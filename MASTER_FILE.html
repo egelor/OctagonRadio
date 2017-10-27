@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>Radio<sub>OctaGon</sub> Radio<sub>OctaGon</sub></title>
-<!-- 2017-10-27 Παρ 16:04 -->
+<!-- 2017-10-27 Παρ 16:13 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Eugene Tryfonides" />
@@ -147,9 +147,10 @@ for the JavaScript code in this tag.
 <li><a href="#sec-3">3. OctaGon Radio&#xa0;&#xa0;&#xa0;<span class="tag"><span class="radio">radio</span></span></a>
 <ul>
 <li><a href="#sec-3-1">3.1. ProxySpace    Master<sub>file</sub><sub>Zannos</sub>.org</a></li>
-<li><a href="#sec-3-2">3.2. Microphone&#xa0;&#xa0;&#xa0;<span class="tag"><span class="mic">mic</span></span></a></li>
-<li><a href="#sec-3-3">3.3. Record Out</a></li>
-<li><a href="#sec-3-4">3.4. MamathroN Server</a></li>
+<li><a href="#sec-3-2">3.2. Επιστροφές (feedback) OctaGon Monitoring</a></li>
+<li><a href="#sec-3-3">3.3. Microphone&#xa0;&#xa0;&#xa0;<span class="tag"><span class="mic">mic</span></span></a></li>
+<li><a href="#sec-3-4">3.4. Record Out</a></li>
+<li><a href="#sec-3-5">3.5. MamathroN Server</a></li>
 </ul>
 </li>
 <li><a href="#sec-4">4. org-source-fontify-buffer</a></li>
@@ -260,20 +261,25 @@ C- c &gt;  //show-post-buffer
 <pre class="src src-sclang">p=<span style="color: #00d7af;">ProxySpace</span>.new<span style="color: #dd0000; font-weight: bold;">(</span>s<span style="color: #dd0000; font-weight: bold;">)</span>;
  p.push;
  p.stop;p.release;
- #+E
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2"><span class="section-number-3">3.2</span> Επιστροφές (feedback) OctaGon Monitoring</h3>
+<div class="outline-text-3" id="text-3-2">
+<div class="org-src-container">
 
- **  &#917;&#960;&#953;&#963;&#964;&#961;&#959;&#966;&#941;&#962; <span style="color: #dd0000; font-weight: bold;">(</span>feedback<span style="color: #dd0000; font-weight: bold;">)</span> OctaGon Monitoring
-#+BEGIN_SRC sclang Octagon Monitoring
-<span style="color: #ff8700;">~octmonit</span>=<span style="color: #dd0000; font-weight: bold;">{</span><span style="color: #00d7af;">AudioIn</span>.<span style="color: #ffd700;">ar</span><span style="color: #5fafd7; font-weight: bold;">(</span><span style="color: #a1db00; font-weight: bold;">[</span>11,12<span style="color: #a1db00; font-weight: bold;">]</span><span style="color: #5fafd7; font-weight: bold;">)</span><span style="color: #dd0000; font-weight: bold;">}</span>
+<pre class="src src-sclang"><span style="color: #ff8700;">~octmonit</span>=<span style="color: #dd0000; font-weight: bold;">{</span><span style="color: #00d7af;">AudioIn</span>.<span style="color: #ffd700;">ar</span><span style="color: #5fafd7; font-weight: bold;">(</span><span style="color: #a1db00; font-weight: bold;">[</span>11,12<span style="color: #a1db00; font-weight: bold;">]</span><span style="color: #5fafd7; font-weight: bold;">)</span><span style="color: #dd0000; font-weight: bold;">}</span>
 <span style="color: #ff8700;">~octmonit</span>.play<span style="color: #dd0000; font-weight: bold;">(</span>1,3<span style="color: #dd0000; font-weight: bold;">)</span>;
 <span style="color: #ff8700;">~octmonit</span>.stop;
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-sec-3-2" class="outline-3">
-<h3 id="sec-3-2"><a id="ID-213f482b-6de1-463b-9a2c-f764577ade14" name="ID-213f482b-6de1-463b-9a2c-f764577ade14"></a><span class="section-number-3">3.2</span> Microphone&#xa0;&#xa0;&#xa0;<span class="tag"><span class="mic">mic</span></span></h3>
-<div class="outline-text-3" id="text-3-2">
+<div id="outline-container-sec-3-3" class="outline-3">
+<h3 id="sec-3-3"><a id="ID-213f482b-6de1-463b-9a2c-f764577ade14" name="ID-213f482b-6de1-463b-9a2c-f764577ade14"></a><span class="section-number-3">3.3</span> Microphone&#xa0;&#xa0;&#xa0;<span class="tag"><span class="mic">mic</span></span></h3>
+<div class="outline-text-3" id="text-3-3">
 <p>
 #+   <a href="01OctaGon_org/mic.sc">Mic.sc </a>  (org-eval-this section) C-H-SPACE
 </p>
@@ -293,9 +299,9 @@ C- c &gt;  //show-post-buffer
 </div>
 </div>
 </div>
-<div id="outline-container-sec-3-3" class="outline-3">
-<h3 id="sec-3-3"><span class="section-number-3">3.3</span> Record Out</h3>
-<div class="outline-text-3" id="text-3-3">
+<div id="outline-container-sec-3-4" class="outline-3">
+<h3 id="sec-3-4"><span class="section-number-3">3.4</span> Record Out</h3>
+<div class="outline-text-3" id="text-3-4">
 <div class="org-src-container">
 
 <pre class="src src-sclang">s.recHeaderFormat = <span style="color: #ff4ea3;">"wav"</span>
@@ -308,9 +314,9 @@ s.stopRecording;
 </div>
 </div>
 
-<div id="outline-container-sec-3-4" class="outline-3">
-<h3 id="sec-3-4"><span class="section-number-3">3.4</span> MamathroN Server</h3>
-<div class="outline-text-3" id="text-3-4">
+<div id="outline-container-sec-3-5" class="outline-3">
+<h3 id="sec-3-5"><span class="section-number-3">3.5</span> MamathroN Server</h3>
+<div class="outline-text-3" id="text-3-5">
 <div class="org-src-container">
 
 <pre class="src src-sclang"><span style="color: #ff8700;">~mamathron</span>=<span style="color: #dd0000; font-weight: bold;">{</span><span style="color: #00d7af;">AudioIn</span>.<span style="color: #ffd700;">ar</span><span style="color: #5fafd7; font-weight: bold;">(</span><span style="color: #a1db00; font-weight: bold;">[</span>9,10<span style="color: #a1db00; font-weight: bold;">]</span><span style="color: #5fafd7; font-weight: bold;">)</span><span style="color: #dd0000; font-weight: bold;">}</span>;
@@ -326,7 +332,6 @@ s.stopRecording;
 </div>
 </div>
 </div>
-
 
 
 
@@ -781,7 +786,7 @@ PulseAudio JACK Source:front-right
 <div id="postamble" class="status">
 <p class="date">Date: <span class="timestamp-wrapper"><span class="timestamp">&lt;2017-10-26 Πεμ&gt;</span></span></p>
 <p class="author">Author: Eugene Tryfonides</p>
-<p class="date">Created: 2017-10-27 Παρ 16:04</p>
+<p class="date">Created: 2017-10-27 Παρ 16:13</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>

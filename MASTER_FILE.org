@@ -68,9 +68,8 @@ jack_connect Carla:audio-out2 'Jack Router':in_8
 p=ProxySpace.new(s);
  p.push;
  p.stop;p.release;
- #+E
-
- **  Επιστροφές (feedback) OctaGon Monitoring
+#+END_SRC
+**  Επιστροφές (feedback) OctaGon Monitoring
 #+BEGIN_SRC sclang Octagon Monitoring
 ~octmonit={AudioIn.ar([11,12])}
 ~octmonit.play(1,3);
@@ -122,7 +121,6 @@ s.stopRecording;
 #+END_SRC
 
 # -----------------------------
-
 
 
 
