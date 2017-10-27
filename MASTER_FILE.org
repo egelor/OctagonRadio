@@ -1,15 +1,8 @@
 #+STARTUP: overview
+ <pre class="example"style="background-color:#eff0f1;">
 #+ATTR_HTML: :style background-color:#666677;
-* org-source-fontify-buffer
-#+BEGIN_SRC emacs-lisp
-(setq
-#+END_SRC
 #+Title: Radio_OctaGon
 * Boot Server SuperCollier
-#+NAME: fontify-natively
-#+BEGIN_SRC  emacs-lisp org-src-fontify-natively
- (setq org-src-fontify-natively t)
-#+END_SRC
 #+NAME: sclang  Server::boot
 #+BEGIN_SRC sclang  bootserver
 // C-c C-,
@@ -137,9 +130,14 @@ s.stopRecording;
 
 
 
+* org-source-fontify-buffer
+#+BEGIN_SRC emacs-lisp fontify
+(setq org-src-fontify-natively t)
+#+END_SRC
 
-** DONE Screenshots
-** Github Configure
+#+Title: Radio_OctaGon
+
+* Github Configure
 #+begin_src emacs-lisp
       (setq org-babel-sh-command "sh")
 #+end_src
@@ -160,12 +158,13 @@ git commit -m ";;Commit message"
 #+END_SRC
 #+BEGIN_SRC sh  remote add origin
 git remote add origin https://github.com/egelor/OctagonRadio.git
+git remote -v
 #+END_SRC
 #+RESULTS:
 #+BEGIN_SRC sh  push origin master
 git push origin master
 #+END_SRC
-
+git push -f origin master
 #+RESULTS:
 
 #+BEGIN_SRC sh
@@ -174,142 +173,6 @@ git push origin master
 #+BEGIN_SRC sh ssh@git
  ssh -T  egelor@github.com
 #+END_SRC
-** Authenticity of host
-'github.com (192.30.253.113)' can't be established.
-RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxydCARLviKw6E5SY8.
-Are you sure you want to continue connecting (yes/no)? yes
-Warning: Permanently added 'github.com,192.30.253.113' (RSA) to the list of known hosts.
-Permission denied (publickey).
-* Artistic outputs and buggs
-** sclang
-init_OSC
-empty
-compiling class library...
-	NumPrimitives = 679
-	compiling dir: '/usr/share/SuperCollider/SCClassLibrary'
-	compiling dir: '/usr/share/SuperCollider/Extensions'
-	compiling dir: '/home/egelor/.local/share/SuperCollider/Extensions'
-	pass 1 done
-	numentries = 1677367 / 34017230 = 0.049
-	8441 method selectors, 4030 classes
-	method table size 30748832 bytes, big table size 272137840
-	Number of Symbols 20637
-	Byte Code Size 865803
-	compiled 853 files in 3.63 seconds
-
-Info: 6 methods are currently overwritten by extensions. To see which, execute:
-MethodOverride.printAll
-
-compile done
-Emacs: Initializing lisp interface.
-MP3.lamepath automatically set to /usr/bin/lame
-WARNING: 'oggdec' executable not found. Please modify the MP3:oggdecpath class variable.
-Help tree read from cache in 0.12415719032288 seconds
-LID: event loop started
-Class tree inited in 0.51 seconds
-
- ================ STARTING FILE LOADING ================
-
- ================ FILE LOADING DONE ================
-
-RESULT = 0
-Welcome to SuperCollider 3.6.6. For help type C-c C-y.
-Emacs: Index help topics in 1.69 seconds
-Emacs: Built symbol table in 0.193 seconds
-booting 57110
-localhost
-Faust: supercollider.cpp: sc_api_version = 2
-Faust: FaustJPverbRaw numControls=11
-Faust: supercollider.cpp: sc_api_version = 2
-Faust: FaustGreyholeRaw numControls=7
-VST_PATH not set, defaulting to /home/egelor/vst:/usr/local/lib/vst:/usr/lib/vst
-DSSI_PATH not set, defaulting to /home/egelor/.dssi:/usr/local/lib/dssi:/usr/lib/dssi
-DSSIVSTPlugin: Error on plugin query: Failed to find dssi-vst-scanner executable
-Found 10 LADSPA plugins
-JackDriver: client name is 'Jack Router'
-SC_AudioDriver: sample rate = 44100.000000, driver's block size = 256
-
-** jack_lsp -c
-MIC:                          system:capture_1
-Firefox:Chrome:   PulseAudio JACK Source:front-left
-Mic_In:                     Jack Router:in_1
-Mic_In:                     Jack Router:in_3
-InstrumentOrMic: system:capture_2
-InstrumentOrMic: Jack Router:in_2
-                                   Jack Router:in_4
-system:playback_1
-   Jack Router:out_3
-system:playback_2
-   Jack Router:out_4
-system:playback_3
-   Jack Router:out_3
-system:playback_4
-   Jack Router:out_4
-netjack:capture_1
-   Jack Router:in_11
-netjack:capture_2
-   Jack Router:in_12
-netjack:capture_3
-netjack:playback_1
-netjack:playback_2
-   Jack Router:out_2
-netjack:playback_3
-netjack-01:capture_1
-   Jack Router:in_9
-netjack-01:capture_2
-   Jack Router:in_10
-netjack-01:capture_3
-netjack-01:playback_1
-   Jack Router:out_5
-netjack-01:playback_2
-   Jack Router:out_6
-netjack-01:playback_3
-Jack Router:in_1
-   system:capture_1
-Jack Router:in_2
-   system:capture_2
-Jack Router:in_3
-   system:capture_1
-Jack Router:in_4
-   system:capture_2
-Jack Router:in_5
-Jack Router:in_6
-Jack Router:in_7
-   PulseAudio JACK Sink:front-left
-Jack Router:in_8
-   PulseAudio JACK Sink:front-right
-Jack Router:in_9
-   netjack-01:capture_1
-Jack Router:in_10
-   netjack-01:capture_2
-Jack Router:in_11
-   netjack:capture_1
-Jack Router:in_12
-   netjack:capture_2
-Jack Router:out_1
-Jack Router:out_2
-   netjack:playback_2
-Jack Router:out_3
-   system:playback_3
-   system:playback_1
-Jack Router:out_4
-   system:playback_4
-   system:playback_2
-Jack Router:out_5
-   netjack-01:playback_1
-Jack Router:out_6
-   netjack-01:playback_2
-Jack Router:out_7
-Jack Router:out_8
-PulseAudio JACK Sink:front-left
-   Jack Router:in_7
-PulseAudio JACK Sink:front-right
-   Jack Router:in_8
-PulseAudio JACK Source:front-left
-   system:capture_1
-PulseAudio JACK Source:front-right
-   system:capture_2
-
 *   Keybindings  :windmove:                                      :buffermove:
 **  Window move
 #+BEGIN_SRC emacs-lisp  windowmove
@@ -578,19 +441,132 @@ h(eval-after-load "org"
 #+RESULTS:
 | keymap | (8388719 . prelude-smart-open-line-above) | (8388717 keymap (98 . magit-blame) (102 . magit-log-buffer-file) (108 . magit-log) (109 . magit-status)) | (8388715 . prelude-kill-whole-line) | (8388714 . prelude-top-join-line) | (8388722 . prelude-recentf-ido-find-file) | (8388711 . god-local-mode) | (8388720 . projectile-command-map) | (C-S-down . move-text-down) | (C-S-up . move-text-up) | (C-S-return . prelude-smart-open-line-above) | (27 keymap (26 . prelude-indent-defun) (111 . prelude-smart-open-line)) | (S-return . prelude-smart-open-line) | (3 keymap (105 . prelude-goto-symbol) (83 . prelude-find-shell-init-file) (73 . prelude-find-user-init-file) (107 . prelude-kill-other-buffers) (116 . prelude-visit-term-buffer) (114 . prelude-rename-buffer-and-file) (27 keymap (100 . prelude-duplicate-and-comment-current-line-or-region)) (100 . prelude-duplicate-current-line-or-region) (68 . prelude-delete-file-and-buffer) (115 . prelude-swap-windows) (101 . prelude-eval-and-replace) (117 . prelude-view-url) (102 . prelude-recentf-ido-find-file) (110 . prelude-cleanup-buffer-or-region) (85 . prelude-duckduckgo) (121 . prelude-youtube) (71 . prelude-github) (103 . prelude-google) (111 . prelude-open-with)) |
 
-*  Emacs shell help
-* [#A] navigate   C-c C-f  //only for folders
-Type u to Unmark a file or all files of an inserted subdirectory.
-Type DEL to back up one line and unmark or unflag.
-Type x to delete (eXecute) the files flagged `D'.
-Type RET to Find the current line's file
-  (or dired it in another buffer, if it is a directory).
-Type o to find file or Dired directory in Other window.
-Type i to Insert a subdirectory in this buffer.
-Type R to Rename a file or move the marked files to another directory.
-Type C to Copy files.
-Type s to toggle Sorting by name/date or change the `ls' switches.
-Type g to read all currently expanded directories aGain.
-  This retains all marks and hides subdirs again that were hidden before.
-  Use `SPC' and `DEL' to move down and up by lines.
-*  TODO This will generate <pre class="example"style="background-color:#eff0f1;">, which will apply color to that block only.
+* Artistic outputs and buggs
+** sclang
+init_OSC
+empty
+compiling class library...
+	NumPrimitives = 679
+	compiling dir: '/usr/share/SuperCollider/SCClassLibrary'
+	compiling dir: '/usr/share/SuperCollider/Extensions'
+	compiling dir: '/home/egelor/.local/share/SuperCollider/Extensions'
+	pass 1 done
+	numentries = 1677367 / 34017230 = 0.049
+	8441 method selectors, 4030 classes
+	method table size 30748832 bytes, big table size 272137840
+	Number of Symbols 20637
+	Byte Code Size 865803
+	compiled 853 files in 3.63 seconds
+
+Info: 6 methods are currently overwritten by extensions. To see which, execute:
+MethodOverride.printAll
+
+compile done
+Emacs: Initializing lisp interface.
+MP3.lamepath automatically set to /usr/bin/lame
+WARNING: 'oggdec' executable not found. Please modify the MP3:oggdecpath class variable.
+Help tree read from cache in 0.12415719032288 seconds
+LID: event loop started
+Class tree inited in 0.51 seconds
+
+ ================ STARTING FILE LOADING ================
+
+ ================ FILE LOADING DONE ================
+
+RESULT = 0
+Welcome to SuperCollider 3.6.6. For help type C-c C-y.
+Emacs: Index help topics in 1.69 seconds
+Emacs: Built symbol table in 0.193 seconds
+booting 57110
+localhost
+Faust: supercollider.cpp: sc_api_version = 2
+Faust: FaustJPverbRaw numControls=11
+Faust: supercollider.cpp: sc_api_version = 2
+Faust: FaustGreyholeRaw numControls=7
+VST_PATH not set, defaulting to /home/egelor/vst:/usr/local/lib/vst:/usr/lib/vst
+DSSI_PATH not set, defaulting to /home/egelor/.dssi:/usr/local/lib/dssi:/usr/lib/dssi
+DSSIVSTPlugin: Error on plugin query: Failed to find dssi-vst-scanner executable
+Found 10 LADSPA plugins
+JackDriver: client name is 'Jack Router'
+SC_AudioDriver: sample rate = 44100.000000, driver's block size = 256
+
+** jack_lsp -c
+MIC:                          system:capture_1
+Firefox:Chrome:   PulseAudio JACK Source:front-left
+Mic_In:                     Jack Router:in_1
+Mic_In:                     Jack Router:in_3
+InstrumentOrMic: system:capture_2
+InstrumentOrMic: Jack Router:in_2
+                                   Jack Router:in_4
+system:playback_1
+   Jack Router:out_3
+system:playback_2
+   Jack Router:out_4
+system:playback_3
+   Jack Router:out_3
+system:playback_4
+   Jack Router:out_4
+netjack:capture_1
+   Jack Router:in_11
+netjack:capture_2
+   Jack Router:in_12
+netjack:capture_3
+netjack:playback_1
+netjack:playback_2
+   Jack Router:out_2
+netjack:playback_3
+netjack-01:capture_1
+   Jack Router:in_9
+netjack-01:capture_2
+   Jack Router:in_10
+netjack-01:capture_3
+netjack-01:playback_1
+   Jack Router:out_5
+netjack-01:playback_2
+   Jack Router:out_6
+netjack-01:playback_3
+Jack Router:in_1
+   system:capture_1
+Jack Router:in_2
+   system:capture_2
+Jack Router:in_3
+   system:capture_1
+Jack Router:in_4
+   system:capture_2
+Jack Router:in_5
+Jack Router:in_6
+Jack Router:in_7
+   PulseAudio JACK Sink:front-left
+Jack Router:in_8
+   PulseAudio JACK Sink:front-right
+Jack Router:in_9
+   netjack-01:capture_1
+Jack Router:in_10
+   netjack-01:capture_2
+Jack Router:in_11
+   netjack:capture_1
+Jack Router:in_12
+   netjack:capture_2
+Jack Router:out_1
+Jack Router:out_2
+   netjack:playback_2
+Jack Router:out_3
+   system:playback_3
+   system:playback_1
+Jack Router:out_4
+   system:playback_4
+   system:playback_2
+Jack Router:out_5
+   netjack-01:playback_1
+Jack Router:out_6
+   netjack-01:playback_2
+Jack Router:out_7
+Jack Router:out_8
+PulseAudio JACK Sink:front-left
+   Jack Router:in_7
+PulseAudio JACK Sink:front-right
+   Jack Router:in_8
+PulseAudio JACK Source:front-left
+   system:capture_1
+PulseAudio JACK Source:front-right
+   system:capture_2

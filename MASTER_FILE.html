@@ -3,8 +3,8 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<title>Radio<sub>OctaGon</sub></title>
-<!-- 2017-10-26 Πεμ 06:35 -->
+<title>Radio<sub>OctaGon</sub> Radio<sub>OctaGon</sub></title>
+<!-- 2017-10-27 Παρ 16:04 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Eugene Tryfonides" />
@@ -137,74 +137,143 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">Radio<sub>OctaGon</sub></h1>
+<h1 class="title">Radio<sub>OctaGon</sub> Radio<sub>OctaGon</sub></h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
 <li><a href="#sec-1">1. Boot Server SuperCollier</a></li>
-<li><a href="#sec-2">2. ProxySpace Master<sub>file</sub><sub>Zannos</sub>.org</a>
+<li><a href="#sec-2">2. neuron@Radio</a></li>
+<li><a href="#sec-3">3. OctaGon Radio&#xa0;&#xa0;&#xa0;<span class="tag"><span class="radio">radio</span></span></a>
 <ul>
-<li><a href="#sec-2-1">2.1. Microphone&#xa0;&#xa0;&#xa0;<span class="tag"><span class="mic">mic</span></span></a></li>
-<li><a href="#sec-2-2">2.2. MamathroN Server</a></li>
-<li><a href="#sec-2-3">2.3. <span class="done DONE">DONE</span> Screenshot from sclang</a></li>
+<li><a href="#sec-3-1">3.1. ProxySpace    Master<sub>file</sub><sub>Zannos</sub>.org</a></li>
+<li><a href="#sec-3-2">3.2. Microphone&#xa0;&#xa0;&#xa0;<span class="tag"><span class="mic">mic</span></span></a></li>
+<li><a href="#sec-3-3">3.3. Record Out</a></li>
+<li><a href="#sec-3-4">3.4. MamathroN Server</a></li>
 </ul>
 </li>
-<li><a href="#sec-3">3. Keybindings  :windmove:&#xa0;&#xa0;&#xa0;<span class="tag"><span class="buffermove">buffermove</span></span></a>
+<li><a href="#sec-4">4. org-source-fontify-buffer</a></li>
+<li><a href="#sec-5">5. Github Configure</a></li>
+<li><a href="#sec-6">6. Keybindings  :windmove:&#xa0;&#xa0;&#xa0;<span class="tag"><span class="buffermove">buffermove</span></span></a>
 <ul>
-<li><a href="#sec-3-1">3.1. Window move</a></li>
-<li><a href="#sec-3-2">3.2. ace-window</a></li>
-<li><a href="#sec-3-3">3.3. Hide-show block  code</a></li>
+<li><a href="#sec-6-1">6.1. Window move</a></li>
+<li><a href="#sec-6-2">6.2. ace-window</a></li>
+<li><a href="#sec-6-3">6.3. Hide-show block  code</a></li>
 </ul>
 </li>
-<li><a href="#sec-4">4. Org-sc Keys  org-sc.el    :org: :org-sc:</a></li>
-<li><a href="#sec-5">5. Org-mode Keys&#xa0;&#xa0;&#xa0;<span class="tag"><span class="keys">keys</span></span></a></li>
-<li><a href="#sec-6">6. 011<sub>untangle</sub><sub>tangle</sub>.el</a></li>
-<li><a href="#sec-7">7. Emacs shell help</a></li>
-<li><a href="#sec-8">8. navigate   C-c C-f  //only for folders</a></li>
+<li><a href="#sec-7">7. Org-sc Keys  org-sc.el    :org: :org-sc:</a></li>
+<li><a href="#sec-8">8. Org-mode Keys&#xa0;&#xa0;&#xa0;<span class="tag"><span class="keys">keys</span></span></a></li>
+<li><a href="#sec-9">9. 011<sub>untangle</sub><sub>tangle</sub>.el</a></li>
+<li><a href="#sec-10">10. Artistic outputs and buggs</a>
+<ul>
+<li><a href="#sec-10-1">10.1. sclang</a></li>
+<li><a href="#sec-10-2">10.2. jack<sub>lsp</sub> -c</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 <p>
-This will generate &lt;pre class="example"style="background-color:#eff0f1;"&gt;, which will apply color to that block only.
+&lt;pre class="example"style="background-color:#eff0f1;"&gt;
 </p>
 <div id="outline-container-sec-1" class="outline-2">
 <h2 id="sec-1"><span class="section-number-2">1</span> Boot Server SuperCollier</h2>
 <div class="outline-text-2" id="text-1">
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp" id="Neuron"><span style="color: #dd0000; font-weight: bold;">(</span>setq org-src-fontify-natively t<span style="color: #dd0000; font-weight: bold;">)</span>
-</pre>
-</div>
-<pre class="example">
-t
-</pre>
-
-<div class="org-src-container">
-
-<pre class="src src-sclang" id="boot_sclang"><span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">C-c C-,</span>
+<pre class="src src-sclang" id="sclang-Server::boot"><span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">C-c C-,</span>
+<span style="color: #00d7af;">Server</span>.default.boot;
  s.boot;
 </pre>
 </div>
 </div>
 </div>
 <div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2"><span class="section-number-2">2</span> ProxySpace <a href="file:///home/egelor/.emacs.d/personal/postload/MASTER-FILE-170722.html">Master<sub>file</sub><sub>Zannos</sub>.org</a></h2>
+<h2 id="sec-2"><span class="section-number-2">2</span> <a href="file:///home/egelor/Radio/neuron.sh">neuron@Radio</a></h2>
 <div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li>neuron@Radio is a zsh script that connects Jack with SuperCollider,mic,mamathronServer &amp; PulseAudio And More
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #6c6c6c; font-style: italic;">#</span><span style="color: #6c6c6c; font-style: italic;">!/bin/</span><span style="color: #a1db00; font-weight: bold;">zsh</span>
+<span style="color: #6c6c6c; font-style: italic;">#</span><span style="color: #6c6c6c; font-style: italic;">disconnect netjack from system palyback</span>
+jack_disconnect system:playback_1 netjack:capture_1
+jack_disconnect system:playback_2 netjack:capture_2
+<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">Mic to Sc  in_1 allready connect</span>
+jack_connect <span style="color: #ff4ea3;">'Jack Router'</span>:in_3 system:capture_1
+jack_connect <span style="color: #ff4ea3;">'Jack Router'</span>:in_1 system:capture_2
+<span style="color: #6c6c6c; font-style: italic;">#</span><span style="color: #6c6c6c; font-style: italic;">Second Input to Sc</span>
+jack_connect <span style="color: #ff4ea3;">'Jack Router'</span>:in_2 system:capture_1
+jack_connect <span style="color: #ff4ea3;">'Jack Router'</span>:in_4 system:capture_2
+<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">connect vlc</span>
+<span style="color: #ff8700;">PIDS2</span>=$(pidof vlc)
+jack_disconnect vlc_<span style="color: #ff4ea3;">"$PIDS2"</span>:out_1 system:playback_1
+jack_disconnect vlc_<span style="color: #ff4ea3;">"$PIDS2"</span>:out_2 system:playback_2
+jack_connect <span style="color: #ff4ea3;">'Jack Router'</span>:in_5  vlc_<span style="color: #ff4ea3;">"$PIDS2"</span>:out_1
+jack_connect <span style="color: #ff4ea3;">'Jack Router'</span>:in_6  vlc_<span style="color: #ff4ea3;">"$PIDS2"</span>:out_2
+<span style="color: #6c6c6c; font-style: italic;">#</span><span style="color: #6c6c6c; font-style: italic;">Disconnect Connect Pulseaudio Sink</span>
+jack_disconnect <span style="color: #ff4ea3;">'PulseAudio JACK Sink'</span>:front-left system:playback_1
+jack_disconnect <span style="color: #ff4ea3;">'PulseAudio JACK Sink'</span>:front-right system:playback_2
+jack_connect <span style="color: #ff4ea3;">'Jack Router'</span>:in_8  <span style="color: #ff4ea3;">'PulseAudio JACK Sink'</span>:front-right
+jack_connect <span style="color: #ff4ea3;">'Jack Router'</span>:in_7  <span style="color: #ff4ea3;">'PulseAudio JACK Sink'</span>:front-left
+<span style="color: #6c6c6c; font-style: italic;">#</span><span style="color: #6c6c6c; font-style: italic;">Mamatron to SuperCollider &amp;&amp;  SuperCollider MonitortoMamathron</span>
+
+jack_connect netjack-01:capture_1 <span style="color: #ff4ea3;">'Jack Router'</span>:in_9
+jack_connect netjack-01:capture_2 <span style="color: #ff4ea3;">'Jack Router'</span>:in_10
+
+jack_connect  netjack-01:playback_1 <span style="color: #ff4ea3;">'Jack Router'</span>:out_5
+jack_connect  netjack-01:playback_2 <span style="color: #ff4ea3;">'Jack Router'</span>:out_6
+<span style="color: #6c6c6c; font-style: italic;">#</span><span style="color: #6c6c6c; font-style: italic;">connect neuron to octagon radio</span>
+jack_connect <span style="color: #ff4ea3;">'Jack Router'</span>:out_1 netjack:playback_1
+jack_connect <span style="color: #ff4ea3;">'Jack Router'</span>:out_2 netjack:playback_2
+<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">connect Supercollider out 3 &amp; 4 to system:playback as Monitor</span>
+jack_connect <span style="color: #ff4ea3;">'Jack Router'</span>:out_3 system:playback_1
+jack_connect <span style="color: #ff4ea3;">'Jack Router'</span>:out_4 system:playback_2
+<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">Disconnect supercollider out to system</span>
+jack_disconnect <span style="color: #ff4ea3;">'Jack Router'</span>:out_1 system:playback_1
+jack_disconnect <span style="color: #ff4ea3;">'Jack Router'</span>:out_2 system:playback_2
+<span style="color: #6c6c6c; font-style: italic;">#</span><span style="color: #6c6c6c; font-style: italic;">Netjack Capture Octagon Monitor to SuperCollider</span>
+jack_connect netjack:capture_1 <span style="color: #ff4ea3;">'Jack Router'</span>:in_11
+jack_connect netjack:capture_2 <span style="color: #ff4ea3;">'Jack Router'</span>:in_12
+<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">Carla</span>
+jack_connect Carla:audio-in1 <span style="color: #ff4ea3;">'Jack Router'</span>:out_3
+jack_connect Carla:audio-in2 <span style="color: #ff4ea3;">'Jack Router'</span>:out_4
+jack_connect Carla:audio-out1 <span style="color: #ff4ea3;">'Jack Router'</span>:in_7
+jack_connect Carla:audio-out2 <span style="color: #ff4ea3;">'Jack Router'</span>:in_8
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> OctaGon Radio&#xa0;&#xa0;&#xa0;<span class="tag"><span class="radio">radio</span></span></h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> ProxySpace    <a href="file:///home/egelor/.emacs.d/personal/postload/MASTER-FILE-170722.html">Master<sub>file</sub><sub>Zannos</sub>.org</a></h3>
+<div class="outline-text-3" id="text-3-1">
 <p>
 C- c &gt;  //show-post-buffer
 </p>
 <div class="org-src-container">
 
 <pre class="src src-sclang">p=<span style="color: #00d7af;">ProxySpace</span>.new<span style="color: #dd0000; font-weight: bold;">(</span>s<span style="color: #dd0000; font-weight: bold;">)</span>;
-p.push;
-p.stop;p.release;
+ p.push;
+ p.stop;p.release;
+ #+E
+
+ **  &#917;&#960;&#953;&#963;&#964;&#961;&#959;&#966;&#941;&#962; <span style="color: #dd0000; font-weight: bold;">(</span>feedback<span style="color: #dd0000; font-weight: bold;">)</span> OctaGon Monitoring
+#+BEGIN_SRC sclang Octagon Monitoring
+<span style="color: #ff8700;">~octmonit</span>=<span style="color: #dd0000; font-weight: bold;">{</span><span style="color: #00d7af;">AudioIn</span>.<span style="color: #ffd700;">ar</span><span style="color: #5fafd7; font-weight: bold;">(</span><span style="color: #a1db00; font-weight: bold;">[</span>11,12<span style="color: #a1db00; font-weight: bold;">]</span><span style="color: #5fafd7; font-weight: bold;">)</span><span style="color: #dd0000; font-weight: bold;">}</span>
+<span style="color: #ff8700;">~octmonit</span>.play<span style="color: #dd0000; font-weight: bold;">(</span>1,3<span style="color: #dd0000; font-weight: bold;">)</span>;
+<span style="color: #ff8700;">~octmonit</span>.stop;
 </pre>
 </div>
 </div>
-<div id="outline-container-sec-2-1" class="outline-3">
-<h3 id="sec-2-1"><a id="ID-213f482b-6de1-463b-9a2c-f764577ade14" name="ID-213f482b-6de1-463b-9a2c-f764577ade14"></a><span class="section-number-3">2.1</span> Microphone&#xa0;&#xa0;&#xa0;<span class="tag"><span class="mic">mic</span></span></h3>
-<div class="outline-text-3" id="text-2-1">
+</div>
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2"><a id="ID-213f482b-6de1-463b-9a2c-f764577ade14" name="ID-213f482b-6de1-463b-9a2c-f764577ade14"></a><span class="section-number-3">3.2</span> Microphone&#xa0;&#xa0;&#xa0;<span class="tag"><span class="mic">mic</span></span></h3>
+<div class="outline-text-3" id="text-3-2">
 <p>
 #+   <a href="01OctaGon_org/mic.sc">Mic.sc </a>  (org-eval-this section) C-H-SPACE
 </p>
@@ -213,9 +282,10 @@ p.stop;p.release;
 <pre class="src src-sclang"><span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">Microphone of the  streamer Octagon.</span>
 <span style="color: #ff8700;">~mic</span>=<span style="color: #dd0000; font-weight: bold;">{</span><span style="color: #00d7af;">AudioIn</span>.<span style="color: #ffd700;">ar</span><span style="color: #5fafd7; font-weight: bold;">(</span><span style="color: #a1db00; font-weight: bold;">[</span>1,3<span style="color: #a1db00; font-weight: bold;">]</span><span style="color: #5fafd7; font-weight: bold;">)</span><span style="color: #dd0000; font-weight: bold;">}</span>
 <span style="color: #ff8700;">~micmonitor</span>=<span style="color: #dd0000; font-weight: bold;">{</span><span style="color: #00d7af;">AudioIn</span>.<span style="color: #ffd700;">ar</span><span style="color: #5fafd7; font-weight: bold;">(</span><span style="color: #a1db00; font-weight: bold;">[</span>1,3<span style="color: #a1db00; font-weight: bold;">]</span><span style="color: #5fafd7; font-weight: bold;">)</span><span style="color: #dd0000; font-weight: bold;">}</span>
+<span style="color: #ff8700;">~mictomamathron</span>=<span style="color: #dd0000; font-weight: bold;">{</span><span style="color: #00d7af;">AudioIn</span>.<span style="color: #ffd700;">ar</span><span style="color: #5fafd7; font-weight: bold;">(</span><span style="color: #a1db00; font-weight: bold;">[</span>1,3<span style="color: #a1db00; font-weight: bold;">]</span><span style="color: #5fafd7; font-weight: bold;">)</span><span style="color: #dd0000; font-weight: bold;">}</span>
 <span style="color: #ff8700;">~mictomamathron</span>.play<span style="color: #dd0000; font-weight: bold;">(</span>4<span style="color: #dd0000; font-weight: bold;">)</span>;
 <span style="color: #ff8700;">~mictomamathron</span>.stop;
-<span style="color: #ff8700;">~mic</span>.play<span style="color: #dd0000; font-weight: bold;">(</span>0<span style="color: #dd0000; font-weight: bold;">)</span>;
+<span style="color: #ff8700;">~mic</span>.play<span style="color: #dd0000; font-weight: bold;">(</span>1,2<span style="color: #dd0000; font-weight: bold;">)</span>;
 <span style="color: #ff8700;">~mic</span>.stop;
 <span style="color: #ff8700;">~micmonitor</span>.play<span style="color: #dd0000; font-weight: bold;">(</span>2<span style="color: #dd0000; font-weight: bold;">)</span>;
 <span style="color: #ff8700;">~micmonitor</span>.stop;
@@ -223,13 +293,28 @@ p.stop;p.release;
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-2" class="outline-3">
-<h3 id="sec-2-2"><span class="section-number-3">2.2</span> MamathroN Server</h3>
-<div class="outline-text-3" id="text-2-2">
+<div id="outline-container-sec-3-3" class="outline-3">
+<h3 id="sec-3-3"><span class="section-number-3">3.3</span> Record Out</h3>
+<div class="outline-text-3" id="text-3-3">
 <div class="org-src-container">
 
-<pre class="src src-sclang"><span style="color: #ff8700;">~mamathron</span>=<span style="color: #dd0000; font-weight: bold;">{</span><span style="color: #00d7af;">AudioIn</span>.<span style="color: #ffd700;">ar</span><span style="color: #5fafd7; font-weight: bold;">(</span><span style="color: #a1db00; font-weight: bold;">[</span>9,10<span style="color: #a1db00; font-weight: bold;">]</span><span style="color: #5fafd7; font-weight: bold;">)</span><span style="color: #dd0000; font-weight: bold;">}</span>
-<span style="color: #ff8700;">~mamathronmonitor</span>=<span style="color: #dd0000; font-weight: bold;">{</span><span style="color: #00d7af;">AudioIn</span>.<span style="color: #ffd700;">ar</span><span style="color: #5fafd7; font-weight: bold;">(</span><span style="color: #a1db00; font-weight: bold;">[</span>9,10<span style="color: #a1db00; font-weight: bold;">]</span><span style="color: #5fafd7; font-weight: bold;">)</span><span style="color: #dd0000; font-weight: bold;">}</span>
+<pre class="src src-sclang">s.recHeaderFormat = <span style="color: #ff4ea3;">"wav"</span>
+s.recChannels <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">default: 2) Must me called before preperForRecord</span>
+s.prepareForRecord;
+s.record<span style="color: #dd0000; font-weight: bold;">(</span>0<span style="color: #dd0000; font-weight: bold;">)</span>;
+s.stopRecording;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-4" class="outline-3">
+<h3 id="sec-3-4"><span class="section-number-3">3.4</span> MamathroN Server</h3>
+<div class="outline-text-3" id="text-3-4">
+<div class="org-src-container">
+
+<pre class="src src-sclang"><span style="color: #ff8700;">~mamathron</span>=<span style="color: #dd0000; font-weight: bold;">{</span><span style="color: #00d7af;">AudioIn</span>.<span style="color: #ffd700;">ar</span><span style="color: #5fafd7; font-weight: bold;">(</span><span style="color: #a1db00; font-weight: bold;">[</span>9,10<span style="color: #a1db00; font-weight: bold;">]</span><span style="color: #5fafd7; font-weight: bold;">)</span><span style="color: #dd0000; font-weight: bold;">}</span>;
+<span style="color: #ff8700;">~mamathronmonitor</span>=<span style="color: #dd0000; font-weight: bold;">{</span><span style="color: #00d7af;">AudioIn</span>.<span style="color: #ffd700;">ar</span><span style="color: #5fafd7; font-weight: bold;">(</span><span style="color: #a1db00; font-weight: bold;">[</span>9,10<span style="color: #a1db00; font-weight: bold;">]</span><span style="color: #5fafd7; font-weight: bold;">)</span><span style="color: #dd0000; font-weight: bold;">}</span>;
 <span style="color: #ff8700;">~mamathron</span>.play<span style="color: #dd0000; font-weight: bold;">(</span>0<span style="color: #dd0000; font-weight: bold;">)</span>;
 <span style="color: #ff8700;">~mamathron</span>.stop;
 <span style="color: #ff8700;">~mamathron</span>.release;
@@ -240,77 +325,73 @@ p.stop;p.release;
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-3" class="outline-3">
-<h3 id="sec-2-3"><span class="section-number-3">2.3</span> <span class="done DONE">DONE</span> Screenshot from sclang</h3>
-<div class="outline-text-3" id="text-2-3">
-<p>
-init<sub>OSC</sub>
-empty
-compiling class library&#x2026;
-        NumPrimitives = 679
-        compiling dir: '/usr/share/SuperCollider/SCClassLibrary'
-        compiling dir: '<i>usr/share/SuperCollider/Extensions'
-        compiling dir: '/home/egelor</i>.local/share/SuperCollider/Extensions'
-        pass 1 done
-        numentries = 1677367 / 34017230 = 0.049
-        8441 method selectors, 4030 classes
-        method table size 30748832 bytes, big table size 272137840
-        Number of Symbols 20637
-        Byte Code Size 865803
-        compiled 853 files in 3.63 seconds
-</p>
+</div>
 
-<p>
-Info: 6 methods are currently overwritten by extensions. To see which, execute:
-MethodOverride.printAll
-</p>
 
-<p>
-compile done
-Emacs: Initializing lisp interface.
-MP3.lamepath automatically set to /usr/bin/lame
-WARNING: 'oggdec' executable not found. Please modify the MP3:oggdecpath class variable.
-Help tree read from cache in 0.12415719032288 seconds
-LID: event loop started
-Class tree inited in 0.51 seconds
-</p>
 
-<p>
-<code>==============</code> STARTING FILE LOADING <code>==============</code>
-</p>
 
-<p>
-<code>==============</code> FILE LOADING DONE <code>==============</code>
-</p>
 
-<p>
-RESULT = 0
-Welcome to SuperCollider 3.6.6. For help type C-c C-y.
-Emacs: Index help topics in 1.69 seconds
-Emacs: Built symbol table in 0.193 seconds
-booting 57110
-localhost
-Faust: supercollider.cpp: sc<sub>api</sub><sub>version</sub> = 2
-Faust: FaustJPverbRaw numControls=11
-Faust: supercollider.cpp: sc<sub>api</sub><sub>version</sub> = 2
-Faust: FaustGreyholeRaw numControls=7
-VST<sub>PATH</sub> not set, defaulting to <i>home/egelor/vst:/usr/local/lib/vst:/usr/lib/vst
-DSSI<sub>PATH</sub> not set, defaulting to /home/egelor</i>.dssi:/usr/local/lib/dssi:/usr/lib/dssi
-DSSIVSTPlugin: Error on plugin query: Failed to find dssi-vst-scanner executable
-Found 10 LADSPA plugins
-JackDriver: client name is 'Jack Router'
-SC<sub>AudioDriver</sub>: sample rate = 44100.000000, driver's block size = 256
-</p>
+
+
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> org-source-fontify-buffer</h2>
+<div class="outline-text-2" id="text-4">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span style="color: #dd0000; font-weight: bold;">(</span>setq org-src-fontify-natively t<span style="color: #dd0000; font-weight: bold;">)</span>
+</pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-sec-3" class="outline-2">
-<h2 id="sec-3"><span class="section-number-2">3</span> Keybindings  :windmove:&#xa0;&#xa0;&#xa0;<span class="tag"><span class="buffermove">buffermove</span></span></h2>
-<div class="outline-text-2" id="text-3">
-</div><div id="outline-container-sec-3-1" class="outline-3">
-<h3 id="sec-3-1"><span class="section-number-3">3.1</span> Window move</h3>
-<div class="outline-text-3" id="text-3-1">
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Github Configure</h2>
+<div class="outline-text-2" id="text-5">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span style="color: #dd0000; font-weight: bold;">(</span>setq org-babel-sh-command <span style="color: #ff4ea3;">"sh"</span><span style="color: #dd0000; font-weight: bold;">)</span>
+</pre>
+</div>
+<p>
+git config &#x2013;global user.name "egelor"
+#+END<sub>SRC</sub>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">git config --global user.emacs <span style="color: #ff4ea3;">"e.trifonidis@gmail.com"</span>
+</pre>
+</div>
+<p>
+git remote add origin <a href="https://github.com/egelor/OctagonRadio.git">https://github.com/egelor/OctagonRadio.git</a>
+git remote -v
+#+END<sub>SRC</sub>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">git push origin master
+</pre>
+</div>
+<p>
+git push -f origin master
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh"></pre>
+</div>
+<div class="org-src-container">
+
+<pre class="src src-sh">ssh -T  egelor@github.com
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> Keybindings  :windmove:&#xa0;&#xa0;&#xa0;<span class="tag"><span class="buffermove">buffermove</span></span></h2>
+<div class="outline-text-2" id="text-6">
+</div><div id="outline-container-sec-6-1" class="outline-3">
+<h3 id="sec-6-1"><span class="section-number-3">6.1</span> Window move</h3>
+<div class="outline-text-3" id="text-6-1">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp"><span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"s-&lt;"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'beginning-of-buffer<span style="color: #dd0000; font-weight: bold;">)</span>
@@ -327,9 +408,9 @@ SC<sub>AudioDriver</sub>: sample rate = 44100.000000, driver's block size = 256
 </div>
 </div>
 </div>
-<div id="outline-container-sec-3-2" class="outline-3">
-<h3 id="sec-3-2"><span class="section-number-3">3.2</span> ace-window</h3>
-<div class="outline-text-3" id="text-3-2">
+<div id="outline-container-sec-6-2" class="outline-3">
+<h3 id="sec-6-2"><span class="section-number-3">6.2</span> ace-window</h3>
+<div class="outline-text-3" id="text-6-2">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp"><span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-S-a c"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'ace-jump-char-mode<span style="color: #dd0000; font-weight: bold;">)</span>
@@ -344,9 +425,9 @@ SC<sub>AudioDriver</sub>: sample rate = 44100.000000, driver's block size = 256
 </div>
 </div>
 </div>
-<div id="outline-container-sec-3-3" class="outline-3">
-<h3 id="sec-3-3"><span class="section-number-3">3.3</span> Hide-show block  code</h3>
-<div class="outline-text-3" id="text-3-3">
+<div id="outline-container-sec-6-3" class="outline-3">
+<h3 id="sec-6-3"><span class="section-number-3">6.3</span> Hide-show block  code</h3>
+<div class="outline-text-3" id="text-6-3">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp"><span style="color: #dd0000; font-weight: bold;">(</span><span style="color: #a1db00; font-weight: bold;">defun</span> <span style="color: #ffd700;">my-toggle-hideshow-all</span> <span style="color: #5fafd7; font-weight: bold;">()</span>
@@ -365,9 +446,9 @@ SC<sub>AudioDriver</sub>: sample rate = 44100.000000, driver's block size = 256
 </div>
 </div>
 </div>
-<div id="outline-container-sec-4" class="outline-2">
-<h2 id="sec-4"><span class="section-number-2">4</span> Org-sc Keys  <a href="file:///home/egelor/.emacs.d/personal/postload/015_org-sc.el">org-sc.el  </a>  :org: :org-sc:</h2>
-<div class="outline-text-2" id="text-4">
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7"><span class="section-number-2">7</span> Org-sc Keys  <a href="file:///home/egelor/.emacs.d/personal/postload/015_org-sc.el">org-sc.el  </a>  :org: :org-sc:</h2>
+<div class="outline-text-2" id="text-7">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp"><span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-c l"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'sclang-start<span style="color: #dd0000; font-weight: bold;">)</span>
@@ -442,9 +523,9 @@ h<span style="color: #dd0000; font-weight: bold;">(</span>eval-after-load <span 
 </div>
 </div>
 </div>
-<div id="outline-container-sec-5" class="outline-2">
-<h2 id="sec-5"><span class="section-number-2">5</span> Org-mode Keys&#xa0;&#xa0;&#xa0;<span class="tag"><span class="keys">keys</span></span></h2>
-<div class="outline-text-2" id="text-5">
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8"><span class="section-number-2">8</span> Org-mode Keys&#xa0;&#xa0;&#xa0;<span class="tag"><span class="keys">keys</span></span></h2>
+<div class="outline-text-2" id="text-8">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp"><span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">This is run once after loading org for the first time</span>
@@ -539,36 +620,168 @@ h<span style="color: #dd0000; font-weight: bold;">(</span>eval-after-load <span 
 </div>
 </div>
 </div>
-<div id="outline-container-sec-6" class="outline-2">
-<h2 id="sec-6"><span class="section-number-2">6</span> 011<sub>untangle</sub><sub>tangle</sub>.el</h2>
+<div id="outline-container-sec-9" class="outline-2">
+<h2 id="sec-9"><span class="section-number-2">9</span> 011<sub>untangle</sub><sub>tangle</sub>.el</h2>
 </div>
-<div id="outline-container-sec-7" class="outline-2">
-<h2 id="sec-7"><span class="section-number-2">7</span> Emacs shell help</h2>
-</div>
-<div id="outline-container-sec-8" class="outline-2">
-<h2 id="sec-8"><span class="section-number-2">8</span> navigate   C-c C-f  //only for folders</h2>
-<div class="outline-text-2" id="text-8">
+<div id="outline-container-sec-10" class="outline-2">
+<h2 id="sec-10"><span class="section-number-2">10</span> Artistic outputs and buggs</h2>
+<div class="outline-text-2" id="text-10">
+</div><div id="outline-container-sec-10-1" class="outline-3">
+<h3 id="sec-10-1"><span class="section-number-3">10.1</span> sclang</h3>
+<div class="outline-text-3" id="text-10-1">
 <p>
-Type u to Unmark a file or all files of an inserted subdirectory.
-Type DEL to back up one line and unmark or unflag.
-Type x to delete (eXecute) the files flagged `D'.
-Type RET to Find the current line's file
-  (or dired it in another buffer, if it is a directory).
-Type o to find file or Dired directory in Other window.
-Type i to Insert a subdirectory in this buffer.
-Type R to Rename a file or move the marked files to another directory.
-Type C to Copy files.
-Type s to toggle Sorting by name/date or change the `ls' switches.
-Type g to read all currently expanded directories aGain.
-  This retains all marks and hides subdirs again that were hidden before.
-  Use `SPC' and `DEL' to move down and up by lines.
+init<sub>OSC</sub>
+empty
+compiling class library&#x2026;
+        NumPrimitives = 679
+        compiling dir: '/usr/share/SuperCollider/SCClassLibrary'
+        compiling dir: '<i>usr/share/SuperCollider/Extensions'
+        compiling dir: '/home/egelor</i>.local/share/SuperCollider/Extensions'
+        pass 1 done
+        numentries = 1677367 / 34017230 = 0.049
+        8441 method selectors, 4030 classes
+        method table size 30748832 bytes, big table size 272137840
+        Number of Symbols 20637
+        Byte Code Size 865803
+        compiled 853 files in 3.63 seconds
+</p>
+
+<p>
+Info: 6 methods are currently overwritten by extensions. To see which, execute:
+MethodOverride.printAll
+</p>
+
+<p>
+compile done
+Emacs: Initializing lisp interface.
+MP3.lamepath automatically set to /usr/bin/lame
+WARNING: 'oggdec' executable not found. Please modify the MP3:oggdecpath class variable.
+Help tree read from cache in 0.12415719032288 seconds
+LID: event loop started
+Class tree inited in 0.51 seconds
+</p>
+
+<p>
+<code>==============</code> STARTING FILE LOADING <code>==============</code>
+</p>
+
+<p>
+<code>==============</code> FILE LOADING DONE <code>==============</code>
+</p>
+
+<p>
+RESULT = 0
+Welcome to SuperCollider 3.6.6. For help type C-c C-y.
+Emacs: Index help topics in 1.69 seconds
+Emacs: Built symbol table in 0.193 seconds
+booting 57110
+localhost
+Faust: supercollider.cpp: sc<sub>api</sub><sub>version</sub> = 2
+Faust: FaustJPverbRaw numControls=11
+Faust: supercollider.cpp: sc<sub>api</sub><sub>version</sub> = 2
+Faust: FaustGreyholeRaw numControls=7
+VST<sub>PATH</sub> not set, defaulting to <i>home/egelor/vst:/usr/local/lib/vst:/usr/lib/vst
+DSSI<sub>PATH</sub> not set, defaulting to /home/egelor</i>.dssi:/usr/local/lib/dssi:/usr/lib/dssi
+DSSIVSTPlugin: Error on plugin query: Failed to find dssi-vst-scanner executable
+Found 10 LADSPA plugins
+JackDriver: client name is 'Jack Router'
+SC<sub>AudioDriver</sub>: sample rate = 44100.000000, driver's block size = 256
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-10-2" class="outline-3">
+<h3 id="sec-10-2"><span class="section-number-3">10.2</span> jack<sub>lsp</sub> -c</h3>
+<div class="outline-text-3" id="text-10-2">
+<p>
+MIC:                          system:capture<sub>1</sub>
+Firefox:Chrome:   PulseAudio JACK Source:front-left
+Mic<sub>In</sub>:                     Jack Router:in<sub>1</sub>
+Mic<sub>In</sub>:                     Jack Router:in<sub>3</sub>
+InstrumentOrMic: system:capture<sub>2</sub>
+InstrumentOrMic: Jack Router:in<sub>2</sub>
+                                   Jack Router:in<sub>4</sub>
+system:playback<sub>1</sub>
+   Jack Router:out<sub>3</sub>
+system:playback<sub>2</sub>
+   Jack Router:out<sub>4</sub>
+system:playback<sub>3</sub>
+   Jack Router:out<sub>3</sub>
+system:playback<sub>4</sub>
+   Jack Router:out<sub>4</sub>
+netjack:capture<sub>1</sub>
+   Jack Router:in<sub>11</sub>
+netjack:capture<sub>2</sub>
+   Jack Router:in<sub>12</sub>
+netjack:capture<sub>3</sub>
+netjack:playback<sub>1</sub>
+netjack:playback<sub>2</sub>
+   Jack Router:out<sub>2</sub>
+netjack:playback<sub>3</sub>
+netjack-01:capture<sub>1</sub>
+   Jack Router:in<sub>9</sub>
+netjack-01:capture<sub>2</sub>
+   Jack Router:in<sub>10</sub>
+netjack-01:capture<sub>3</sub>
+netjack-01:playback<sub>1</sub>
+   Jack Router:out<sub>5</sub>
+netjack-01:playback<sub>2</sub>
+   Jack Router:out<sub>6</sub>
+netjack-01:playback<sub>3</sub>
+Jack Router:in<sub>1</sub>
+   system:capture<sub>1</sub>
+Jack Router:in<sub>2</sub>
+   system:capture<sub>2</sub>
+Jack Router:in<sub>3</sub>
+   system:capture<sub>1</sub>
+Jack Router:in<sub>4</sub>
+   system:capture<sub>2</sub>
+Jack Router:in<sub>5</sub>
+Jack Router:in<sub>6</sub>
+Jack Router:in<sub>7</sub>
+   PulseAudio JACK Sink:front-left
+Jack Router:in<sub>8</sub>
+   PulseAudio JACK Sink:front-right
+Jack Router:in<sub>9</sub>
+   netjack-01:capture<sub>1</sub>
+Jack Router:in<sub>10</sub>
+   netjack-01:capture<sub>2</sub>
+Jack Router:in<sub>11</sub>
+   netjack:capture<sub>1</sub>
+Jack Router:in<sub>12</sub>
+   netjack:capture<sub>2</sub>
+Jack Router:out<sub>1</sub>
+Jack Router:out<sub>2</sub>
+   netjack:playback<sub>2</sub>
+Jack Router:out<sub>3</sub>
+   system:playback<sub>3</sub>
+   system:playback<sub>1</sub>
+Jack Router:out<sub>4</sub>
+   system:playback<sub>4</sub>
+   system:playback<sub>2</sub>
+Jack Router:out<sub>5</sub>
+   netjack-01:playback<sub>1</sub>
+Jack Router:out<sub>6</sub>
+   netjack-01:playback<sub>2</sub>
+Jack Router:out<sub>7</sub>
+Jack Router:out<sub>8</sub>
+PulseAudio JACK Sink:front-left
+   Jack Router:in<sub>7</sub>
+PulseAudio JACK Sink:front-right
+   Jack Router:in<sub>8</sub>
+PulseAudio JACK Source:front-left
+   system:capture<sub>1</sub>
+PulseAudio JACK Source:front-right
+   system:capture<sub>2</sub>
 </p>
 </div>
 </div>
 </div>
+</div>
 <div id="postamble" class="status">
+<p class="date">Date: <span class="timestamp-wrapper"><span class="timestamp">&lt;2017-10-26 Πεμ&gt;</span></span></p>
 <p class="author">Author: Eugene Tryfonides</p>
-<p class="date">Created: 2017-10-26 Πεμ 06:35</p>
+<p class="date">Created: 2017-10-27 Παρ 16:04</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
