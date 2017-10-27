@@ -1,0 +1,596 @@
+#+STARTUP: overview
+#+ATTR_HTML: :style background-color:#666677;
+* org-source-fontify-buffer
+#+BEGIN_SRC emacs-lisp
+(setq
+#+END_SRC
+#+Title: Radio_OctaGon
+* Boot Server SuperCollier
+#+NAME: fontify-natively
+#+BEGIN_SRC  emacs-lisp org-src-fontify-natively
+ (setq org-src-fontify-natively t)
+#+END_SRC
+#+NAME: sclang  Server::boot
+#+BEGIN_SRC sclang  bootserver
+// C-c C-,
+Server.default.boot;
+ s.boot;
+#+END_SRC
+* [[file:~/Radio/neuron.sh][neuron@Radio]]
+- neuron@Radio is a zsh script that connects Jack with SuperCollider,mic,mamathronServer & PulseAudio And More
+#+BEGIN_SRC sh  NeuroN Interconnect
+#!/bin/zsh
+#disconnect netjack from system palyback
+jack_disconnect system:playback_1 netjack:capture_1
+jack_disconnect system:playback_2 netjack:capture_2
+# Mic to Sc  in_1 allready connect
+jack_connect 'Jack Router':in_3 system:capture_1
+jack_connect 'Jack Router':in_1 system:capture_2
+#Second Input to Sc
+jack_connect 'Jack Router':in_2 system:capture_1
+jack_connect 'Jack Router':in_4 system:capture_2
+# connect vlc
+PIDS2=$(pidof vlc)
+jack_disconnect vlc_"$PIDS2":out_1 system:playback_1
+jack_disconnect vlc_"$PIDS2":out_2 system:playback_2
+jack_connect 'Jack Router':in_5  vlc_"$PIDS2":out_1
+jack_connect 'Jack Router':in_6  vlc_"$PIDS2":out_2
+#Disconnect Connect Pulseaudio Sink
+jack_disconnect 'PulseAudio JACK Sink':front-left system:playback_1
+jack_disconnect 'PulseAudio JACK Sink':front-right system:playback_2
+jack_connect 'Jack Router':in_8  'PulseAudio JACK Sink':front-right
+jack_connect 'Jack Router':in_7  'PulseAudio JACK Sink':front-left
+#Mamatron to SuperCollider &&  SuperCollider MonitortoMamathron
+
+jack_connect netjack-01:capture_1 'Jack Router':in_9
+jack_connect netjack-01:capture_2 'Jack Router':in_10
+
+jack_connect  netjack-01:playback_1 'Jack Router':out_5
+jack_connect  netjack-01:playback_2 'Jack Router':out_6
+#connect neuron to octagon radio
+jack_connect 'Jack Router':out_1 netjack:playback_1
+jack_connect 'Jack Router':out_2 netjack:playback_2
+# connect Supercollider out 3 & 4 to system:playback as Monitor
+jack_connect 'Jack Router':out_3 system:playback_1
+jack_connect 'Jack Router':out_4 system:playback_2
+# Disconnect supercollider out to system
+jack_disconnect 'Jack Router':out_1 system:playback_1
+jack_disconnect 'Jack Router':out_2 system:playback_2
+#Netjack Capture Octagon Monitor to SuperCollider
+jack_connect netjack:capture_1 'Jack Router':in_11
+jack_connect netjack:capture_2 'Jack Router':in_12
+# Carla
+jack_connect Carla:audio-in1 'Jack Router':out_3
+jack_connect Carla:audio-in2 'Jack Router':out_4
+jack_connect Carla:audio-out1 'Jack Router':in_7
+jack_connect Carla:audio-out2 'Jack Router':in_8
+#+END_SRC
+* OctaGon Radio :radio:
+** ProxySpace    [[file:~/.emacs.d/personal/postload/MASTER-FILE-170722.org][Master_file_Zannos.org]]
+  :PROPERTIES:
+  :DATE:     <2017-10-26 Πεμ 05:04>
+  :END:
+ C- c >  //show-post-buffer
+#+BEGIN_SRC  sclang
+p=ProxySpace.new(s);
+ p.push;
+ p.stop;p.release;
+ #+E
+
+ **  Επιστροφές (feedback) OctaGon Monitoring
+#+BEGIN_SRC sclang Octagon Monitoring
+~octmonit={AudioIn.ar([11,12])}
+~octmonit.play(1,3);
+~octmonit.stop;
+#+END_SRC
+**  Microphone :mic:
+   :PROPERTIES:
+   :ID:       213f482b-6de1-463b-9a2c-f764577ade14
+   :eval-id:  2
+   :END:
+    #+   [[file:01OctaGon_org/mic.sc][Mic.sc ]]  (org-eval-this section) C-H-SPACE
+#+BEGIN_SRC  sclang  MiC&Monitor
+//Microphone of the  streamer Octagon.
+~mic={AudioIn.ar([1,3])}
+~micmonitor={AudioIn.ar([1,3])}
+~mictomamathron={AudioIn.ar([1,3])}
+~mictomamathron.play(4);
+~mictomamathron.stop;
+~mic.play(1,2);
+~mic.stop;
+~micmonitor.play(2);
+~micmonitor.stop;
+#+END_SRC
+**  Record Out
+   :PROPERTIES:
+   :DATE:     <2017-10-26 Πεμ 14:58>
+   :END:
+#+Name:Record (path)
+#+Arguments: Is passed to prepareForRecord (above).
+#+date:<2017-10-26 Πεμ>
+#+BEGIN_SRC sclang  Rec
+s.recHeaderFormat = "wav"
+s.recChannels //default: 2) Must me called before preperForRecord
+s.prepareForRecord;
+s.record(0);
+s.stopRecording;
+#+END_SRC
+
+**  MamathroN Server
+#+BEGIN_SRC   sclang
+~mamathron={AudioIn.ar([9,10])};
+~mamathronmonitor={AudioIn.ar([9,10])};
+~mamathron.play(0);
+~mamathron.stop;
+~mamathron.release;
+~mamathronmonitor.play(2);
+~mamathronmonitor.stop;
+~mamathronmonitor.release;
+#+END_SRC
+
+# -----------------------------
+
+
+
+
+
+
+
+
+
+** DONE Screenshots
+** Github Configure
+#+begin_src emacs-lisp
+      (setq org-babel-sh-command "sh")
+#+end_src
+#+RESULTS:
+: sh
+#+BEGIN_SRC sh github
+git config --global user.name "egelor"
+#+END_SRC
+#+RESULTS:
+#+BEGIN_SRC sh github Config
+git config --global user.emacs "e.trifonidis@gmail.com"
+#+END_SRC
+#+RESULTS:
+#+BEGIN_SRC sh init add  commit
+git init
+# git add filename
+git commit -m ";;Commit message"
+#+END_SRC
+#+BEGIN_SRC sh  remote add origin
+git remote add origin https://github.com/egelor/OctagonRadio.git
+#+END_SRC
+#+RESULTS:
+#+BEGIN_SRC sh  push origin master
+git push origin master
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_SRC sh
+
+#+END_SRC
+#+BEGIN_SRC sh ssh@git
+ ssh -T  egelor@github.com
+#+END_SRC
+** Authenticity of host
+'github.com (192.30.253.113)' can't be established.
+RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxydCARLviKw6E5SY8.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'github.com,192.30.253.113' (RSA) to the list of known hosts.
+Permission denied (publickey).
+* Artistic outputs and buggs
+** sclang
+init_OSC
+empty
+compiling class library...
+	NumPrimitives = 679
+	compiling dir: '/usr/share/SuperCollider/SCClassLibrary'
+	compiling dir: '/usr/share/SuperCollider/Extensions'
+	compiling dir: '/home/egelor/.local/share/SuperCollider/Extensions'
+	pass 1 done
+	numentries = 1677367 / 34017230 = 0.049
+	8441 method selectors, 4030 classes
+	method table size 30748832 bytes, big table size 272137840
+	Number of Symbols 20637
+	Byte Code Size 865803
+	compiled 853 files in 3.63 seconds
+
+Info: 6 methods are currently overwritten by extensions. To see which, execute:
+MethodOverride.printAll
+
+compile done
+Emacs: Initializing lisp interface.
+MP3.lamepath automatically set to /usr/bin/lame
+WARNING: 'oggdec' executable not found. Please modify the MP3:oggdecpath class variable.
+Help tree read from cache in 0.12415719032288 seconds
+LID: event loop started
+Class tree inited in 0.51 seconds
+
+ ================ STARTING FILE LOADING ================
+
+ ================ FILE LOADING DONE ================
+
+RESULT = 0
+Welcome to SuperCollider 3.6.6. For help type C-c C-y.
+Emacs: Index help topics in 1.69 seconds
+Emacs: Built symbol table in 0.193 seconds
+booting 57110
+localhost
+Faust: supercollider.cpp: sc_api_version = 2
+Faust: FaustJPverbRaw numControls=11
+Faust: supercollider.cpp: sc_api_version = 2
+Faust: FaustGreyholeRaw numControls=7
+VST_PATH not set, defaulting to /home/egelor/vst:/usr/local/lib/vst:/usr/lib/vst
+DSSI_PATH not set, defaulting to /home/egelor/.dssi:/usr/local/lib/dssi:/usr/lib/dssi
+DSSIVSTPlugin: Error on plugin query: Failed to find dssi-vst-scanner executable
+Found 10 LADSPA plugins
+JackDriver: client name is 'Jack Router'
+SC_AudioDriver: sample rate = 44100.000000, driver's block size = 256
+
+** jack_lsp -c
+MIC:                          system:capture_1
+Firefox:Chrome:   PulseAudio JACK Source:front-left
+Mic_In:                     Jack Router:in_1
+Mic_In:                     Jack Router:in_3
+InstrumentOrMic: system:capture_2
+InstrumentOrMic: Jack Router:in_2
+                                   Jack Router:in_4
+system:playback_1
+   Jack Router:out_3
+system:playback_2
+   Jack Router:out_4
+system:playback_3
+   Jack Router:out_3
+system:playback_4
+   Jack Router:out_4
+netjack:capture_1
+   Jack Router:in_11
+netjack:capture_2
+   Jack Router:in_12
+netjack:capture_3
+netjack:playback_1
+netjack:playback_2
+   Jack Router:out_2
+netjack:playback_3
+netjack-01:capture_1
+   Jack Router:in_9
+netjack-01:capture_2
+   Jack Router:in_10
+netjack-01:capture_3
+netjack-01:playback_1
+   Jack Router:out_5
+netjack-01:playback_2
+   Jack Router:out_6
+netjack-01:playback_3
+Jack Router:in_1
+   system:capture_1
+Jack Router:in_2
+   system:capture_2
+Jack Router:in_3
+   system:capture_1
+Jack Router:in_4
+   system:capture_2
+Jack Router:in_5
+Jack Router:in_6
+Jack Router:in_7
+   PulseAudio JACK Sink:front-left
+Jack Router:in_8
+   PulseAudio JACK Sink:front-right
+Jack Router:in_9
+   netjack-01:capture_1
+Jack Router:in_10
+   netjack-01:capture_2
+Jack Router:in_11
+   netjack:capture_1
+Jack Router:in_12
+   netjack:capture_2
+Jack Router:out_1
+Jack Router:out_2
+   netjack:playback_2
+Jack Router:out_3
+   system:playback_3
+   system:playback_1
+Jack Router:out_4
+   system:playback_4
+   system:playback_2
+Jack Router:out_5
+   netjack-01:playback_1
+Jack Router:out_6
+   netjack-01:playback_2
+Jack Router:out_7
+Jack Router:out_8
+PulseAudio JACK Sink:front-left
+   Jack Router:in_7
+PulseAudio JACK Sink:front-right
+   Jack Router:in_8
+PulseAudio JACK Source:front-left
+   system:capture_1
+PulseAudio JACK Source:front-right
+   system:capture_2
+
+*   Keybindings  :windmove:                                      :buffermove:
+**  Window move
+#+BEGIN_SRC emacs-lisp  windowmove
+(global-set-key (kbd "s-<") 'beginning-of-buffer)
+(global-set-key (kbd "s->") 'end-of-buffer)
+(global-set-key (kbd "s-S-<right>") 'windmove-right)
+(global-set-key (kbd "s-S-<left>") 'windmove-left)
+(global-set-key (kbd "s-S-<up>") 'windmove-up)
+(global-set-key (kbd "s-S-<down>") 'windmove-down)
+(global-set-key (kbd "s-M-<right>") 'buf-move-right)
+(global-set-key (kbd "s-M-<left>") 'buf-move-left)
+(global-set-key (kbd "s-M-<up>") 'buf-move-up)
+(global-set-key (kbd "s-M-<down>") 'buf-move-down)
+#+END_SRC
+**  ace-window
+#+BEGIN_SRC  emacs-lisp
+(global-set-key (kbd "C-S-a c") 'ace-jump-char-mode)
+(global-set-key (kbd "C-S-a w") 'ace-jump-word-mode)
+(global-set-key (kbd "C-S-a l") 'ace-jump-line-mode)
+(global-set-key (kbd "C-S-a b") 'ace-jump-buffer)
+(global-set-key (kbd "C-S-a d") 'ace-window)
+(global-set-key (kbd "C-S-a W") 'ace-window)
+(global-set-key (kbd "C-S-a s") 'switch-window)
+(global-set-key (kbd "s-W") 'switch-window) ;; related to  ace-window s-w
+#+END_SRC
+** Hide-show block  code
+#+BEGIN_SRC  emacs-lisp
+(defun my-toggle-hideshow-all ()
+  "Toggle hideshow all."
+  (interactive)
+  (set (make-variable-buffer-local 'my-hs-hide) (not my-hs-hide))
+  (if my-hs-hide
+      (hs-hide-all)
+    (hs-show-all)))
+(global-set-key (kbd "C-c @ @") 'my-toggle-hideshow-all)
+(global-set-key (kbd "C-c @ h") 'hs-hide-block)
+(global-set-key (kbd "C-c @ s") 'hs-show-block)
+(global-set-key (kbd "C-c @ SPC") 'hs-show-block)
+#+END_SRC
+* Org-sc Keys  [[file:~/.emacs.d/personal/postload/015_org-sc.el][org-sc.el  ]]  :org: :org-sc:
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "H-c l") 'sclang-start)
+(global-set-key (kbd "H-c w") 'sclang-switch-to-workspace)
+(global-set-key (kbd "C-c C-,") 'sclang-eval-line)
+(global-set-key (kbd "C-c C-M-,") 'sclang-eval-line-inspect)
+(global-set-key (kbd "M-P") 'sclang-clear-post-buffer)
+(global-set-key (kbd "H-c >") 'sclang-show-post-buffer)
+(global-set-key (kbd "H-c H-y") 'sclang-open-help-gui)
+(global-set-key (kbd "H-c :") 'sclang-find-definitions)
+(global-set-key (kbd "H-c t") 'org-sc-synthtemplate-gui)
+(global-set-key (kbd "H-c H-t") 'org-sc-templates-gui)
+(global-set-key (kbd "H-c H-g") 'org-sc-guis)
+(global-set-key (kbd "H-c p") 'org-sc-patterntemplate-gui)
+(global-set-key (kbd "H-c c") 'org-sc-select-synthtree-then-synthPlayer)
+(global-set-key (kbd "H-c H-c") 'org-sc-synthPlayer-into-last-synthtree)
+(global-set-key (kbd "H-c k") 'org-sc-select-synthtree-then-knobs)
+(global-set-key (kbd "H-c f") 'org-sc-faders)
+;; (global-set-key (kbd "H-c H-f") 'org-sc-set-global-fade-time)
+;; (global-set-key (kbd "H-c H-C-f") 'org-sc-set-fade-time)
+(global-set-key (kbd "H-c SPC") 'org-sc-toggle-section-synthtree)
+(global-set-key (kbd "H-SPC") 'org-sc-toggle-section-synthtree)
+(global-set-key (kbd "H-c H-SPC") 'org-sc-toggle-section-synthtree)
+(global-set-key (kbd "H-c g") 'org-sc-start-synthtree)
+(global-set-key (kbd "H-c s") 'org-sc-stop-synthtree)
+(global-set-key (kbd "H-c H-s") 'org-sc-stop-last-synthtree)
+(global-set-key (kbd "H-b g") 'org-sc-play-buffer)
+(global-set-key (kbd "H-b l") 'org-sc-load-buffer)
+(global-set-key (kbd "H-b L") 'org-sc-show-buffer-list)
+(global-set-key (kbd "H-b o") 'org-sc-open-buffer-list)
+(global-set-key (kbd "H-b s") 'org-sc-save-buffer-list)
+(global-set-key (kbd "H-b f") 'org-sc-free-buffer)
+
+h(eval-after-load "org"
+  ;; move / eval / synthPlayer sections
+  '(progn
+     (define-key org-mode-map (kbd "H-C-SPC") 'org-sc-eval-this-section)
+     (define-key org-mode-map (kbd "H-M-SPC") 'org-sc-synthPlayer-this-section)
+     (define-key org-mode-map (kbd "H-s n") 'org-sc-next-section)
+     (define-key org-mode-map (kbd "H-s p") 'org-sc-previous-section)
+     (define-key org-mode-map (kbd "H-C-n") 'org-sc-eval-next-section)
+     (define-key org-mode-map (kbd "H-C-p") 'org-sc-eval-previous-section)
+     (define-key org-mode-map (kbd "H-M-n") 'org-sc-synthPlayer-next-section)
+     (define-key org-mode-map (kbd "H-M-p") 'org-sc-synthPlayer-previous-section)
+     ;; same level movement: up and down arrow keys
+     (define-key org-mode-map (kbd "H-j") 'org-sc-next-same-level-section)
+     (define-key org-mode-map (kbd "H-k") 'org-sc-previous-same-level-section)
+     (define-key org-mode-map (kbd "H-C-j") 'org-sc-eval-next-same-level-section)
+     (define-key org-mode-map (kbd "H-C-k") 'org-sc-eval-previous-same-level-section)
+     (define-key org-mode-map (kbd "H-M-j") 'org-sc-synthPlayer-next-same-level-section)
+     (define-key org-mode-map (kbd "H-M-k") 'org-sc-synthPlayer-previous-same-level-section)
+     ;; more stuff:
+     (define-key org-mode-map (kbd "C-M-x") 'org-sc-eval)
+     (define-key org-mode-map (kbd "C-c C-,") 'sclang-eval-line)
+     ;; 9 because in the us keyboard it is below open paren:
+     (define-key org-mode-map (kbd "C-c C-9") 'sclang-eval-dwim)
+     (define-key org-mode-map (kbd "C-M-z") 'org-sc-stop-section-processes)
+     (define-key org-mode-map (kbd "H-C-x") 'org-sc-eval-in-routine)
+     ;; convenient parallel to H-C-x:
+     (define-key org-mode-map (kbd "H-C-z") 'org-sc-stop-section-processes)
+     (define-key org-mode-map (kbd "C-M-n") 'org-sc-eval-next)
+     (define-key org-mode-map (kbd "C-M-p") 'org-sc-eval-previous)
+     ;; this overrides the default binding org-schedule, which I do not use often:
+     (define-key org-mode-map (kbd "C-c C-s") 'sclang-main-stop)
+     (define-key org-mode-map (kbd "H-C-r") 'sclang-process-registry-gui)
+     (define-key org-mode-map (kbd "C-c C-M-.") 'org-sc-stop-section-processes)
+
+     (define-key org-mode-map (kbd "C-c C-x l") 'org-sc-toggle-autoload)
+     (define-key org-mode-map (kbd "C-c C-x C-l") 'org-sc-load-marked)
+     (define-key org-mode-map (kbd "H-C-o") 'org-sc-toggle-mode))[[
+#+END_SRC
+* Org-mode Keys :keys:
+#+BEGIN_SRC emacs-lisp
+ ;; This is run once after loading org for the first time
+  ;; It adds some org-mode specific key bindings.
+  (eval-after-load 'org
+    '(progn
+       ;; alias for org-cycle, more convenient than TAB
+       (define-key org-mode-map (kbd "C-H-c") 'org-cycle)
+       ;; Note: This keybinding is in analogy to the default keybinding:
+       ;; C-c . -> org-time-stamp
+       (define-key org-mode-map (kbd "C-c C-.") 'org-set-date)
+       (define-key org-mode-map (kbd "C-M-{") 'backward-paragraph)
+       (define-key org-mode-map (kbd "C-M-}") 'forward-paragraph)
+       (define-key org-mode-map (kbd "C-c C-S") 'org-schedule)
+       (define-key org-mode-map (kbd "C-c C-s") 'sclang-main-stop)
+       (define-key org-mode-map (kbd "C-c >") 'sclang-show-post-buffer)
+       ;; own additions after org-config-examples below:
+       (define-key org-mode-map (kbd "C-M-S-n") 'org-next-src-block)
+       (define-key org-mode-map (kbd "C-M-S-p") 'org-show-properties-block)
+       (define-key org-mode-map (kbd "C-M-/") 'org-sclang-eval-babel-block)
+              ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+       ;; from: http://orgmode.org/worg/org-configs/org-config-examples.html
+       ;; section navigation
+       (define-key org-mode-map (kbd "M-n") 'jump-outline-next-visible-heading)
+       (define-key org-mode-map (kbd "C-M-n") 'jump-outline-next-visible-heading-and-cycle)
+       (define-key org-mode-map (kbd "M-p") 'jump-outline-previous-visible-heading)
+       (define-key org-mode-map (kbd "C-M-p") 'jump-outline-previous-visible-heading-and-cycle)
+       (define-key org-mode-map (kbd "C-M-f") 'org-jump-forward-heading-same-level)
+       (define-key org-mode-map (kbd "C-M-b") 'org-jump-backward-heading-same-level)
+       (define-key org-mode-map (kbd "C-M-u") 'jump-outline-up-heading)
+       ;; table
+       (define-key org-mode-map (kbd "C-M-w") 'org-table-copy-region)
+       (define-key org-mode-map (kbd "C-M-y") 'org-table-paste-rectangle)
+       (define-key org-mode-map (kbd "C-M-l") 'org-table-sort-lines)
+       ;; display images
+       (define-key org-mode-map (kbd "M-I") 'org-toggle-iimage-in-org)
+       ;; Following are the prelude-mode binding, minus the conflicting table bindings.
+       ;; prelude-mode is turned off for org mode, below.
+       (define-key org-mode-map (kbd "C-c o") 'crux-open-with)
+       ;; (define-key org-mode-map (kbd "C-c g") 'prelude-google)
+       ;; (define-key org-mode-map (kbd "C-c G") 'crux-github)
+       ;; (define-key org-mode-map (kbd "C-c y") 'prelude-youtube)
+       ;; (define-key org-mode-map (kbd "C-c U") 'prelude-duckduckgo)
+       ;;     ;; mimic popular IDEs binding, note that it doesn't work in a terminal session
+       (define-key org-mode-map [(shift return)] 'crux-smart-open-line)
+       (define-key org-mode-map (kbd "M-o") 'crux-smart-open-line)
+       (define-key org-mode-map [(control shift return)] 'crux-smart-open-line-above)
+       (define-key org-mode-map [(control shift up)]  'move-text-up)
+       (define-key org-mode-map [(control shift down)]  'move-text-down)
+       (define-key org-mode-map [(control meta shift up)]  'move-text-up)
+       (define-key org-mode-map [(control meta shift down)]  'move-text-down)
+       ;;     ;; the following 2 break structure editing with meta-shift-up / down in org mode
+       ;;     ;;    (define-key map [(meta shift up)]  'move-text-up)
+       ;;     ;;    (define-key map [(meta shift down)]  'move-text-down)
+       ;;     ;; new substitutes for above:  (these are overwritten by other modes...)
+       ;;     ;; (define-key map (kbd "C-c [")  'move-text-up)
+       ;;     ;; (define-key map (kbd "C-c ]")  'move-text-down)
+       ;;     ;; (define-key map [(control meta shift up)]  'move-text-up)
+       ;;     ;; (define-key map [(control meta shift down)]  'move-text-down)
+       (define-key org-mode-map (kbd "C-c n") 'crux-cleanup-buffer-or-region)
+       (define-key org-mode-map (kbd "C-c f") 'crux-recentf-ido-find-file)
+       (define-key org-mode-map (kbd "C-M-z") 'crux-indent-defun)
+       (define-key org-mode-map (kbd "C-c u") 'crux-view-url)
+       (define-key org-mode-map (kbd "C-c e") 'crux-eval-and-replace)
+       (define-key org-mode-map (kbd "C-c s") 'crux-swap-windows)
+       (define-key org-mode-map (kbd "C-c D") 'crux-delete-file-and-buffer)
+       (define-key org-mode-map (kbd "C-c d") 'crux-duplicate-current-line-or-region)
+       (define-key org-mode-map (kbd "C-c M-d") 'crux-duplicate-and-comment-current-line-or-region)
+       (define-key org-mode-map (kbd "C-c r") 'crux-rename-buffer-and-file)
+       (define-key org-mode-map (kbd "C-c t") 'crux-visit-term-buffer)
+       (define-key org-mode-map (kbd "C-c k") 'crux-kill-other-buffers)
+       ;;     ;; another annoying overwrite of a useful org-mode command:
+       ;;     ;; (define-key map (kbd "C-c TAB") 'prelude-indent-rigidly-and-copy-to-clipboard)
+       (define-key org-mode-map (kbd "C-c I") 'crux-find-user-init-file)
+       (define-key org-mode-map (kbd "C-c S") 'crux-find-shell-init-file)
+       ;; replace not functioning 'prelude-goto-symbol with useful imenu-anywhere
+       (define-key org-mode-map (kbd "C-c i") 'imenu-anywhere)
+       ;;     ;; extra prefix for projectile
+       (define-key org-mode-map (kbd "s-p") 'projectile-command-map)
+       ;;     ;; make some use of the Super key
+       (define-key org-mode-map (kbd "s-g") 'god-local-mode)
+       (define-key org-mode-map (kbd "s-r") 'crux-recentf-ido-find-file)
+       (define-key org-mode-map (kbd "s-j") 'crux-top-join-line)
+       (define-key org-mode-map (kbd "s-k") 'crux-kill-whole-line)
+       (define-key org-mode-map (kbd "s-m m") 'magit-status)
+       (define-key org-mode-map (kbd "s-m l") 'magit-log)
+       (define-key org-mode-map (kbd "s-m f") 'magit-log-buffer-file)
+       (define-key org-mode-map (kbd "s-m b") 'magit-blame)
+       (define-key org-mode-map (kbd "s-o") 'crux-smart-open-line-above)
+       ))
+
+#+END_SRC
+
+#+RESULTS:
+: crux-smart-open-line-above
+* 011_untangle_tangle.el
+* COMMENT prelude-customization
+  s-r   //prelude-recentf-ido-find-file
+(define-key map (kbd "C-c f")  'prelude-recentf-ido-find-file)
+#+BEGIN_SRC emacs-lisp   Prelude-mode map
+  (setq prelude-whitespace nil)
+  ;; undo prelude shift-meta-up/down keybindings which interfere with org-mode
+   (setq prelude-mode-map
+      (let ((map (make-sparse-keymap)))
+       (define-key map (kbd "C-c o") 'prelude-open-with)
+       (define-key map (kbd "C-c g") 'prelude-google)
+       (define-key map (kbd "C-c G") 'prelude-github)
+       (define-key map (kbd "C-c y") 'prelude-youtube)
+       (define-key map (kbd "C-c U") 'prelude-duckduckgo)
+  ;;     ;; mimic popular IDEs binding, note that it doesn't work in a terminal session
+       (define-key map [(shift return)] 'prelude-smart-open-line)
+       (define-key map (kbd "M-o") 'prelude-smart-open-line)
+       (define-key map [(control shift return)] 'prelude-smart-open-line-above)
+       (define-key map [(control shift up)]  'move-text-up)
+       (define-key map [(control shift down)]  'move-text-down)
+  ;;     ;; the following 2 break structure editing with meta-shift-up / down in org mode
+  ;;     ;;    (define-key map [(meta shift up)]  'move-text-up)
+  ;;     ;;    (define-key map [(meta shift down)]  'move-text-down)
+  ;;     ;; new substitutes for above:  (these are overwritten by other modes...)
+  ;;     ;; (define-key map (kbd "C-c [")  'move-text-up)
+  ;;     ;; (define-key map (kbd "C-c ]")  'move-text-down)
+  ;;     ;; (define-key map [(control meta shift up)]  'move-text-up)
+  ;;     ;; (define-key map [(control meta shift down)]  'move-text-down)
+       (define-key map (kbd "C-c n") 'prelude-cleanup-buffer-or-region)
+       (define-key map (kbd "C-c f")  'prelude-recentf-ido-find-file)
+       (define-key map (kbd "C-M-z") 'prelude-indent-defun)
+       (define-key map (kbd "C-c u") 'prelude-view-url)
+       (define-key map (kbd "C-c e") 'prelude-eval-and-replace)
+       (define-key map (kbd "C-c s") 'prelude-swap-windows)
+       (define-key map (kbd "C-c D") 'prelude-delete-file-and-buffer)
+       (define-key map (kbd "C-c d") 'prelude-duplicate-current-line-or-region)
+       (define-key map (kbd "C-c M-d") 'prelude-duplicate-and-comment-current-line-or-region)
+       (define-key map (kbd "C-c r") 'prelude-rename-buffer-and-file)
+       (define-key map (kbd "C-c t") 'prelude-visit-term-buffer)
+       (define-key map (kbd "C-c k") 'prelude-kill-other-buffers)
+  ;;     ;; another annoying overwrite of a useful org-mode command:
+  ;;     ;; (define-key map (kbd "C-c TAB") 'prelude-indent-rigidly-and-copy-to-clipboard)
+       (define-key map (kbd "C-c I") 'prelude-find-user-init-file)
+       (define-key map (kbd "C-c S") 'prelude-find-shell-init-file)
+       (define-key map (kbd "C-c i") 'prelude-goto-symbol)
+  ;;     ;; extra prefix for projectile
+       (define-key map (kbd "s-p") 'projectile-command-map)
+  ;;     ;; make some use of the Super key
+       (define-key map (kbd "s-g") 'god-local-mode)
+       (define-key map (kbd "s-r") 'prelude-recentf-ido-find-file)
+       (define-key map (kbd "s-j") 'prelude-top-join-line)
+       (define-key map (kbd "s-k") 'prelude-kill-whole-line)
+       (define-key map (kbd "s-m m") 'magit-status)
+       (define-key map (kbd "s-m l") 'magit-log)
+       (define-key map (kbd "s-m f") 'magit-log-buffer-file)
+       (define-key map (kbd "s-m b") 'magit-blame)
+       (define-key map (kbd "s-o") 'prelude-smart-open-line-above)
+       map))
+#+END_SRC
+
+#+RESULTS:
+| keymap | (8388719 . prelude-smart-open-line-above) | (8388717 keymap (98 . magit-blame) (102 . magit-log-buffer-file) (108 . magit-log) (109 . magit-status)) | (8388715 . prelude-kill-whole-line) | (8388714 . prelude-top-join-line) | (8388722 . prelude-recentf-ido-find-file) | (8388711 . god-local-mode) | (8388720 . projectile-command-map) | (C-S-down . move-text-down) | (C-S-up . move-text-up) | (C-S-return . prelude-smart-open-line-above) | (27 keymap (26 . prelude-indent-defun) (111 . prelude-smart-open-line)) | (S-return . prelude-smart-open-line) | (3 keymap (105 . prelude-goto-symbol) (83 . prelude-find-shell-init-file) (73 . prelude-find-user-init-file) (107 . prelude-kill-other-buffers) (116 . prelude-visit-term-buffer) (114 . prelude-rename-buffer-and-file) (27 keymap (100 . prelude-duplicate-and-comment-current-line-or-region)) (100 . prelude-duplicate-current-line-or-region) (68 . prelude-delete-file-and-buffer) (115 . prelude-swap-windows) (101 . prelude-eval-and-replace) (117 . prelude-view-url) (102 . prelude-recentf-ido-find-file) (110 . prelude-cleanup-buffer-or-region) (85 . prelude-duckduckgo) (121 . prelude-youtube) (71 . prelude-github) (103 . prelude-google) (111 . prelude-open-with)) |
+
+*  Emacs shell help
+* [#A] navigate   C-c C-f  //only for folders
+Type u to Unmark a file or all files of an inserted subdirectory.
+Type DEL to back up one line and unmark or unflag.
+Type x to delete (eXecute) the files flagged `D'.
+Type RET to Find the current line's file
+  (or dired it in another buffer, if it is a directory).
+Type o to find file or Dired directory in Other window.
+Type i to Insert a subdirectory in this buffer.
+Type R to Rename a file or move the marked files to another directory.
+Type C to Copy files.
+Type s to toggle Sorting by name/date or change the `ls' switches.
+Type g to read all currently expanded directories aGain.
+  This retains all marks and hides subdirs again that were hidden before.
+  Use `SPC' and `DEL' to move down and up by lines.
+*  TODO This will generate <pre class="example"style="background-color:#eff0f1;">, which will apply color to that block only.
