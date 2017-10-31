@@ -58,7 +58,7 @@ jack_connect Carla:audio-in2 'Jack Router':out_4
 jack_connect Carla:audio-out1 'Jack Router':in_7
 jack_connect Carla:audio-out2 'Jack Router':in_8
 #+END_SRC
-* OctaGon Radio :radio:
+* OctaGon Radio :radio: [[file:microphone.sc][MainFile.sc]]
 #+BEGIN_SRC sclang :Volume
  s.initTree;
 s.volume = -3 //db
@@ -124,6 +124,16 @@ eqmamathron = { eq5.ar  (AudioIn.ar([9,10]), \eqSetting.kr(eq5.setting))};
 Out.ar(out, eqmamathron);
 }).writeDefFile;
 )
+( // SynthDef SecondIn with Equalizer7
+SynthDef ("\secondin", { arg out= 0 ;
+	var def7, eq7, eqsecond;
+	def7= EQdef( *({|i| [ ("peak" ++ i).asSymbol,BPeakEQ ] }!20).flatten(1) ); //  20-bands parametric eq
+eq7 = EQSetting( def7 );
+eqsecond = { eq7.ar  (AudioIn.ar([2,4]), \eqSetting.kr(eq7.setting))};
+	Out.ar(out, eqsecond);
+}).writeDefFile;
+)
+
 )
 #+END_SRC
 
