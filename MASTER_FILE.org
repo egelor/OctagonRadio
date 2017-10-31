@@ -2,14 +2,14 @@
  <pre class="example"style="background-color:#eff0f1;">
 #+ATTR_HTML: :style background-color:#666677;
 #+Title: Radio_OctaGon
-* Boot Server SuperCollier
+* Boot Server SCuperCollier
 #+NAME: sclang  Server::boot
 #+BEGIN_SRC sclang  bootserver
 // C-c C-,
 Server.default.boot;
  s.boot;
 #+END_SRC
-* [[file:~/Radio/neuron.sh][neuron@Radio]]
+*  [[file:~/Radio/neuron.sh][neuron@Radio]]
 - neuron@Radio is a zsh script that connects Jack with SuperCollider,mic,mamathronServer & PulseAudio And More
 #+BEGIN_SRC sh  NeuroN Interconnect
 #!/bin/zsh
@@ -59,7 +59,12 @@ jack_connect Carla:audio-out1 'Jack Router':in_7
 jack_connect Carla:audio-out2 'Jack Router':in_8
 #+END_SRC
 * OctaGon Radio :radio:
-** ProxySpace    [[file:~/.emacs.d/personal/postload/MASTER-FILE-170722.org][Master_file_Zannos.org]]
+#+BEGIN_SRC sclang :Volume
+ s.initTree;
+s.volume = -3 //db
+#+END_SRC
+#+RESULTS:
+** ProxySpace-OLD    [[file:~/.emacs.d/personal/postload/MASTER-FILE-170722.org][Master_file_Zannos.org]]
   :PROPERTIES:
   :DATE:     <2017-10-26 Πεμ 05:04>
   :END:
@@ -68,32 +73,161 @@ jack_connect Carla:audio-out2 'Jack Router':in_8
 p=ProxySpace.new(s);
  p.push;
  p.stop;p.release;
+\p.push; //sc-hacks
+#+END_SRC
+** SynthDefs
+#+BEGIN_SRC sclang New Synthdefs with equalizer
+// Base ConnectionS Inputs Outputs with  Mic Octagon Mamathron Player
+( // SynthDef's of OctaGon Radio  with Equalizer
+( // SynthDef Return or feadback with Equalizer6
+SynthDef ("\return", { arg out= 2 ;
+	var def6, eq6 , eqreturn;
+def6 = EQdef( *({|i| [ ("peak" ++ i).asSymbol,BPeakEQ ] }!20).flatten(1) ); //  20-bands parametric eq
+eq6 = EQSetting( def6);
+	eqreturn= { eq6.ar  (AudioIn.ar([11,12]), \eqSetting.kr(eq6.setting))};
+Out.ar(out, eqreturn);
+}).writeDefFile;
+)
+( // SynthDef Mic with Equalizer3
+SynthDef ("\mic", { arg out= 0 ;
+	var def3, eq3, eqmic;
+def3 = EQdef( *({|i| [ ("peak" ++ i).asSymbol,BPeakEQ ] }!20).flatten(1) ); //  20-bands parametric eq
+eq3 = EQSetting( def3 );
+eqmic = { eq3.ar  (AudioIn.ar([1,3]), \eqSetting.kr(eq3.setting))};
+	Out.ar(out, eqmic);
+}).writeDefFile;
+)
+( // SynthDef Player with Equalizer2
+SynthDef ("\player", { arg out= 0 ;
+	var def2, eq2 , eqplayer;
+def2 = EQdef( *({|i| [ ("peak" ++ i).asSymbol,BPeakEQ ] }!20).flatten(1) ); //  20-bands parametric eq
+eq2 = EQSetting( def2 );
+eqplayer = { eq2.ar  (AudioIn.ar([5,6]), \eqSetting.kr(eq2.setting))};
+Out.ar(out, eqplayer);
+}).writeDefFile;
+)
+( // SynthDef Browser  with Equalizer4
+SynthDef ("\browser", { arg out= 0 ;
+	var def4, eq4 , eqbrowser;
+def4 = EQdef( *({|i| [ ("peak" ++ i).asSymbol,BPeakEQ ] }!20).flatten(1) ); //  20-bands parametric eq
+eq4 = EQSetting( def4 );
+eqbrowser = { eq4.ar  (AudioIn.ar([7,8]), \eqSetting.kr(eq4.setting))};
+Out.ar(out, eqbrowser);
+}).writeDefFile;
+)
+( // SynthDef Mamathron  with Equalizer5
+SynthDef ("\mamathron", { arg out= 0 ;
+	var def5, eq5 , eqmamathron;
+def5 = EQdef( *({|i| [ ("peak" ++ i).asSymbol,BPeakEQ ] }!20).flatten(1) ); //  20-bands parametric eq
+eq5 = EQSetting( def5 );
+eqmamathron = { eq5.ar  (AudioIn.ar([9,10]), \eqSetting.kr(eq5.setting))};
+Out.ar(out, eqmamathron);
+}).writeDefFile;
+)
+)
+#+END_SRC
+
+#+BEGIN_SRC sclang SynthDefs  In/outs with out Eq
+( // SynthDef's of OctaGon Radio
+SynthDef("\microphone", { arg out= 0 ; Out.ar(out, AudioIn.ar([1,3])); }).writeDefFile;
+SynthDef("\epistrofi", { arg out= 2 ; Out.ar(out, AudioIn.ar([ 11,12])); }).writeDefFile;
+SynthDef("player", { arg out= 0 ; Out.ar(out, AudioIn.ar([ 5,6])); }).writeDefFile;
+SynthDef("\pulse", { arg out= 0 ; Out.ar(out, AudioIn.ar([ 7,8])); }).writeDefFile;
+SynthDef("\mamathron", { arg out= 0 ; Out.ar(out, AudioIn.ar([ 9,10])); }).writeDefFile;
+SynthDef("\Instrument", { arg out= 0 ; Out.ar(out, AudioIn.ar([ 2,4])); }).writeDefFile;
+)
+#+END_SRC
+** EQUALIZER-OLD
+#+BEGIN_SRC sclang function d=EQdef
+(// synth2  def2 eq2 EQdef EQSettting AudioIn [1,3]  BPeakEQ
+~out = 0 ;
+~dead=EQdef(*({|i| [("peek" ++ i).asSymbol,BPeakEQ ] }!20).flatten(1));  //20-bands parametric eq
+~eq = EQSetting(~dead);
+~micEq = {~eq.ar(AudioIn.ar([7,8]),\eqSettings.kr(~eq.setting)) }.play;
+~micEq = {~eq.ar(AudioIn.ar([1,3]),\eqSettings.kr(~eq.setting)) } +> \p;
+~micEq.stop;
+)
+(
+~viewEq = EQView (eqSetting: ~eq );
+~viewEq.action = { |view, setting| ~micEq.set(\eqSetting,setting) }
+)
 #+END_SRC
 **  Επιστροφές (feedback) OctaGon Monitoring
-#+BEGIN_SRC sclang Octagon Monitoring
-~octmonit={AudioIn.ar([11,12])}
-~octmonit.play(1,3);
+#+BEGIN_SRC sclang returns
+(  // Octagon Feadback or Return
+~return = Synth ("\return",[\out, 2]);
+~return1 = Synth ("\return",[\out, 3]);
+~return.free; ~return1.free;
+~view2.action = { |view, setting| ~mic.set( \eqSetting, setting ) };
+~view2 = EQView(eqSetting:  ~eq6);
+)
+#+END_SRC
+#+BEGIN_SRC sclang  OLD Octagon Monitoring
+~octmonit={AudioIn.ar([11,12])};
+~octmonit.play(2);
 ~octmonit.stop;
 #+END_SRC
 **  Microphone :mic:
    :PROPERTIES:
    :ID:       213f482b-6de1-463b-9a2c-f764577ade14
    :eval-id:  2
+   :DATE:     <2017-10-30 Δευ 18:34>
    :END:
     #+   [[file:01OctaGon_org/mic.sc][Mic.sc ]]  (org-eval-this section) C-H-SPACE
-#+BEGIN_SRC  sclang  MiC&Monitor
+#+BEGIN_SRC sclang Mic with eq
+( //Microphone && Monitor it
+~micmonitor = Synth ("\mic", [\out, 2] );
+~micmonitor.free; ~micmonitor.release;
+~mic = Synth ("\mic" );
+~mic.free;~mic.release;
+~view1.action = { |view, setting| ~mic.set( \eqSetting, setting ) };
+~view1 = EQView(eqSetting:  ~eq3);
+)
+#+END_SRC
+#+BEGIN_SRC  sclang  MiC&Monitor OLD
 //Microphone of the  streamer Octagon.
-~mic={AudioIn.ar([1,3])}
+~mic={AudioIn.ar([1,3])};
 ~micmonitor={AudioIn.ar([1,3])}
 ~mictomamathron={AudioIn.ar([1,3])}
 ~mictomamathron.play(4);
 ~mictomamathron.stop;
-~mic.play(1,2);
+~mic.play(0);
 ~mic.stop;
+ ~mic.release;
 ~micmonitor.play(2);
 ~micmonitor.stop;
 #+END_SRC
-**  Record Out
+** Instrument Or Second microphone
+#+Title: Second Input from SoundCard
+#+BEGIN_SRC sclang InstrumentIn
+~instrumentin={AudioIn.ar([2,4])}
+~instrumentMonitor={AudioIn.ar([2,4])}
+~instrumentIn.play(0);
+~instrument.stop(0);
+~instrumentMonitor.play(2);
+~instrumentMonitor.stop;
+#+END_SRC
+
+** Player: :playlists: :
+#+BEGIN_SRC sclang vlc or player
+( // vlc or player to octagon
+~vlc = Synth("\player");
+~vlc.free; ~vlc.release;
+~monitorVlc=Synth("\vlc",[\out, 2]);
+~montorVlc.free; ~monitorVlc.reslease;
+~view3.action = { |view, setting| ~vlc.set( \eqSetting, setting ) };
+~view3 = EQView(eqSetting:  ~eq2);
+)
+#+END_SRC
+#+BEGIN_SRC sclang Player:OLD
+~player={AudioIn.ar([5,6]}
+~playerMinitor={AudioIn.ar([5,6]}
+~player.play(0);
+~player.stop;
+~playerMonitor.play(2);
+~playerMonitor.stop;
+#+END_SRC
+**  Record Output
    :PROPERTIES:
    :DATE:     <2017-10-26 Πεμ 14:58>
    :END:
@@ -108,32 +242,98 @@ s.record(0);
 s.stopRecording;
 #+END_SRC
 
+** Browser :pulseaudio:
+#+BEGIN_SRC sclang Browser
+( // Browser
+~browser = Synth("\browser");
+~browser.free; ~browser.release;
+~view4.action = { |view, setting| ~browser.set( \eqSetting, setting ) };
+~view4 = EQView(eqSetting:  ~eq4);
+)
+#+END_SRC
+
+#+BEGIN_SRC sclang  OLD Browser::pulseadio sc:channel_in:[7,8]
+~pulse={AudioIn.ar([7,8])}
+~pulsemon={AudioIn.ar([7,8])}
+~pulse.play(2);
+~pulse.stop;
+~pulsemon.play(2);
+~pulsemon.stop;
+~pulse.release;
+~pulsemon.release;
+#+END_SRC
+
 **  MamathroN Server
+#+BEGIN_SRC sclang Mamathron with eq
+(//Manathron
+~mamathron = Synth("mamathron");
+~mamathron.free; ~mamathron.release;
+~view5.action = { |view, setting| ~mamathron.set( \eqSetting, setting ) };
+~view5 = EQView(eqSetting:  ~eq5);
+)
+#+END_SRC
 #+BEGIN_SRC   sclang
 ~mamathron={AudioIn.ar([9,10])};
 ~mamathronmonitor={AudioIn.ar([9,10])};
-~mamathron.play(0);
+~mamathron.play;
 ~mamathron.stop;
 ~mamathron.release;
 ~mamathronmonitor.play(2);
 ~mamathronmonitor.stop;
 ~mamathronmonitor.release;
 #+END_SRC
-
 # -----------------------------
+**  Record Output
+   :PROPERTIES:
+   :DATE:     <2017-10-26 Πεμ 14:58>
+   :END:
+#+Name:Record (path)
+#+Arguments: Is passed to prepareForRecord (above).
+#+date:<2017-10-26 Πεμ>
+#+BEGIN_SRC sclang  Rec
+s.recHeaderFormat = "wav"
+s.recChannels //default: 2) Must me called before preperForRecord
+s.prepareForRecord;
+s.record(0);
+s.stopRecording;
+#+END_SRC
 
-
-
-
-
-
-
+** Octagon to MamathroN
+#+BEGIN_SRC  sclang  Send to mamathron
+// Mic to mamathron
+~mamathronmic = Synth ("\mic", [\out, 4 ]);
+~mamathronmic.free; ~mamthronmic.release;
+//monitor to mamathron
+~mamathronMonitor = Synth ("\return ", [\out, 4 ]);
+~mamathronMonitor.free; ~mamathronMonitor.release;
+// vlc to mamathron
+~mamathronVlc = Synth("\player", [\out, 4 ]);
+ ~mamathronVlc.free; ~mamathronVlc.release;
+// pulse to mamathron
+~mamathronBrowser = Synth ("\browser", [\out, 4 ]);
+~mamathronBrowser.free; ~mamathronBrowser.release;
+#+END_SRC
+#+BEGIN_SRC sclang SendOctagonToMamathron
+~octagontomamathron = {AudioIn.ar([11,12])}
+~mictomamathron = {AudioIn.ar([1,3])};
+~pulsetomamathron = {AudioIn.ar([7,8])};
+~playertomamathron = {AudioIn.ar([5.6])};
+~octagontomamathron.play(4);
+~octagontomamathron.stop;
+~mictomamathron.play(4);
+~mictomamathron.stop;
+~pulsetomamathron.play(4);
+~pulsetomamathron.stop;
+~playertomamathron.play(4);
+~playertomamathron.stop;
+#+END_SRC
 * org-source-fontify-buffer
 #+BEGIN_SRC emacs-lisp fontify
 (setq org-src-fontify-natively t)
 #+END_SRC
 
-#+Title: Radio_OctaGon
+#+RESULTS:
+: t
 
 * Github Configure
 #+begin_src emacs-lisp

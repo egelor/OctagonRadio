@@ -3,8 +3,8 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<title>Radio<sub>OctaGon</sub> Radio<sub>OctaGon</sub></title>
-<!-- 2017-10-27 Παρ 16:13 -->
+<title>Radio<sub>OctaGon</sub> Second Input from SoundCard</title>
+<!-- 2017-10-31 Τρι 18:03 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Eugene Tryfonides" />
@@ -137,20 +137,26 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">Radio<sub>OctaGon</sub> Radio<sub>OctaGon</sub></h1>
+<h1 class="title">Radio<sub>OctaGon</sub> Second Input from SoundCard</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">1. Boot Server SuperCollier</a></li>
+<li><a href="#sec-1">1. Boot Server SCuperCollier</a></li>
 <li><a href="#sec-2">2. neuron@Radio</a></li>
 <li><a href="#sec-3">3. OctaGon Radio&#xa0;&#xa0;&#xa0;<span class="tag"><span class="radio">radio</span></span></a>
 <ul>
-<li><a href="#sec-3-1">3.1. ProxySpace    Master<sub>file</sub><sub>Zannos</sub>.org</a></li>
-<li><a href="#sec-3-2">3.2. Επιστροφές (feedback) OctaGon Monitoring</a></li>
-<li><a href="#sec-3-3">3.3. Microphone&#xa0;&#xa0;&#xa0;<span class="tag"><span class="mic">mic</span></span></a></li>
-<li><a href="#sec-3-4">3.4. Record Out</a></li>
-<li><a href="#sec-3-5">3.5. MamathroN Server</a></li>
+<li><a href="#sec-3-1">3.1. SynthDefs</a></li>
+<li><a href="#sec-3-2">3.2. EQUALIZER-OLD</a></li>
+<li><a href="#sec-3-3">3.3. Επιστροφές (feedback) OctaGon Monitoring</a></li>
+<li><a href="#sec-3-4">3.4. Microphone&#xa0;&#xa0;&#xa0;<span class="tag"><span class="mic">mic</span></span></a></li>
+<li><a href="#sec-3-5">3.5. Instrument Or Second microphone</a></li>
+<li><a href="#sec-3-6">3.6. Player: :playlists: :</a></li>
+<li><a href="#sec-3-7">3.7. Record Output</a></li>
+<li><a href="#sec-3-8">3.8. Browser&#xa0;&#xa0;&#xa0;<span class="tag"><span class="pulseaudio">pulseaudio</span></span></a></li>
+<li><a href="#sec-3-9">3.9. MamathroN Server</a></li>
+<li><a href="#sec-3-10">3.10. Record Output</a></li>
+<li><a href="#sec-3-11">3.11. Octagon to MamathroN</a></li>
 </ul>
 </li>
 <li><a href="#sec-4">4. org-source-fontify-buffer</a></li>
@@ -178,12 +184,12 @@ for the JavaScript code in this tag.
 &lt;pre class="example"style="background-color:#eff0f1;"&gt;
 </p>
 <div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> Boot Server SuperCollier</h2>
+<h2 id="sec-1"><span class="section-number-2">1</span> Boot Server SCuperCollier</h2>
 <div class="outline-text-2" id="text-1">
 <div class="org-src-container">
 
-<pre class="src src-sclang" id="sclang-Server::boot"><span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">C-c C-,</span>
-<span style="color: #00d7af;">Server</span>.default.boot;
+<pre class="src src-sclang" id="sclang-Server::boot"><span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">C-c C-,</span>
+<span style="color: #7CB8BB;">Server</span>.default.boot;
  s.boot;
 </pre>
 </div>
@@ -198,51 +204,51 @@ for the JavaScript code in this tag.
 </ul>
 <div class="org-src-container">
 
-<pre class="src src-sh"><span style="color: #6c6c6c; font-style: italic;">#</span><span style="color: #6c6c6c; font-style: italic;">!/bin/</span><span style="color: #a1db00; font-weight: bold;">zsh</span>
-<span style="color: #6c6c6c; font-style: italic;">#</span><span style="color: #6c6c6c; font-style: italic;">disconnect netjack from system palyback</span>
+<pre class="src src-sh"><span style="color: #5F7F5F;">#</span><span style="color: #7F9F7F;">!/bin/</span><span style="color: #F0DFAF; font-weight: bold;">zsh</span>
+<span style="color: #5F7F5F;">#</span><span style="color: #7F9F7F;">disconnect netjack from system palyback</span>
 jack_disconnect system:playback_1 netjack:capture_1
 jack_disconnect system:playback_2 netjack:capture_2
-<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">Mic to Sc  in_1 allready connect</span>
-jack_connect <span style="color: #ff4ea3;">'Jack Router'</span>:in_3 system:capture_1
-jack_connect <span style="color: #ff4ea3;">'Jack Router'</span>:in_1 system:capture_2
-<span style="color: #6c6c6c; font-style: italic;">#</span><span style="color: #6c6c6c; font-style: italic;">Second Input to Sc</span>
-jack_connect <span style="color: #ff4ea3;">'Jack Router'</span>:in_2 system:capture_1
-jack_connect <span style="color: #ff4ea3;">'Jack Router'</span>:in_4 system:capture_2
-<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">connect vlc</span>
-<span style="color: #ff8700;">PIDS2</span>=$(pidof vlc)
-jack_disconnect vlc_<span style="color: #ff4ea3;">"$PIDS2"</span>:out_1 system:playback_1
-jack_disconnect vlc_<span style="color: #ff4ea3;">"$PIDS2"</span>:out_2 system:playback_2
-jack_connect <span style="color: #ff4ea3;">'Jack Router'</span>:in_5  vlc_<span style="color: #ff4ea3;">"$PIDS2"</span>:out_1
-jack_connect <span style="color: #ff4ea3;">'Jack Router'</span>:in_6  vlc_<span style="color: #ff4ea3;">"$PIDS2"</span>:out_2
-<span style="color: #6c6c6c; font-style: italic;">#</span><span style="color: #6c6c6c; font-style: italic;">Disconnect Connect Pulseaudio Sink</span>
-jack_disconnect <span style="color: #ff4ea3;">'PulseAudio JACK Sink'</span>:front-left system:playback_1
-jack_disconnect <span style="color: #ff4ea3;">'PulseAudio JACK Sink'</span>:front-right system:playback_2
-jack_connect <span style="color: #ff4ea3;">'Jack Router'</span>:in_8  <span style="color: #ff4ea3;">'PulseAudio JACK Sink'</span>:front-right
-jack_connect <span style="color: #ff4ea3;">'Jack Router'</span>:in_7  <span style="color: #ff4ea3;">'PulseAudio JACK Sink'</span>:front-left
-<span style="color: #6c6c6c; font-style: italic;">#</span><span style="color: #6c6c6c; font-style: italic;">Mamatron to SuperCollider &amp;&amp;  SuperCollider MonitortoMamathron</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Mic to Sc  in_1 allready connect</span>
+jack_connect <span style="color: #CC9393;">'Jack Router'</span>:in_3 system:capture_1
+jack_connect <span style="color: #CC9393;">'Jack Router'</span>:in_1 system:capture_2
+<span style="color: #5F7F5F;">#</span><span style="color: #7F9F7F;">Second Input to Sc</span>
+jack_connect <span style="color: #CC9393;">'Jack Router'</span>:in_2 system:capture_1
+jack_connect <span style="color: #CC9393;">'Jack Router'</span>:in_4 system:capture_2
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">connect vlc</span>
+<span style="color: #DFAF8F;">PIDS2</span>=$(pidof vlc)
+jack_disconnect vlc_<span style="color: #CC9393;">"$PIDS2"</span>:out_1 system:playback_1
+jack_disconnect vlc_<span style="color: #CC9393;">"$PIDS2"</span>:out_2 system:playback_2
+jack_connect <span style="color: #CC9393;">'Jack Router'</span>:in_5  vlc_<span style="color: #CC9393;">"$PIDS2"</span>:out_1
+jack_connect <span style="color: #CC9393;">'Jack Router'</span>:in_6  vlc_<span style="color: #CC9393;">"$PIDS2"</span>:out_2
+<span style="color: #5F7F5F;">#</span><span style="color: #7F9F7F;">Disconnect Connect Pulseaudio Sink</span>
+jack_disconnect <span style="color: #CC9393;">'PulseAudio JACK Sink'</span>:front-left system:playback_1
+jack_disconnect <span style="color: #CC9393;">'PulseAudio JACK Sink'</span>:front-right system:playback_2
+jack_connect <span style="color: #CC9393;">'Jack Router'</span>:in_8  <span style="color: #CC9393;">'PulseAudio JACK Sink'</span>:front-right
+jack_connect <span style="color: #CC9393;">'Jack Router'</span>:in_7  <span style="color: #CC9393;">'PulseAudio JACK Sink'</span>:front-left
+<span style="color: #5F7F5F;">#</span><span style="color: #7F9F7F;">Mamatron to SuperCollider &amp;&amp;  SuperCollider MonitortoMamathron</span>
 
-jack_connect netjack-01:capture_1 <span style="color: #ff4ea3;">'Jack Router'</span>:in_9
-jack_connect netjack-01:capture_2 <span style="color: #ff4ea3;">'Jack Router'</span>:in_10
+jack_connect netjack-01:capture_1 <span style="color: #CC9393;">'Jack Router'</span>:in_9
+jack_connect netjack-01:capture_2 <span style="color: #CC9393;">'Jack Router'</span>:in_10
 
-jack_connect  netjack-01:playback_1 <span style="color: #ff4ea3;">'Jack Router'</span>:out_5
-jack_connect  netjack-01:playback_2 <span style="color: #ff4ea3;">'Jack Router'</span>:out_6
-<span style="color: #6c6c6c; font-style: italic;">#</span><span style="color: #6c6c6c; font-style: italic;">connect neuron to octagon radio</span>
-jack_connect <span style="color: #ff4ea3;">'Jack Router'</span>:out_1 netjack:playback_1
-jack_connect <span style="color: #ff4ea3;">'Jack Router'</span>:out_2 netjack:playback_2
-<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">connect Supercollider out 3 &amp; 4 to system:playback as Monitor</span>
-jack_connect <span style="color: #ff4ea3;">'Jack Router'</span>:out_3 system:playback_1
-jack_connect <span style="color: #ff4ea3;">'Jack Router'</span>:out_4 system:playback_2
-<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">Disconnect supercollider out to system</span>
-jack_disconnect <span style="color: #ff4ea3;">'Jack Router'</span>:out_1 system:playback_1
-jack_disconnect <span style="color: #ff4ea3;">'Jack Router'</span>:out_2 system:playback_2
-<span style="color: #6c6c6c; font-style: italic;">#</span><span style="color: #6c6c6c; font-style: italic;">Netjack Capture Octagon Monitor to SuperCollider</span>
-jack_connect netjack:capture_1 <span style="color: #ff4ea3;">'Jack Router'</span>:in_11
-jack_connect netjack:capture_2 <span style="color: #ff4ea3;">'Jack Router'</span>:in_12
-<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">Carla</span>
-jack_connect Carla:audio-in1 <span style="color: #ff4ea3;">'Jack Router'</span>:out_3
-jack_connect Carla:audio-in2 <span style="color: #ff4ea3;">'Jack Router'</span>:out_4
-jack_connect Carla:audio-out1 <span style="color: #ff4ea3;">'Jack Router'</span>:in_7
-jack_connect Carla:audio-out2 <span style="color: #ff4ea3;">'Jack Router'</span>:in_8
+jack_connect  netjack-01:playback_1 <span style="color: #CC9393;">'Jack Router'</span>:out_5
+jack_connect  netjack-01:playback_2 <span style="color: #CC9393;">'Jack Router'</span>:out_6
+<span style="color: #5F7F5F;">#</span><span style="color: #7F9F7F;">connect neuron to octagon radio</span>
+jack_connect <span style="color: #CC9393;">'Jack Router'</span>:out_1 netjack:playback_1
+jack_connect <span style="color: #CC9393;">'Jack Router'</span>:out_2 netjack:playback_2
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">connect Supercollider out 3 &amp; 4 to system:playback as Monitor</span>
+jack_connect <span style="color: #CC9393;">'Jack Router'</span>:out_3 system:playback_1
+jack_connect <span style="color: #CC9393;">'Jack Router'</span>:out_4 system:playback_2
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Disconnect supercollider out to system</span>
+jack_disconnect <span style="color: #CC9393;">'Jack Router'</span>:out_1 system:playback_1
+jack_disconnect <span style="color: #CC9393;">'Jack Router'</span>:out_2 system:playback_2
+<span style="color: #5F7F5F;">#</span><span style="color: #7F9F7F;">Netjack Capture Octagon Monitor to SuperCollider</span>
+jack_connect netjack:capture_1 <span style="color: #CC9393;">'Jack Router'</span>:in_11
+jack_connect netjack:capture_2 <span style="color: #CC9393;">'Jack Router'</span>:in_12
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Carla</span>
+jack_connect Carla:audio-in1 <span style="color: #CC9393;">'Jack Router'</span>:out_3
+jack_connect Carla:audio-in2 <span style="color: #CC9393;">'Jack Router'</span>:out_4
+jack_connect Carla:audio-out1 <span style="color: #CC9393;">'Jack Router'</span>:in_7
+jack_connect Carla:audio-out2 <span style="color: #CC9393;">'Jack Router'</span>:in_8
 </pre>
 </div>
 </div>
@@ -250,101 +256,346 @@ jack_connect Carla:audio-out2 <span style="color: #ff4ea3;">'Jack Router'</span>
 <div id="outline-container-sec-3" class="outline-2">
 <h2 id="sec-3"><span class="section-number-2">3</span> OctaGon Radio&#xa0;&#xa0;&#xa0;<span class="tag"><span class="radio">radio</span></span></h2>
 <div class="outline-text-2" id="text-3">
-</div><div id="outline-container-sec-3-1" class="outline-3">
-<h3 id="sec-3-1"><span class="section-number-3">3.1</span> ProxySpace    <a href="file:///home/egelor/.emacs.d/personal/postload/MASTER-FILE-170722.html">Master<sub>file</sub><sub>Zannos</sub>.org</a></h3>
-<div class="outline-text-3" id="text-3-1">
+<div class="org-src-container">
+
+<pre class="src src-sclang"> s.initTree;
+s.volume = -3 <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">db</span>
+</pre>
+</div>
 <p>
 C- c &gt;  //show-post-buffer
 </p>
 <div class="org-src-container">
 
-<pre class="src src-sclang">p=<span style="color: #00d7af;">ProxySpace</span>.new<span style="color: #dd0000; font-weight: bold;">(</span>s<span style="color: #dd0000; font-weight: bold;">)</span>;
+<pre class="src src-sclang">p=<span style="color: #7CB8BB;">ProxySpace</span>.new<span style="color: #DCDCCC;">(</span>s<span style="color: #DCDCCC;">)</span>;
  p.push;
  p.stop;p.release;
+<span style="color: #BFEBBF;">\p</span>.push; <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">sc-hacks</span>
+</pre>
+</div>
+</div>
+<div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> SynthDefs</h3>
+<div class="outline-text-3" id="text-3-1">
+<div class="org-src-container">
+
+<pre class="src src-sclang"><span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Base ConnectionS Inputs Outputs with  Mic Octagon Mamathron Player</span>
+<span style="color: #DCDCCC;">(</span> <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">SynthDef's of OctaGon Radio  with Equalizer</span>
+<span style="color: #BFEBBF;">(</span> <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">SynthDef Return or feadback with Equalizer6</span>
+<span style="color: #7CB8BB;">SynthDef</span> <span style="color: #D0BF8F;">(</span><span style="color: #CC9393;">"\return"</span>, <span style="color: #93E0E3;">{</span> <span style="color: #F0DFAF; font-weight: bold;">arg</span> out= 2 ;
+        <span style="color: #F0DFAF; font-weight: bold;">var</span> def6, eq6 , eqreturn;
+def6 = <span style="color: #7CB8BB;">EQdef</span><span style="color: #9FC59F;">(</span> *<span style="color: #94BFF3;">(</span><span style="color: #E0CF9F;">{</span>|i| <span style="color: #8FB28F;">[</span> <span style="color: #6CA0A3;">(</span><span style="color: #CC9393;">"peak"</span> ++ i<span style="color: #6CA0A3;">)</span>.asSymbol,<span style="color: #7CB8BB;">BPeakEQ</span> <span style="color: #8FB28F;">]</span> <span style="color: #E0CF9F;">}</span>!20<span style="color: #94BFF3;">)</span>.flatten<span style="color: #94BFF3;">(</span>1<span style="color: #94BFF3;">)</span> <span style="color: #9FC59F;">)</span>; <span style="color: #5F7F5F;">//  </span><span style="color: #7F9F7F;">20-bands parametric eq</span>
+eq6 = <span style="color: #7CB8BB;">EQSetting</span><span style="color: #9FC59F;">(</span> def6<span style="color: #9FC59F;">)</span>;
+        eqreturn= <span style="color: #9FC59F;">{</span> eq6.<span style="color: #93E0E3;">ar</span>  <span style="color: #94BFF3;">(</span><span style="color: #7CB8BB;">AudioIn</span>.<span style="color: #93E0E3;">ar</span><span style="color: #E0CF9F;">(</span><span style="color: #8FB28F;">[</span>11,12<span style="color: #8FB28F;">]</span><span style="color: #E0CF9F;">)</span>, <span style="color: #BFEBBF;">\eqSetting</span>.<span style="color: #93E0E3;">kr</span><span style="color: #E0CF9F;">(</span>eq6.setting<span style="color: #E0CF9F;">)</span><span style="color: #94BFF3;">)</span><span style="color: #9FC59F;">}</span>;
+<span style="color: #7CB8BB;">Out</span>.<span style="color: #93E0E3;">ar</span><span style="color: #9FC59F;">(</span>out, eqreturn<span style="color: #9FC59F;">)</span>;
+<span style="color: #93E0E3;">}</span><span style="color: #D0BF8F;">)</span>.writeDefFile;
+<span style="color: #BFEBBF;">)</span>
+<span style="color: #BFEBBF;">(</span> <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">SynthDef Mic with Equalizer3</span>
+<span style="color: #7CB8BB;">SynthDef</span> <span style="color: #D0BF8F;">(</span><span style="color: #CC9393;">"\mic"</span>, <span style="color: #93E0E3;">{</span> <span style="color: #F0DFAF; font-weight: bold;">arg</span> out= 0 ;
+        <span style="color: #F0DFAF; font-weight: bold;">var</span> def3, eq3, eqmic;
+def3 = <span style="color: #7CB8BB;">EQdef</span><span style="color: #9FC59F;">(</span> *<span style="color: #94BFF3;">(</span><span style="color: #E0CF9F;">{</span>|i| <span style="color: #8FB28F;">[</span> <span style="color: #6CA0A3;">(</span><span style="color: #CC9393;">"peak"</span> ++ i<span style="color: #6CA0A3;">)</span>.asSymbol,<span style="color: #7CB8BB;">BPeakEQ</span> <span style="color: #8FB28F;">]</span> <span style="color: #E0CF9F;">}</span>!20<span style="color: #94BFF3;">)</span>.flatten<span style="color: #94BFF3;">(</span>1<span style="color: #94BFF3;">)</span> <span style="color: #9FC59F;">)</span>; <span style="color: #5F7F5F;">//  </span><span style="color: #7F9F7F;">20-bands parametric eq</span>
+eq3 = <span style="color: #7CB8BB;">EQSetting</span><span style="color: #9FC59F;">(</span> def3 <span style="color: #9FC59F;">)</span>;
+eqmic = <span style="color: #9FC59F;">{</span> eq3.<span style="color: #93E0E3;">ar</span>  <span style="color: #94BFF3;">(</span><span style="color: #7CB8BB;">AudioIn</span>.<span style="color: #93E0E3;">ar</span><span style="color: #E0CF9F;">(</span><span style="color: #8FB28F;">[</span>1,3<span style="color: #8FB28F;">]</span><span style="color: #E0CF9F;">)</span>, <span style="color: #BFEBBF;">\eqSetting</span>.<span style="color: #93E0E3;">kr</span><span style="color: #E0CF9F;">(</span>eq3.setting<span style="color: #E0CF9F;">)</span><span style="color: #94BFF3;">)</span><span style="color: #9FC59F;">}</span>;
+        <span style="color: #7CB8BB;">Out</span>.<span style="color: #93E0E3;">ar</span><span style="color: #9FC59F;">(</span>out, eqmic<span style="color: #9FC59F;">)</span>;
+<span style="color: #93E0E3;">}</span><span style="color: #D0BF8F;">)</span>.writeDefFile;
+<span style="color: #BFEBBF;">)</span>
+<span style="color: #BFEBBF;">(</span> <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">SynthDef Player with Equalizer2</span>
+<span style="color: #7CB8BB;">SynthDef</span> <span style="color: #D0BF8F;">(</span><span style="color: #CC9393;">"\player"</span>, <span style="color: #93E0E3;">{</span> <span style="color: #F0DFAF; font-weight: bold;">arg</span> out= 0 ;
+        <span style="color: #F0DFAF; font-weight: bold;">var</span> def2, eq2 , eqplayer;
+def2 = <span style="color: #7CB8BB;">EQdef</span><span style="color: #9FC59F;">(</span> *<span style="color: #94BFF3;">(</span><span style="color: #E0CF9F;">{</span>|i| <span style="color: #8FB28F;">[</span> <span style="color: #6CA0A3;">(</span><span style="color: #CC9393;">"peak"</span> ++ i<span style="color: #6CA0A3;">)</span>.asSymbol,<span style="color: #7CB8BB;">BPeakEQ</span> <span style="color: #8FB28F;">]</span> <span style="color: #E0CF9F;">}</span>!20<span style="color: #94BFF3;">)</span>.flatten<span style="color: #94BFF3;">(</span>1<span style="color: #94BFF3;">)</span> <span style="color: #9FC59F;">)</span>; <span style="color: #5F7F5F;">//  </span><span style="color: #7F9F7F;">20-bands parametric eq</span>
+eq2 = <span style="color: #7CB8BB;">EQSetting</span><span style="color: #9FC59F;">(</span> def2 <span style="color: #9FC59F;">)</span>;
+eqplayer = <span style="color: #9FC59F;">{</span> eq2.<span style="color: #93E0E3;">ar</span>  <span style="color: #94BFF3;">(</span><span style="color: #7CB8BB;">AudioIn</span>.<span style="color: #93E0E3;">ar</span><span style="color: #E0CF9F;">(</span><span style="color: #8FB28F;">[</span>5,6<span style="color: #8FB28F;">]</span><span style="color: #E0CF9F;">)</span>, <span style="color: #BFEBBF;">\eqSetting</span>.<span style="color: #93E0E3;">kr</span><span style="color: #E0CF9F;">(</span>eq2.setting<span style="color: #E0CF9F;">)</span><span style="color: #94BFF3;">)</span><span style="color: #9FC59F;">}</span>;
+<span style="color: #7CB8BB;">Out</span>.<span style="color: #93E0E3;">ar</span><span style="color: #9FC59F;">(</span>out, eqplayer<span style="color: #9FC59F;">)</span>;
+<span style="color: #93E0E3;">}</span><span style="color: #D0BF8F;">)</span>.writeDefFile;
+<span style="color: #BFEBBF;">)</span>
+<span style="color: #BFEBBF;">(</span> <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">SynthDef Browser  with Equalizer4</span>
+<span style="color: #7CB8BB;">SynthDef</span> <span style="color: #D0BF8F;">(</span><span style="color: #CC9393;">"\browser"</span>, <span style="color: #93E0E3;">{</span> <span style="color: #F0DFAF; font-weight: bold;">arg</span> out= 0 ;
+        <span style="color: #F0DFAF; font-weight: bold;">var</span> def4, eq4 , eqbrowser;
+def4 = <span style="color: #7CB8BB;">EQdef</span><span style="color: #9FC59F;">(</span> *<span style="color: #94BFF3;">(</span><span style="color: #E0CF9F;">{</span>|i| <span style="color: #8FB28F;">[</span> <span style="color: #6CA0A3;">(</span><span style="color: #CC9393;">"peak"</span> ++ i<span style="color: #6CA0A3;">)</span>.asSymbol,<span style="color: #7CB8BB;">BPeakEQ</span> <span style="color: #8FB28F;">]</span> <span style="color: #E0CF9F;">}</span>!20<span style="color: #94BFF3;">)</span>.flatten<span style="color: #94BFF3;">(</span>1<span style="color: #94BFF3;">)</span> <span style="color: #9FC59F;">)</span>; <span style="color: #5F7F5F;">//  </span><span style="color: #7F9F7F;">20-bands parametric eq</span>
+eq4 = <span style="color: #7CB8BB;">EQSetting</span><span style="color: #9FC59F;">(</span> def4 <span style="color: #9FC59F;">)</span>;
+eqbrowser = <span style="color: #9FC59F;">{</span> eq4.<span style="color: #93E0E3;">ar</span>  <span style="color: #94BFF3;">(</span><span style="color: #7CB8BB;">AudioIn</span>.<span style="color: #93E0E3;">ar</span><span style="color: #E0CF9F;">(</span><span style="color: #8FB28F;">[</span>7,8<span style="color: #8FB28F;">]</span><span style="color: #E0CF9F;">)</span>, <span style="color: #BFEBBF;">\eqSetting</span>.<span style="color: #93E0E3;">kr</span><span style="color: #E0CF9F;">(</span>eq4.setting<span style="color: #E0CF9F;">)</span><span style="color: #94BFF3;">)</span><span style="color: #9FC59F;">}</span>;
+<span style="color: #7CB8BB;">Out</span>.<span style="color: #93E0E3;">ar</span><span style="color: #9FC59F;">(</span>out, eqbrowser<span style="color: #9FC59F;">)</span>;
+<span style="color: #93E0E3;">}</span><span style="color: #D0BF8F;">)</span>.writeDefFile;
+<span style="color: #BFEBBF;">)</span>
+<span style="color: #BFEBBF;">(</span> <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">SynthDef Mamathron  with Equalizer5</span>
+<span style="color: #7CB8BB;">SynthDef</span> <span style="color: #D0BF8F;">(</span><span style="color: #CC9393;">"\mamathron"</span>, <span style="color: #93E0E3;">{</span> <span style="color: #F0DFAF; font-weight: bold;">arg</span> out= 0 ;
+        <span style="color: #F0DFAF; font-weight: bold;">var</span> def5, eq5 , eqmamathron;
+def5 = <span style="color: #7CB8BB;">EQdef</span><span style="color: #9FC59F;">(</span> *<span style="color: #94BFF3;">(</span><span style="color: #E0CF9F;">{</span>|i| <span style="color: #8FB28F;">[</span> <span style="color: #6CA0A3;">(</span><span style="color: #CC9393;">"peak"</span> ++ i<span style="color: #6CA0A3;">)</span>.asSymbol,<span style="color: #7CB8BB;">BPeakEQ</span> <span style="color: #8FB28F;">]</span> <span style="color: #E0CF9F;">}</span>!20<span style="color: #94BFF3;">)</span>.flatten<span style="color: #94BFF3;">(</span>1<span style="color: #94BFF3;">)</span> <span style="color: #9FC59F;">)</span>; <span style="color: #5F7F5F;">//  </span><span style="color: #7F9F7F;">20-bands parametric eq</span>
+eq5 = <span style="color: #7CB8BB;">EQSetting</span><span style="color: #9FC59F;">(</span> def5 <span style="color: #9FC59F;">)</span>;
+eqmamathron = <span style="color: #9FC59F;">{</span> eq5.<span style="color: #93E0E3;">ar</span>  <span style="color: #94BFF3;">(</span><span style="color: #7CB8BB;">AudioIn</span>.<span style="color: #93E0E3;">ar</span><span style="color: #E0CF9F;">(</span><span style="color: #8FB28F;">[</span>9,10<span style="color: #8FB28F;">]</span><span style="color: #E0CF9F;">)</span>, <span style="color: #BFEBBF;">\eqSetting</span>.<span style="color: #93E0E3;">kr</span><span style="color: #E0CF9F;">(</span>eq5.setting<span style="color: #E0CF9F;">)</span><span style="color: #94BFF3;">)</span><span style="color: #9FC59F;">}</span>;
+<span style="color: #7CB8BB;">Out</span>.<span style="color: #93E0E3;">ar</span><span style="color: #9FC59F;">(</span>out, eqmamathron<span style="color: #9FC59F;">)</span>;
+<span style="color: #93E0E3;">}</span><span style="color: #D0BF8F;">)</span>.writeDefFile;
+<span style="color: #BFEBBF;">)</span>
+<span style="color: #DCDCCC;">)</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-sclang"><span style="color: #DCDCCC;">(</span> <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">SynthDef's of OctaGon Radio</span>
+<span style="color: #7CB8BB;">SynthDef</span><span style="color: #BFEBBF;">(</span><span style="color: #CC9393;">"\microphone"</span>, <span style="color: #D0BF8F;">{</span> <span style="color: #F0DFAF; font-weight: bold;">arg</span> out= 0 ; <span style="color: #7CB8BB;">Out</span>.<span style="color: #93E0E3;">ar</span><span style="color: #93E0E3;">(</span>out, <span style="color: #7CB8BB;">AudioIn</span>.<span style="color: #93E0E3;">ar</span><span style="color: #9FC59F;">(</span><span style="color: #94BFF3;">[</span>1,3<span style="color: #94BFF3;">]</span><span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">)</span>; <span style="color: #D0BF8F;">}</span><span style="color: #BFEBBF;">)</span>.writeDefFile;
+<span style="color: #7CB8BB;">SynthDef</span><span style="color: #BFEBBF;">(</span><span style="color: #CC9393;">"\epistrofi"</span>, <span style="color: #D0BF8F;">{</span> <span style="color: #F0DFAF; font-weight: bold;">arg</span> out= 2 ; <span style="color: #7CB8BB;">Out</span>.<span style="color: #93E0E3;">ar</span><span style="color: #93E0E3;">(</span>out, <span style="color: #7CB8BB;">AudioIn</span>.<span style="color: #93E0E3;">ar</span><span style="color: #9FC59F;">(</span><span style="color: #94BFF3;">[</span> 11,12<span style="color: #94BFF3;">]</span><span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">)</span>; <span style="color: #D0BF8F;">}</span><span style="color: #BFEBBF;">)</span>.writeDefFile;
+<span style="color: #7CB8BB;">SynthDef</span><span style="color: #BFEBBF;">(</span><span style="color: #CC9393;">"player"</span>, <span style="color: #D0BF8F;">{</span> <span style="color: #F0DFAF; font-weight: bold;">arg</span> out= 0 ; <span style="color: #7CB8BB;">Out</span>.<span style="color: #93E0E3;">ar</span><span style="color: #93E0E3;">(</span>out, <span style="color: #7CB8BB;">AudioIn</span>.<span style="color: #93E0E3;">ar</span><span style="color: #9FC59F;">(</span><span style="color: #94BFF3;">[</span> 5,6<span style="color: #94BFF3;">]</span><span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">)</span>; <span style="color: #D0BF8F;">}</span><span style="color: #BFEBBF;">)</span>.writeDefFile;
+<span style="color: #7CB8BB;">SynthDef</span><span style="color: #BFEBBF;">(</span><span style="color: #CC9393;">"\pulse"</span>, <span style="color: #D0BF8F;">{</span> <span style="color: #F0DFAF; font-weight: bold;">arg</span> out= 0 ; <span style="color: #7CB8BB;">Out</span>.<span style="color: #93E0E3;">ar</span><span style="color: #93E0E3;">(</span>out, <span style="color: #7CB8BB;">AudioIn</span>.<span style="color: #93E0E3;">ar</span><span style="color: #9FC59F;">(</span><span style="color: #94BFF3;">[</span> 7,8<span style="color: #94BFF3;">]</span><span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">)</span>; <span style="color: #D0BF8F;">}</span><span style="color: #BFEBBF;">)</span>.writeDefFile;
+<span style="color: #7CB8BB;">SynthDef</span><span style="color: #BFEBBF;">(</span><span style="color: #CC9393;">"\mamathron"</span>, <span style="color: #D0BF8F;">{</span> <span style="color: #F0DFAF; font-weight: bold;">arg</span> out= 0 ; <span style="color: #7CB8BB;">Out</span>.<span style="color: #93E0E3;">ar</span><span style="color: #93E0E3;">(</span>out, <span style="color: #7CB8BB;">AudioIn</span>.<span style="color: #93E0E3;">ar</span><span style="color: #9FC59F;">(</span><span style="color: #94BFF3;">[</span> 9,10<span style="color: #94BFF3;">]</span><span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">)</span>; <span style="color: #D0BF8F;">}</span><span style="color: #BFEBBF;">)</span>.writeDefFile;
+<span style="color: #7CB8BB;">SynthDef</span><span style="color: #BFEBBF;">(</span><span style="color: #CC9393;">"\Instrument"</span>, <span style="color: #D0BF8F;">{</span> <span style="color: #F0DFAF; font-weight: bold;">arg</span> out= 0 ; <span style="color: #7CB8BB;">Out</span>.<span style="color: #93E0E3;">ar</span><span style="color: #93E0E3;">(</span>out, <span style="color: #7CB8BB;">AudioIn</span>.<span style="color: #93E0E3;">ar</span><span style="color: #9FC59F;">(</span><span style="color: #94BFF3;">[</span> 2,4<span style="color: #94BFF3;">]</span><span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">)</span>; <span style="color: #D0BF8F;">}</span><span style="color: #BFEBBF;">)</span>.writeDefFile;
+<span style="color: #DCDCCC;">)</span>
 </pre>
 </div>
 </div>
 </div>
 <div id="outline-container-sec-3-2" class="outline-3">
-<h3 id="sec-3-2"><span class="section-number-3">3.2</span> Επιστροφές (feedback) OctaGon Monitoring</h3>
+<h3 id="sec-3-2"><span class="section-number-3">3.2</span> EQUALIZER-OLD</h3>
 <div class="outline-text-3" id="text-3-2">
 <div class="org-src-container">
 
-<pre class="src src-sclang"><span style="color: #ff8700;">~octmonit</span>=<span style="color: #dd0000; font-weight: bold;">{</span><span style="color: #00d7af;">AudioIn</span>.<span style="color: #ffd700;">ar</span><span style="color: #5fafd7; font-weight: bold;">(</span><span style="color: #a1db00; font-weight: bold;">[</span>11,12<span style="color: #a1db00; font-weight: bold;">]</span><span style="color: #5fafd7; font-weight: bold;">)</span><span style="color: #dd0000; font-weight: bold;">}</span>
-<span style="color: #ff8700;">~octmonit</span>.play<span style="color: #dd0000; font-weight: bold;">(</span>1,3<span style="color: #dd0000; font-weight: bold;">)</span>;
-<span style="color: #ff8700;">~octmonit</span>.stop;
+<pre class="src src-sclang"><span style="color: #DCDCCC;">(</span><span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">synth2  def2 eq2 EQdef EQSettting AudioIn [1,3]  BPeakEQ</span>
+<span style="color: #DFAF8F;">~out</span> = 0 ;
+<span style="color: #DFAF8F;">~dead</span>=<span style="color: #7CB8BB;">EQdef</span><span style="color: #BFEBBF;">(</span>*<span style="color: #D0BF8F;">(</span><span style="color: #93E0E3;">{</span>|i| <span style="color: #9FC59F;">[</span><span style="color: #94BFF3;">(</span><span style="color: #CC9393;">"peek"</span> ++ i<span style="color: #94BFF3;">)</span>.asSymbol,<span style="color: #7CB8BB;">BPeakEQ</span> <span style="color: #9FC59F;">]</span> <span style="color: #93E0E3;">}</span>!20<span style="color: #D0BF8F;">)</span>.flatten<span style="color: #D0BF8F;">(</span>1<span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span>;  <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">20-bands parametric eq</span>
+<span style="color: #DFAF8F;">~eq</span> = <span style="color: #7CB8BB;">EQSetting</span><span style="color: #BFEBBF;">(</span><span style="color: #DFAF8F;">~dead</span><span style="color: #BFEBBF;">)</span>;
+<span style="color: #DFAF8F;">~micEq</span> = <span style="color: #BFEBBF;">{</span><span style="color: #DFAF8F;">~eq</span>.<span style="color: #93E0E3;">ar</span><span style="color: #D0BF8F;">(</span><span style="color: #7CB8BB;">AudioIn</span>.<span style="color: #93E0E3;">ar</span><span style="color: #93E0E3;">(</span><span style="color: #9FC59F;">[</span>7,8<span style="color: #9FC59F;">]</span><span style="color: #93E0E3;">)</span>,<span style="color: #BFEBBF;">\eqSettings</span>.<span style="color: #93E0E3;">kr</span><span style="color: #93E0E3;">(</span><span style="color: #DFAF8F;">~eq</span>.setting<span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span> <span style="color: #BFEBBF;">}</span>.play;
+<span style="color: #DFAF8F;">~micEq</span> = <span style="color: #BFEBBF;">{</span><span style="color: #DFAF8F;">~eq</span>.<span style="color: #93E0E3;">ar</span><span style="color: #D0BF8F;">(</span><span style="color: #7CB8BB;">AudioIn</span>.<span style="color: #93E0E3;">ar</span><span style="color: #93E0E3;">(</span><span style="color: #9FC59F;">[</span>1,3<span style="color: #9FC59F;">]</span><span style="color: #93E0E3;">)</span>,<span style="color: #BFEBBF;">\eqSettings</span>.<span style="color: #93E0E3;">kr</span><span style="color: #93E0E3;">(</span><span style="color: #DFAF8F;">~eq</span>.setting<span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span> <span style="color: #BFEBBF;">}</span> +&gt; <span style="color: #BFEBBF;">\p</span>;
+<span style="color: #DFAF8F;">~micEq</span>.stop;
+<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>
+<span style="color: #DFAF8F;">~viewEq</span> = <span style="color: #7CB8BB;">EQView</span> <span style="color: #BFEBBF;">(</span><span style="color: #DFAF8F;">eqSetting:</span> <span style="color: #DFAF8F;">~eq</span> <span style="color: #BFEBBF;">)</span>;
+<span style="color: #DFAF8F;">~viewEq</span>.action = <span style="color: #BFEBBF;">{</span> |view, setting| <span style="color: #DFAF8F;">~micEq</span>.set<span style="color: #D0BF8F;">(</span><span style="color: #BFEBBF;">\eqSetting</span>,setting<span style="color: #D0BF8F;">)</span> <span style="color: #BFEBBF;">}</span>
+<span style="color: #DCDCCC;">)</span>
 </pre>
 </div>
 </div>
 </div>
 <div id="outline-container-sec-3-3" class="outline-3">
-<h3 id="sec-3-3"><a id="ID-213f482b-6de1-463b-9a2c-f764577ade14" name="ID-213f482b-6de1-463b-9a2c-f764577ade14"></a><span class="section-number-3">3.3</span> Microphone&#xa0;&#xa0;&#xa0;<span class="tag"><span class="mic">mic</span></span></h3>
+<h3 id="sec-3-3"><span class="section-number-3">3.3</span> Επιστροφές (feedback) OctaGon Monitoring</h3>
 <div class="outline-text-3" id="text-3-3">
-<p>
-#+   <a href="01OctaGon_org/mic.sc">Mic.sc </a>  (org-eval-this section) C-H-SPACE
-</p>
 <div class="org-src-container">
 
-<pre class="src src-sclang"><span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">Microphone of the  streamer Octagon.</span>
-<span style="color: #ff8700;">~mic</span>=<span style="color: #dd0000; font-weight: bold;">{</span><span style="color: #00d7af;">AudioIn</span>.<span style="color: #ffd700;">ar</span><span style="color: #5fafd7; font-weight: bold;">(</span><span style="color: #a1db00; font-weight: bold;">[</span>1,3<span style="color: #a1db00; font-weight: bold;">]</span><span style="color: #5fafd7; font-weight: bold;">)</span><span style="color: #dd0000; font-weight: bold;">}</span>
-<span style="color: #ff8700;">~micmonitor</span>=<span style="color: #dd0000; font-weight: bold;">{</span><span style="color: #00d7af;">AudioIn</span>.<span style="color: #ffd700;">ar</span><span style="color: #5fafd7; font-weight: bold;">(</span><span style="color: #a1db00; font-weight: bold;">[</span>1,3<span style="color: #a1db00; font-weight: bold;">]</span><span style="color: #5fafd7; font-weight: bold;">)</span><span style="color: #dd0000; font-weight: bold;">}</span>
-<span style="color: #ff8700;">~mictomamathron</span>=<span style="color: #dd0000; font-weight: bold;">{</span><span style="color: #00d7af;">AudioIn</span>.<span style="color: #ffd700;">ar</span><span style="color: #5fafd7; font-weight: bold;">(</span><span style="color: #a1db00; font-weight: bold;">[</span>1,3<span style="color: #a1db00; font-weight: bold;">]</span><span style="color: #5fafd7; font-weight: bold;">)</span><span style="color: #dd0000; font-weight: bold;">}</span>
-<span style="color: #ff8700;">~mictomamathron</span>.play<span style="color: #dd0000; font-weight: bold;">(</span>4<span style="color: #dd0000; font-weight: bold;">)</span>;
-<span style="color: #ff8700;">~mictomamathron</span>.stop;
-<span style="color: #ff8700;">~mic</span>.play<span style="color: #dd0000; font-weight: bold;">(</span>1,2<span style="color: #dd0000; font-weight: bold;">)</span>;
-<span style="color: #ff8700;">~mic</span>.stop;
-<span style="color: #ff8700;">~micmonitor</span>.play<span style="color: #dd0000; font-weight: bold;">(</span>2<span style="color: #dd0000; font-weight: bold;">)</span>;
-<span style="color: #ff8700;">~micmonitor</span>.stop;
+<pre class="src src-sclang"><span style="color: #DCDCCC;">(</span>  <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Octagon Feadback or Return</span>
+<span style="color: #DFAF8F;">~return</span> = <span style="color: #7CB8BB;">Synth</span> <span style="color: #BFEBBF;">(</span><span style="color: #CC9393;">"\return"</span>,<span style="color: #D0BF8F;">[</span><span style="color: #BFEBBF;">\out</span>, 2<span style="color: #D0BF8F;">]</span><span style="color: #BFEBBF;">)</span>;
+<span style="color: #DFAF8F;">~return1</span> = <span style="color: #7CB8BB;">Synth</span> <span style="color: #BFEBBF;">(</span><span style="color: #CC9393;">"\return"</span>,<span style="color: #D0BF8F;">[</span><span style="color: #BFEBBF;">\out</span>, 3<span style="color: #D0BF8F;">]</span><span style="color: #BFEBBF;">)</span>;
+<span style="color: #DFAF8F;">~return</span>.free; <span style="color: #DFAF8F;">~return1</span>.free;
+<span style="color: #DFAF8F;">~view2</span>.action = <span style="color: #BFEBBF;">{</span> |view, setting| <span style="color: #DFAF8F;">~mic</span>.set<span style="color: #D0BF8F;">(</span> <span style="color: #BFEBBF;">\eqSetting</span>, setting <span style="color: #D0BF8F;">)</span> <span style="color: #BFEBBF;">}</span>;
+<span style="color: #DFAF8F;">~view2</span> = <span style="color: #7CB8BB;">EQView</span><span style="color: #BFEBBF;">(</span><span style="color: #DFAF8F;">eqSetting:</span>  <span style="color: #DFAF8F;">~eq6</span><span style="color: #BFEBBF;">)</span>;
+<span style="color: #DCDCCC;">)</span>
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre class="src src-sclang"><span style="color: #DFAF8F;">~octmonit</span>=<span style="color: #DCDCCC;">{</span><span style="color: #7CB8BB;">AudioIn</span>.<span style="color: #93E0E3;">ar</span><span style="color: #BFEBBF;">(</span><span style="color: #D0BF8F;">[</span>11,12<span style="color: #D0BF8F;">]</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">}</span>;
+<span style="color: #DFAF8F;">~octmonit</span>.play<span style="color: #DCDCCC;">(</span>2<span style="color: #DCDCCC;">)</span>;
+<span style="color: #DFAF8F;">~octmonit</span>.stop;
 </pre>
 </div>
 </div>
 </div>
 <div id="outline-container-sec-3-4" class="outline-3">
-<h3 id="sec-3-4"><span class="section-number-3">3.4</span> Record Out</h3>
+<h3 id="sec-3-4"><a id="ID-213f482b-6de1-463b-9a2c-f764577ade14" name="ID-213f482b-6de1-463b-9a2c-f764577ade14"></a><span class="section-number-3">3.4</span> Microphone&#xa0;&#xa0;&#xa0;<span class="tag"><span class="mic">mic</span></span></h3>
 <div class="outline-text-3" id="text-3-4">
+<p>
+#+   <a href="01OctaGon_org/mic.sc">Mic.sc </a>  (org-eval-this section) C-H-SPACE
+</p>
 <div class="org-src-container">
 
-<pre class="src src-sclang">s.recHeaderFormat = <span style="color: #ff4ea3;">"wav"</span>
-s.recChannels <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">default: 2) Must me called before preperForRecord</span>
+<pre class="src src-sclang"><span style="color: #DCDCCC;">(</span> <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">Microphone &amp;&amp; Monitor it</span>
+<span style="color: #DFAF8F;">~micmonitor</span> = <span style="color: #7CB8BB;">Synth</span> <span style="color: #BFEBBF;">(</span><span style="color: #CC9393;">"\mic"</span>, <span style="color: #D0BF8F;">[</span><span style="color: #BFEBBF;">\out</span>, 2<span style="color: #D0BF8F;">]</span> <span style="color: #BFEBBF;">)</span>;
+<span style="color: #DFAF8F;">~micmonitor</span>.free; <span style="color: #DFAF8F;">~micmonitor</span>.release;
+<span style="color: #DFAF8F;">~mic</span> = <span style="color: #7CB8BB;">Synth</span> <span style="color: #BFEBBF;">(</span><span style="color: #CC9393;">"\mic"</span> <span style="color: #BFEBBF;">)</span>;
+<span style="color: #DFAF8F;">~mic</span>.free;<span style="color: #DFAF8F;">~mic</span>.release;
+<span style="color: #DFAF8F;">~view1</span>.action = <span style="color: #BFEBBF;">{</span> |view, setting| <span style="color: #DFAF8F;">~mic</span>.set<span style="color: #D0BF8F;">(</span> <span style="color: #BFEBBF;">\eqSetting</span>, setting <span style="color: #D0BF8F;">)</span> <span style="color: #BFEBBF;">}</span>;
+<span style="color: #DFAF8F;">~view1</span> = <span style="color: #7CB8BB;">EQView</span><span style="color: #BFEBBF;">(</span><span style="color: #DFAF8F;">eqSetting:</span>  <span style="color: #DFAF8F;">~eq3</span><span style="color: #BFEBBF;">)</span>;
+<span style="color: #DCDCCC;">)</span>
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre class="src src-sclang"><span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">Microphone of the  streamer Octagon.</span>
+<span style="color: #DFAF8F;">~mic</span>=<span style="color: #DCDCCC;">{</span><span style="color: #7CB8BB;">AudioIn</span>.<span style="color: #93E0E3;">ar</span><span style="color: #BFEBBF;">(</span><span style="color: #D0BF8F;">[</span>1,3<span style="color: #D0BF8F;">]</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">}</span>;
+<span style="color: #DFAF8F;">~micmonitor</span>=<span style="color: #DCDCCC;">{</span><span style="color: #7CB8BB;">AudioIn</span>.<span style="color: #93E0E3;">ar</span><span style="color: #BFEBBF;">(</span><span style="color: #D0BF8F;">[</span>1,3<span style="color: #D0BF8F;">]</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">}</span>
+<span style="color: #DFAF8F;">~mictomamathron</span>=<span style="color: #DCDCCC;">{</span><span style="color: #7CB8BB;">AudioIn</span>.<span style="color: #93E0E3;">ar</span><span style="color: #BFEBBF;">(</span><span style="color: #D0BF8F;">[</span>1,3<span style="color: #D0BF8F;">]</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">}</span>
+<span style="color: #DFAF8F;">~mictomamathron</span>.play<span style="color: #DCDCCC;">(</span>4<span style="color: #DCDCCC;">)</span>;
+<span style="color: #DFAF8F;">~mictomamathron</span>.stop;
+<span style="color: #DFAF8F;">~mic</span>.play<span style="color: #DCDCCC;">(</span>0<span style="color: #DCDCCC;">)</span>;
+<span style="color: #DFAF8F;">~mic</span>.stop;
+ <span style="color: #DFAF8F;">~mic</span>.release;
+<span style="color: #DFAF8F;">~micmonitor</span>.play<span style="color: #DCDCCC;">(</span>2<span style="color: #DCDCCC;">)</span>;
+<span style="color: #DFAF8F;">~micmonitor</span>.stop;
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3-5" class="outline-3">
+<h3 id="sec-3-5"><span class="section-number-3">3.5</span> Instrument Or Second microphone</h3>
+<div class="outline-text-3" id="text-3-5">
+<div class="org-src-container">
+
+<pre class="src src-sclang"><span style="color: #DFAF8F;">~instrumentin</span>=<span style="color: #DCDCCC;">{</span><span style="color: #7CB8BB;">AudioIn</span>.<span style="color: #93E0E3;">ar</span><span style="color: #BFEBBF;">(</span><span style="color: #D0BF8F;">[</span>2,4<span style="color: #D0BF8F;">]</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">}</span>
+<span style="color: #DFAF8F;">~instrumentMonitor</span>=<span style="color: #DCDCCC;">{</span><span style="color: #7CB8BB;">AudioIn</span>.<span style="color: #93E0E3;">ar</span><span style="color: #BFEBBF;">(</span><span style="color: #D0BF8F;">[</span>2,4<span style="color: #D0BF8F;">]</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">}</span>
+<span style="color: #DFAF8F;">~instrumentIn</span>.play<span style="color: #DCDCCC;">(</span>0<span style="color: #DCDCCC;">)</span>;
+<span style="color: #DFAF8F;">~instrument</span>.stop<span style="color: #DCDCCC;">(</span>0<span style="color: #DCDCCC;">)</span>;
+<span style="color: #DFAF8F;">~instrumentMonitor</span>.play<span style="color: #DCDCCC;">(</span>2<span style="color: #DCDCCC;">)</span>;
+<span style="color: #DFAF8F;">~instrumentMonitor</span>.stop;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-6" class="outline-3">
+<h3 id="sec-3-6"><span class="section-number-3">3.6</span> Player: :playlists: :</h3>
+<div class="outline-text-3" id="text-3-6">
+<div class="org-src-container">
+
+<pre class="src src-sclang"><span style="color: #DCDCCC;">(</span> <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">vlc or player to octagon</span>
+<span style="color: #DFAF8F;">~vlc</span> = <span style="color: #7CB8BB;">Synth</span><span style="color: #BFEBBF;">(</span><span style="color: #CC9393;">"\player"</span><span style="color: #BFEBBF;">)</span>;
+<span style="color: #DFAF8F;">~vlc</span>.free; <span style="color: #DFAF8F;">~vlc</span>.release;
+<span style="color: #DFAF8F;">~monitorVlc</span>=<span style="color: #7CB8BB;">Synth</span><span style="color: #BFEBBF;">(</span><span style="color: #CC9393;">"\vlc"</span>,<span style="color: #D0BF8F;">[</span><span style="color: #BFEBBF;">\out</span>, 2<span style="color: #D0BF8F;">]</span><span style="color: #BFEBBF;">)</span>;
+<span style="color: #DFAF8F;">~montorVlc</span>.free; <span style="color: #DFAF8F;">~monitorVlc</span>.reslease;
+<span style="color: #DFAF8F;">~view3</span>.action = <span style="color: #BFEBBF;">{</span> |view, setting| <span style="color: #DFAF8F;">~vlc</span>.set<span style="color: #D0BF8F;">(</span> <span style="color: #BFEBBF;">\eqSetting</span>, setting <span style="color: #D0BF8F;">)</span> <span style="color: #BFEBBF;">}</span>;
+<span style="color: #DFAF8F;">~view3</span> = <span style="color: #7CB8BB;">EQView</span><span style="color: #BFEBBF;">(</span><span style="color: #DFAF8F;">eqSetting:</span>  <span style="color: #DFAF8F;">~eq2</span><span style="color: #BFEBBF;">)</span>;
+<span style="color: #DCDCCC;">)</span>
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre class="src src-sclang"><span style="color: #DFAF8F;">~player</span>=<span style="color: #DCDCCC;">{</span><span style="color: #7CB8BB;">AudioIn</span>.<span style="color: #93E0E3;">ar</span><span style="color: #BFEBBF;">(</span><span style="color: #D0BF8F;">[</span>5,6<span style="color: #D0BF8F;">]</span><span style="color: #88090B;">}</span>
+<span style="color: #DFAF8F;">~playerMinitor</span>=<span style="color: #BFEBBF;">{</span><span style="color: #7CB8BB;">AudioIn</span>.<span style="color: #93E0E3;">ar</span><span style="color: #D0BF8F;">(</span><span style="color: #93E0E3;">[</span>5,6<span style="color: #93E0E3;">]</span><span style="color: #88090B;">}</span>
+<span style="color: #DFAF8F;">~player</span>.play<span style="color: #D0BF8F;">(</span>0<span style="color: #D0BF8F;">)</span>;
+<span style="color: #DFAF8F;">~player</span>.stop;
+<span style="color: #DFAF8F;">~playerMonitor</span>.play<span style="color: #D0BF8F;">(</span>2<span style="color: #D0BF8F;">)</span>;
+<span style="color: #DFAF8F;">~playerMonitor</span>.stop;
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3-7" class="outline-3">
+<h3 id="sec-3-7"><span class="section-number-3">3.7</span> Record Output</h3>
+<div class="outline-text-3" id="text-3-7">
+<div class="org-src-container">
+
+<pre class="src src-sclang">s.recHeaderFormat = <span style="color: #CC9393;">"wav"</span>
+s.recChannels <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">default: 2) Must me called before preperForRecord</span>
 s.prepareForRecord;
-s.record<span style="color: #dd0000; font-weight: bold;">(</span>0<span style="color: #dd0000; font-weight: bold;">)</span>;
+s.record<span style="color: #DCDCCC;">(</span>0<span style="color: #DCDCCC;">)</span>;
 s.stopRecording;
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-sec-3-5" class="outline-3">
-<h3 id="sec-3-5"><span class="section-number-3">3.5</span> MamathroN Server</h3>
-<div class="outline-text-3" id="text-3-5">
+<div id="outline-container-sec-3-8" class="outline-3">
+<h3 id="sec-3-8"><span class="section-number-3">3.8</span> Browser&#xa0;&#xa0;&#xa0;<span class="tag"><span class="pulseaudio">pulseaudio</span></span></h3>
+<div class="outline-text-3" id="text-3-8">
 <div class="org-src-container">
 
-<pre class="src src-sclang"><span style="color: #ff8700;">~mamathron</span>=<span style="color: #dd0000; font-weight: bold;">{</span><span style="color: #00d7af;">AudioIn</span>.<span style="color: #ffd700;">ar</span><span style="color: #5fafd7; font-weight: bold;">(</span><span style="color: #a1db00; font-weight: bold;">[</span>9,10<span style="color: #a1db00; font-weight: bold;">]</span><span style="color: #5fafd7; font-weight: bold;">)</span><span style="color: #dd0000; font-weight: bold;">}</span>;
-<span style="color: #ff8700;">~mamathronmonitor</span>=<span style="color: #dd0000; font-weight: bold;">{</span><span style="color: #00d7af;">AudioIn</span>.<span style="color: #ffd700;">ar</span><span style="color: #5fafd7; font-weight: bold;">(</span><span style="color: #a1db00; font-weight: bold;">[</span>9,10<span style="color: #a1db00; font-weight: bold;">]</span><span style="color: #5fafd7; font-weight: bold;">)</span><span style="color: #dd0000; font-weight: bold;">}</span>;
-<span style="color: #ff8700;">~mamathron</span>.play<span style="color: #dd0000; font-weight: bold;">(</span>0<span style="color: #dd0000; font-weight: bold;">)</span>;
-<span style="color: #ff8700;">~mamathron</span>.stop;
-<span style="color: #ff8700;">~mamathron</span>.release;
-<span style="color: #ff8700;">~mamathronmonitor</span>.play<span style="color: #dd0000; font-weight: bold;">(</span>2<span style="color: #dd0000; font-weight: bold;">)</span>;
-<span style="color: #ff8700;">~mamathronmonitor</span>.stop;
-<span style="color: #ff8700;">~mamathronmonitor</span>.release;
+<pre class="src src-sclang"><span style="color: #DCDCCC;">(</span> <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Browser</span>
+<span style="color: #DFAF8F;">~browser</span> = <span style="color: #7CB8BB;">Synth</span><span style="color: #BFEBBF;">(</span><span style="color: #CC9393;">"\browser"</span><span style="color: #BFEBBF;">)</span>;
+<span style="color: #DFAF8F;">~browser</span>.free; <span style="color: #DFAF8F;">~browser</span>.release;
+<span style="color: #DFAF8F;">~view4</span>.action = <span style="color: #BFEBBF;">{</span> |view, setting| <span style="color: #DFAF8F;">~browser</span>.set<span style="color: #D0BF8F;">(</span> <span style="color: #BFEBBF;">\eqSetting</span>, setting <span style="color: #D0BF8F;">)</span> <span style="color: #BFEBBF;">}</span>;
+<span style="color: #DFAF8F;">~view4</span> = <span style="color: #7CB8BB;">EQView</span><span style="color: #BFEBBF;">(</span><span style="color: #DFAF8F;">eqSetting:</span>  <span style="color: #DFAF8F;">~eq4</span><span style="color: #BFEBBF;">)</span>;
+<span style="color: #DCDCCC;">)</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-sclang"><span style="color: #DFAF8F;">~pulse</span>=<span style="color: #DCDCCC;">{</span><span style="color: #7CB8BB;">AudioIn</span>.<span style="color: #93E0E3;">ar</span><span style="color: #BFEBBF;">(</span><span style="color: #D0BF8F;">[</span>7,8<span style="color: #D0BF8F;">]</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">}</span>
+<span style="color: #DFAF8F;">~pulsemon</span>=<span style="color: #DCDCCC;">{</span><span style="color: #7CB8BB;">AudioIn</span>.<span style="color: #93E0E3;">ar</span><span style="color: #BFEBBF;">(</span><span style="color: #D0BF8F;">[</span>7,8<span style="color: #D0BF8F;">]</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">}</span>
+<span style="color: #DFAF8F;">~pulse</span>.play<span style="color: #DCDCCC;">(</span>2<span style="color: #DCDCCC;">)</span>;
+<span style="color: #DFAF8F;">~pulse</span>.stop;
+<span style="color: #DFAF8F;">~pulsemon</span>.play<span style="color: #DCDCCC;">(</span>2<span style="color: #DCDCCC;">)</span>;
+<span style="color: #DFAF8F;">~pulsemon</span>.stop;
+<span style="color: #DFAF8F;">~pulse</span>.release;
+<span style="color: #DFAF8F;">~pulsemon</span>.release;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-9" class="outline-3">
+<h3 id="sec-3-9"><span class="section-number-3">3.9</span> MamathroN Server</h3>
+<div class="outline-text-3" id="text-3-9">
+<div class="org-src-container">
+
+<pre class="src src-sclang"><span style="color: #DCDCCC;">(</span><span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">Manathron</span>
+<span style="color: #DFAF8F;">~mamathron</span> = <span style="color: #7CB8BB;">Synth</span><span style="color: #BFEBBF;">(</span><span style="color: #CC9393;">"mamathron"</span><span style="color: #BFEBBF;">)</span>;
+<span style="color: #DFAF8F;">~mamathron</span>.free; <span style="color: #DFAF8F;">~mamathron</span>.release;
+<span style="color: #DFAF8F;">~view5</span>.action = <span style="color: #BFEBBF;">{</span> |view, setting| <span style="color: #DFAF8F;">~mamathron</span>.set<span style="color: #D0BF8F;">(</span> <span style="color: #BFEBBF;">\eqSetting</span>, setting <span style="color: #D0BF8F;">)</span> <span style="color: #BFEBBF;">}</span>;
+<span style="color: #DFAF8F;">~view5</span> = <span style="color: #7CB8BB;">EQView</span><span style="color: #BFEBBF;">(</span><span style="color: #DFAF8F;">eqSetting:</span>  <span style="color: #DFAF8F;">~eq5</span><span style="color: #BFEBBF;">)</span>;
+<span style="color: #DCDCCC;">)</span>
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre class="src src-sclang"><span style="color: #DFAF8F;">~mamathron</span>=<span style="color: #DCDCCC;">{</span><span style="color: #7CB8BB;">AudioIn</span>.<span style="color: #93E0E3;">ar</span><span style="color: #BFEBBF;">(</span><span style="color: #D0BF8F;">[</span>9,10<span style="color: #D0BF8F;">]</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">}</span>;
+<span style="color: #DFAF8F;">~mamathronmonitor</span>=<span style="color: #DCDCCC;">{</span><span style="color: #7CB8BB;">AudioIn</span>.<span style="color: #93E0E3;">ar</span><span style="color: #BFEBBF;">(</span><span style="color: #D0BF8F;">[</span>9,10<span style="color: #D0BF8F;">]</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">}</span>;
+<span style="color: #DFAF8F;">~mamathron</span>.play;
+<span style="color: #DFAF8F;">~mamathron</span>.stop;
+<span style="color: #DFAF8F;">~mamathron</span>.release;
+<span style="color: #DFAF8F;">~mamathronmonitor</span>.play<span style="color: #DCDCCC;">(</span>2<span style="color: #DCDCCC;">)</span>;
+<span style="color: #DFAF8F;">~mamathronmonitor</span>.stop;
+<span style="color: #DFAF8F;">~mamathronmonitor</span>.release;
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3-10" class="outline-3">
+<h3 id="sec-3-10"><span class="section-number-3">3.10</span> Record Output</h3>
+<div class="outline-text-3" id="text-3-10">
+<div class="org-src-container">
+
+<pre class="src src-sclang">s.recHeaderFormat = <span style="color: #CC9393;">"wav"</span>
+s.recChannels <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">default: 2) Must me called before preperForRecord</span>
+s.prepareForRecord;
+s.record<span style="color: #DCDCCC;">(</span>0<span style="color: #DCDCCC;">)</span>;
+s.stopRecording;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-11" class="outline-3">
+<h3 id="sec-3-11"><span class="section-number-3">3.11</span> Octagon to MamathroN</h3>
+<div class="outline-text-3" id="text-3-11">
+<div class="org-src-container">
+
+<pre class="src src-sclang"><span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Mic to mamathron</span>
+<span style="color: #DFAF8F;">~mamathronmic</span> = <span style="color: #7CB8BB;">Synth</span> <span style="color: #DCDCCC;">(</span><span style="color: #CC9393;">"\mic"</span>, <span style="color: #BFEBBF;">[</span><span style="color: #BFEBBF;">\out</span>, 4 <span style="color: #BFEBBF;">]</span><span style="color: #DCDCCC;">)</span>;
+<span style="color: #DFAF8F;">~mamathronmic</span>.free; <span style="color: #DFAF8F;">~mamthronmic</span>.release;
+<span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">monitor to mamathron</span>
+<span style="color: #DFAF8F;">~mamathronMonitor</span> = <span style="color: #7CB8BB;">Synth</span> <span style="color: #DCDCCC;">(</span><span style="color: #CC9393;">"\return "</span>, <span style="color: #BFEBBF;">[</span><span style="color: #BFEBBF;">\out</span>, 4 <span style="color: #BFEBBF;">]</span><span style="color: #DCDCCC;">)</span>;
+<span style="color: #DFAF8F;">~mamathronMonitor</span>.free; <span style="color: #DFAF8F;">~mamathronMonitor</span>.release;
+<span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">vlc to mamathron</span>
+<span style="color: #DFAF8F;">~mamathronVlc</span> = <span style="color: #7CB8BB;">Synth</span><span style="color: #DCDCCC;">(</span><span style="color: #CC9393;">"\player"</span>, <span style="color: #BFEBBF;">[</span><span style="color: #BFEBBF;">\out</span>, 4 <span style="color: #BFEBBF;">]</span><span style="color: #DCDCCC;">)</span>;
+ <span style="color: #DFAF8F;">~mamathronVlc</span>.free; <span style="color: #DFAF8F;">~mamathronVlc</span>.release;
+<span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">pulse to mamathron</span>
+<span style="color: #DFAF8F;">~mamathronBrowser</span> = <span style="color: #7CB8BB;">Synth</span> <span style="color: #DCDCCC;">(</span><span style="color: #CC9393;">"\browser"</span>, <span style="color: #BFEBBF;">[</span><span style="color: #BFEBBF;">\out</span>, 4 <span style="color: #BFEBBF;">]</span><span style="color: #DCDCCC;">)</span>;
+<span style="color: #DFAF8F;">~mamathronBrowser</span>.free; <span style="color: #DFAF8F;">~mamathronBrowser</span>.release;
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre class="src src-sclang"><span style="color: #DFAF8F;">~octagontomamathron</span> = <span style="color: #DCDCCC;">{</span><span style="color: #7CB8BB;">AudioIn</span>.<span style="color: #93E0E3;">ar</span><span style="color: #BFEBBF;">(</span><span style="color: #D0BF8F;">[</span>11,12<span style="color: #D0BF8F;">]</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">}</span>
+<span style="color: #DFAF8F;">~mictomamathron</span> = <span style="color: #DCDCCC;">{</span><span style="color: #7CB8BB;">AudioIn</span>.<span style="color: #93E0E3;">ar</span><span style="color: #BFEBBF;">(</span><span style="color: #D0BF8F;">[</span>1,3<span style="color: #D0BF8F;">]</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">}</span>;
+<span style="color: #DFAF8F;">~pulsetomamathron</span> = <span style="color: #DCDCCC;">{</span><span style="color: #7CB8BB;">AudioIn</span>.<span style="color: #93E0E3;">ar</span><span style="color: #BFEBBF;">(</span><span style="color: #D0BF8F;">[</span>7,8<span style="color: #D0BF8F;">]</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">}</span>;
+<span style="color: #DFAF8F;">~playertomamathron</span> = <span style="color: #DCDCCC;">{</span><span style="color: #7CB8BB;">AudioIn</span>.<span style="color: #93E0E3;">ar</span><span style="color: #BFEBBF;">(</span><span style="color: #D0BF8F;">[</span>5.6<span style="color: #D0BF8F;">]</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">}</span>;
+<span style="color: #DFAF8F;">~octagontomamathron</span>.play<span style="color: #DCDCCC;">(</span>4<span style="color: #DCDCCC;">)</span>;
+<span style="color: #DFAF8F;">~octagontomamathron</span>.stop;
+<span style="color: #DFAF8F;">~mictomamathron</span>.play<span style="color: #DCDCCC;">(</span>4<span style="color: #DCDCCC;">)</span>;
+<span style="color: #DFAF8F;">~mictomamathron</span>.stop;
+<span style="color: #DFAF8F;">~pulsetomamathron</span>.play<span style="color: #DCDCCC;">(</span>4<span style="color: #DCDCCC;">)</span>;
+<span style="color: #DFAF8F;">~pulsetomamathron</span>.stop;
+<span style="color: #DFAF8F;">~playertomamathron</span>.play<span style="color: #DCDCCC;">(</span>4<span style="color: #DCDCCC;">)</span>;
+<span style="color: #DFAF8F;">~playertomamathron</span>.stop;
 </pre>
 </div>
 </div>
 </div>
 </div>
-
-
-
-
-
-
-
 <div id="outline-container-sec-4" class="outline-2">
 <h2 id="sec-4"><span class="section-number-2">4</span> org-source-fontify-buffer</h2>
 <div class="outline-text-2" id="text-4">
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp"><span style="color: #dd0000; font-weight: bold;">(</span>setq org-src-fontify-natively t<span style="color: #dd0000; font-weight: bold;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #DCDCCC;">(</span>setq org-src-fontify-natively t<span style="color: #DCDCCC;">)</span>
 </pre>
 </div>
 </div>
@@ -355,7 +606,7 @@ s.stopRecording;
 <div class="outline-text-2" id="text-5">
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp"><span style="color: #dd0000; font-weight: bold;">(</span>setq org-babel-sh-command <span style="color: #ff4ea3;">"sh"</span><span style="color: #dd0000; font-weight: bold;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #DCDCCC;">(</span>setq org-babel-sh-command <span style="color: #CC9393;">"sh"</span><span style="color: #DCDCCC;">)</span>
 </pre>
 </div>
 <p>
@@ -364,7 +615,7 @@ git config &#x2013;global user.name "egelor"
 </p>
 <div class="org-src-container">
 
-<pre class="src src-sh">git config --global user.emacs <span style="color: #ff4ea3;">"e.trifonidis@gmail.com"</span>
+<pre class="src src-sh">git config --global user.emacs <span style="color: #CC9393;">"e.trifonidis@gmail.com"</span>
 </pre>
 </div>
 <p>
@@ -399,16 +650,16 @@ git push -f origin master
 <div class="outline-text-3" id="text-6-1">
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp"><span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"s-&lt;"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'beginning-of-buffer<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"s-&gt;"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'end-of-buffer<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"s-S-&lt;right&gt;"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'windmove-right<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"s-S-&lt;left&gt;"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'windmove-left<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"s-S-&lt;up&gt;"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'windmove-up<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"s-S-&lt;down&gt;"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'windmove-down<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"s-M-&lt;right&gt;"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'buf-move-right<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"s-M-&lt;left&gt;"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'buf-move-left<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"s-M-&lt;up&gt;"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'buf-move-up<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"s-M-&lt;down&gt;"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'buf-move-down<span style="color: #dd0000; font-weight: bold;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"s-&lt;"</span><span style="color: #BFEBBF;">)</span> 'beginning-of-buffer<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"s-&gt;"</span><span style="color: #BFEBBF;">)</span> 'end-of-buffer<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"s-S-&lt;right&gt;"</span><span style="color: #BFEBBF;">)</span> 'windmove-right<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"s-S-&lt;left&gt;"</span><span style="color: #BFEBBF;">)</span> 'windmove-left<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"s-S-&lt;up&gt;"</span><span style="color: #BFEBBF;">)</span> 'windmove-up<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"s-S-&lt;down&gt;"</span><span style="color: #BFEBBF;">)</span> 'windmove-down<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"s-M-&lt;right&gt;"</span><span style="color: #BFEBBF;">)</span> 'buf-move-right<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"s-M-&lt;left&gt;"</span><span style="color: #BFEBBF;">)</span> 'buf-move-left<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"s-M-&lt;up&gt;"</span><span style="color: #BFEBBF;">)</span> 'buf-move-up<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"s-M-&lt;down&gt;"</span><span style="color: #BFEBBF;">)</span> 'buf-move-down<span style="color: #DCDCCC;">)</span>
 </pre>
 </div>
 </div>
@@ -418,14 +669,14 @@ git push -f origin master
 <div class="outline-text-3" id="text-6-2">
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp"><span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-S-a c"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'ace-jump-char-mode<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-S-a w"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'ace-jump-word-mode<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-S-a l"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'ace-jump-line-mode<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-S-a b"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'ace-jump-buffer<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-S-a d"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'ace-window<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-S-a W"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'ace-window<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-S-a s"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'switch-window<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"s-W"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'switch-window<span style="color: #dd0000; font-weight: bold;">)</span> <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">related to  ace-window s-w</span>
+<pre class="src src-emacs-lisp"><span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"C-S-a c"</span><span style="color: #BFEBBF;">)</span> 'ace-jump-char-mode<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"C-S-a w"</span><span style="color: #BFEBBF;">)</span> 'ace-jump-word-mode<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"C-S-a l"</span><span style="color: #BFEBBF;">)</span> 'ace-jump-line-mode<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"C-S-a b"</span><span style="color: #BFEBBF;">)</span> 'ace-jump-buffer<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"C-S-a d"</span><span style="color: #BFEBBF;">)</span> 'ace-window<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"C-S-a W"</span><span style="color: #BFEBBF;">)</span> 'ace-window<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"C-S-a s"</span><span style="color: #BFEBBF;">)</span> 'switch-window<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"s-W"</span><span style="color: #BFEBBF;">)</span> 'switch-window<span style="color: #DCDCCC;">)</span> <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">related to  ace-window s-w</span>
 </pre>
 </div>
 </div>
@@ -435,17 +686,17 @@ git push -f origin master
 <div class="outline-text-3" id="text-6-3">
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp"><span style="color: #dd0000; font-weight: bold;">(</span><span style="color: #a1db00; font-weight: bold;">defun</span> <span style="color: #ffd700;">my-toggle-hideshow-all</span> <span style="color: #5fafd7; font-weight: bold;">()</span>
-  <span style="color: #ff4b4b;">"Toggle hideshow all."</span>
-  <span style="color: #5fafd7; font-weight: bold;">(</span>interactive<span style="color: #5fafd7; font-weight: bold;">)</span>
-  <span style="color: #5fafd7; font-weight: bold;">(</span>set <span style="color: #a1db00; font-weight: bold;">(</span>make-variable-buffer-local 'my-hs-hide<span style="color: #a1db00; font-weight: bold;">)</span> <span style="color: #a1db00; font-weight: bold;">(</span>not my-hs-hide<span style="color: #a1db00; font-weight: bold;">)</span><span style="color: #5fafd7; font-weight: bold;">)</span>
-  <span style="color: #5fafd7; font-weight: bold;">(</span><span style="color: #a1db00; font-weight: bold;">if</span> my-hs-hide
-      <span style="color: #a1db00; font-weight: bold;">(</span>hs-hide-all<span style="color: #a1db00; font-weight: bold;">)</span>
-    <span style="color: #a1db00; font-weight: bold;">(</span>hs-show-all<span style="color: #a1db00; font-weight: bold;">)</span><span style="color: #5fafd7; font-weight: bold;">)</span><span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c @ @"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'my-toggle-hideshow-all<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c @ h"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'hs-hide-block<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c @ s"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'hs-show-block<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c @ SPC"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'hs-show-block<span style="color: #dd0000; font-weight: bold;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">my-toggle-hideshow-all</span> <span style="color: #BFEBBF;">()</span>
+  <span style="color: #9FC59F;">"Toggle hideshow all."</span>
+  <span style="color: #BFEBBF;">(</span>interactive<span style="color: #BFEBBF;">)</span>
+  <span style="color: #BFEBBF;">(</span>set <span style="color: #D0BF8F;">(</span>make-variable-buffer-local 'my-hs-hide<span style="color: #D0BF8F;">)</span> <span style="color: #D0BF8F;">(</span>not my-hs-hide<span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span>
+  <span style="color: #BFEBBF;">(</span><span style="color: #F0DFAF; font-weight: bold;">if</span> my-hs-hide
+      <span style="color: #D0BF8F;">(</span>hs-hide-all<span style="color: #D0BF8F;">)</span>
+    <span style="color: #D0BF8F;">(</span>hs-show-all<span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"C-c @ @"</span><span style="color: #BFEBBF;">)</span> 'my-toggle-hideshow-all<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"C-c @ h"</span><span style="color: #BFEBBF;">)</span> 'hs-hide-block<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"C-c @ s"</span><span style="color: #BFEBBF;">)</span> 'hs-show-block<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"C-c @ SPC"</span><span style="color: #BFEBBF;">)</span> 'hs-show-block<span style="color: #DCDCCC;">)</span>
 </pre>
 </div>
 </div>
@@ -456,74 +707,74 @@ git push -f origin master
 <div class="outline-text-2" id="text-7">
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp"><span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-c l"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'sclang-start<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-c w"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'sclang-switch-to-workspace<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c C-,"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'sclang-eval-line<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c C-M-,"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'sclang-eval-line-inspect<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"M-P"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'sclang-clear-post-buffer<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-c &gt;"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'sclang-show-post-buffer<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-c H-y"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'sclang-open-help-gui<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-c :"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'sclang-find-definitions<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-c t"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'org-sc-synthtemplate-gui<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-c H-t"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'org-sc-templates-gui<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-c H-g"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'org-sc-guis<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-c p"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'org-sc-patterntemplate-gui<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-c c"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'org-sc-select-synthtree-then-synthPlayer<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-c H-c"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'org-sc-synthPlayer-into-last-synthtree<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-c k"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'org-sc-select-synthtree-then-knobs<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-c f"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'org-sc-faders<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">(global-set-key (kbd "H-c H-f") 'org-sc-set-global-fade-time)</span>
-<span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">(global-set-key (kbd "H-c H-C-f") 'org-sc-set-fade-time)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-c SPC"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'org-sc-toggle-section-synthtree<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-SPC"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'org-sc-toggle-section-synthtree<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-c H-SPC"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'org-sc-toggle-section-synthtree<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-c g"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'org-sc-start-synthtree<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-c s"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'org-sc-stop-synthtree<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-c H-s"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'org-sc-stop-last-synthtree<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-b g"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'org-sc-play-buffer<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-b l"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'org-sc-load-buffer<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-b L"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'org-sc-show-buffer-list<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-b o"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'org-sc-open-buffer-list<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-b s"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'org-sc-save-buffer-list<span style="color: #dd0000; font-weight: bold;">)</span>
-<span style="color: #dd0000; font-weight: bold;">(</span>global-set-key <span style="color: #5fafd7; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-b f"</span><span style="color: #5fafd7; font-weight: bold;">)</span> 'org-sc-free-buffer<span style="color: #dd0000; font-weight: bold;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"H-c l"</span><span style="color: #BFEBBF;">)</span> 'sclang-start<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"H-c w"</span><span style="color: #BFEBBF;">)</span> 'sclang-switch-to-workspace<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"C-c C-,"</span><span style="color: #BFEBBF;">)</span> 'sclang-eval-line<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"C-c C-M-,"</span><span style="color: #BFEBBF;">)</span> 'sclang-eval-line-inspect<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"M-P"</span><span style="color: #BFEBBF;">)</span> 'sclang-clear-post-buffer<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"H-c &gt;"</span><span style="color: #BFEBBF;">)</span> 'sclang-show-post-buffer<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"H-c H-y"</span><span style="color: #BFEBBF;">)</span> 'sclang-open-help-gui<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"H-c :"</span><span style="color: #BFEBBF;">)</span> 'sclang-find-definitions<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"H-c t"</span><span style="color: #BFEBBF;">)</span> 'org-sc-synthtemplate-gui<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"H-c H-t"</span><span style="color: #BFEBBF;">)</span> 'org-sc-templates-gui<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"H-c H-g"</span><span style="color: #BFEBBF;">)</span> 'org-sc-guis<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"H-c p"</span><span style="color: #BFEBBF;">)</span> 'org-sc-patterntemplate-gui<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"H-c c"</span><span style="color: #BFEBBF;">)</span> 'org-sc-select-synthtree-then-synthPlayer<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"H-c H-c"</span><span style="color: #BFEBBF;">)</span> 'org-sc-synthPlayer-into-last-synthtree<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"H-c k"</span><span style="color: #BFEBBF;">)</span> 'org-sc-select-synthtree-then-knobs<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"H-c f"</span><span style="color: #BFEBBF;">)</span> 'org-sc-faders<span style="color: #DCDCCC;">)</span>
+<span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">(global-set-key (kbd "H-c H-f") 'org-sc-set-global-fade-time)</span>
+<span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">(global-set-key (kbd "H-c H-C-f") 'org-sc-set-fade-time)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"H-c SPC"</span><span style="color: #BFEBBF;">)</span> 'org-sc-toggle-section-synthtree<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"H-SPC"</span><span style="color: #BFEBBF;">)</span> 'org-sc-toggle-section-synthtree<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"H-c H-SPC"</span><span style="color: #BFEBBF;">)</span> 'org-sc-toggle-section-synthtree<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"H-c g"</span><span style="color: #BFEBBF;">)</span> 'org-sc-start-synthtree<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"H-c s"</span><span style="color: #BFEBBF;">)</span> 'org-sc-stop-synthtree<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"H-c H-s"</span><span style="color: #BFEBBF;">)</span> 'org-sc-stop-last-synthtree<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"H-b g"</span><span style="color: #BFEBBF;">)</span> 'org-sc-play-buffer<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"H-b l"</span><span style="color: #BFEBBF;">)</span> 'org-sc-load-buffer<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"H-b L"</span><span style="color: #BFEBBF;">)</span> 'org-sc-show-buffer-list<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"H-b o"</span><span style="color: #BFEBBF;">)</span> 'org-sc-open-buffer-list<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"H-b s"</span><span style="color: #BFEBBF;">)</span> 'org-sc-save-buffer-list<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span>global-set-key <span style="color: #BFEBBF;">(</span>kbd <span style="color: #CC9393;">"H-b f"</span><span style="color: #BFEBBF;">)</span> 'org-sc-free-buffer<span style="color: #DCDCCC;">)</span>
 
-h<span style="color: #dd0000; font-weight: bold;">(</span>eval-after-load <span style="color: #ff4ea3;">"org"</span>
-  <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">move / eval / synthPlayer sections</span>
-  '<span style="color: #5fafd7; font-weight: bold;">(</span><span style="color: #a1db00; font-weight: bold;">progn</span>
-     <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-C-SPC"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-sc-eval-this-section<span style="color: #a1db00; font-weight: bold;">)</span>
-     <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-M-SPC"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-sc-synthPlayer-this-section<span style="color: #a1db00; font-weight: bold;">)</span>
-     <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-s n"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-sc-next-section<span style="color: #a1db00; font-weight: bold;">)</span>
-     <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-s p"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-sc-previous-section<span style="color: #a1db00; font-weight: bold;">)</span>
-     <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-C-n"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-sc-eval-next-section<span style="color: #a1db00; font-weight: bold;">)</span>
-     <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-C-p"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-sc-eval-previous-section<span style="color: #a1db00; font-weight: bold;">)</span>
-     <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-M-n"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-sc-synthPlayer-next-section<span style="color: #a1db00; font-weight: bold;">)</span>
-     <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-M-p"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-sc-synthPlayer-previous-section<span style="color: #a1db00; font-weight: bold;">)</span>
-     <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">same level movement: up and down arrow keys</span>
-     <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-j"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-sc-next-same-level-section<span style="color: #a1db00; font-weight: bold;">)</span>
-     <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-k"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-sc-previous-same-level-section<span style="color: #a1db00; font-weight: bold;">)</span>
-     <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-C-j"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-sc-eval-next-same-level-section<span style="color: #a1db00; font-weight: bold;">)</span>
-     <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-C-k"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-sc-eval-previous-same-level-section<span style="color: #a1db00; font-weight: bold;">)</span>
-     <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-M-j"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-sc-synthPlayer-next-same-level-section<span style="color: #a1db00; font-weight: bold;">)</span>
-     <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-M-k"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-sc-synthPlayer-previous-same-level-section<span style="color: #a1db00; font-weight: bold;">)</span>
-     <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">more stuff:</span>
-     <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-M-x"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-sc-eval<span style="color: #a1db00; font-weight: bold;">)</span>
-     <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c C-,"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'sclang-eval-line<span style="color: #a1db00; font-weight: bold;">)</span>
-     <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">9 because in the us keyboard it is below open paren:</span>
-     <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c C-9"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'sclang-eval-dwim<span style="color: #a1db00; font-weight: bold;">)</span>
-     <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-M-z"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-sc-stop-section-processes<span style="color: #a1db00; font-weight: bold;">)</span>
-     <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-C-x"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-sc-eval-in-routine<span style="color: #a1db00; font-weight: bold;">)</span>
-     <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">convenient parallel to H-C-x:</span>
-     <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-C-z"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-sc-stop-section-processes<span style="color: #a1db00; font-weight: bold;">)</span>
-     <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-M-n"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-sc-eval-next<span style="color: #a1db00; font-weight: bold;">)</span>
-     <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-M-p"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-sc-eval-previous<span style="color: #a1db00; font-weight: bold;">)</span>
-     <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">this overrides the default binding org-schedule, which I do not use often:</span>
-     <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c C-s"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'sclang-main-stop<span style="color: #a1db00; font-weight: bold;">)</span>
-     <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-C-r"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'sclang-process-registry-gui<span style="color: #a1db00; font-weight: bold;">)</span>
-     <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c C-M-."</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-sc-stop-section-processes<span style="color: #a1db00; font-weight: bold;">)</span>
+h<span style="color: #DCDCCC;">(</span>eval-after-load <span style="color: #CC9393;">"org"</span>
+  <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">move / eval / synthPlayer sections</span>
+  '<span style="color: #BFEBBF;">(</span><span style="color: #F0DFAF; font-weight: bold;">progn</span>
+     <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"H-C-SPC"</span><span style="color: #93E0E3;">)</span> 'org-sc-eval-this-section<span style="color: #D0BF8F;">)</span>
+     <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"H-M-SPC"</span><span style="color: #93E0E3;">)</span> 'org-sc-synthPlayer-this-section<span style="color: #D0BF8F;">)</span>
+     <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"H-s n"</span><span style="color: #93E0E3;">)</span> 'org-sc-next-section<span style="color: #D0BF8F;">)</span>
+     <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"H-s p"</span><span style="color: #93E0E3;">)</span> 'org-sc-previous-section<span style="color: #D0BF8F;">)</span>
+     <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"H-C-n"</span><span style="color: #93E0E3;">)</span> 'org-sc-eval-next-section<span style="color: #D0BF8F;">)</span>
+     <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"H-C-p"</span><span style="color: #93E0E3;">)</span> 'org-sc-eval-previous-section<span style="color: #D0BF8F;">)</span>
+     <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"H-M-n"</span><span style="color: #93E0E3;">)</span> 'org-sc-synthPlayer-next-section<span style="color: #D0BF8F;">)</span>
+     <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"H-M-p"</span><span style="color: #93E0E3;">)</span> 'org-sc-synthPlayer-previous-section<span style="color: #D0BF8F;">)</span>
+     <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">same level movement: up and down arrow keys</span>
+     <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"H-j"</span><span style="color: #93E0E3;">)</span> 'org-sc-next-same-level-section<span style="color: #D0BF8F;">)</span>
+     <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"H-k"</span><span style="color: #93E0E3;">)</span> 'org-sc-previous-same-level-section<span style="color: #D0BF8F;">)</span>
+     <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"H-C-j"</span><span style="color: #93E0E3;">)</span> 'org-sc-eval-next-same-level-section<span style="color: #D0BF8F;">)</span>
+     <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"H-C-k"</span><span style="color: #93E0E3;">)</span> 'org-sc-eval-previous-same-level-section<span style="color: #D0BF8F;">)</span>
+     <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"H-M-j"</span><span style="color: #93E0E3;">)</span> 'org-sc-synthPlayer-next-same-level-section<span style="color: #D0BF8F;">)</span>
+     <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"H-M-k"</span><span style="color: #93E0E3;">)</span> 'org-sc-synthPlayer-previous-same-level-section<span style="color: #D0BF8F;">)</span>
+     <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">more stuff:</span>
+     <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-M-x"</span><span style="color: #93E0E3;">)</span> 'org-sc-eval<span style="color: #D0BF8F;">)</span>
+     <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-c C-,"</span><span style="color: #93E0E3;">)</span> 'sclang-eval-line<span style="color: #D0BF8F;">)</span>
+     <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">9 because in the us keyboard it is below open paren:</span>
+     <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-c C-9"</span><span style="color: #93E0E3;">)</span> 'sclang-eval-dwim<span style="color: #D0BF8F;">)</span>
+     <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-M-z"</span><span style="color: #93E0E3;">)</span> 'org-sc-stop-section-processes<span style="color: #D0BF8F;">)</span>
+     <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"H-C-x"</span><span style="color: #93E0E3;">)</span> 'org-sc-eval-in-routine<span style="color: #D0BF8F;">)</span>
+     <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">convenient parallel to H-C-x:</span>
+     <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"H-C-z"</span><span style="color: #93E0E3;">)</span> 'org-sc-stop-section-processes<span style="color: #D0BF8F;">)</span>
+     <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-M-n"</span><span style="color: #93E0E3;">)</span> 'org-sc-eval-next<span style="color: #D0BF8F;">)</span>
+     <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-M-p"</span><span style="color: #93E0E3;">)</span> 'org-sc-eval-previous<span style="color: #D0BF8F;">)</span>
+     <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">this overrides the default binding org-schedule, which I do not use often:</span>
+     <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-c C-s"</span><span style="color: #93E0E3;">)</span> 'sclang-main-stop<span style="color: #D0BF8F;">)</span>
+     <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"H-C-r"</span><span style="color: #93E0E3;">)</span> 'sclang-process-registry-gui<span style="color: #D0BF8F;">)</span>
+     <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-c C-M-."</span><span style="color: #93E0E3;">)</span> 'org-sc-stop-section-processes<span style="color: #D0BF8F;">)</span>
 
-     <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c C-x l"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-sc-toggle-autoload<span style="color: #a1db00; font-weight: bold;">)</span>
-     <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c C-x C-l"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-sc-load-marked<span style="color: #a1db00; font-weight: bold;">)</span>
-     <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"H-C-o"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-sc-toggle-mode<span style="color: #a1db00; font-weight: bold;">)</span><span style="color: #5fafd7; font-weight: bold;">)[</span><span style="color: #a1db00; font-weight: bold;">[</span>
+     <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-c C-x l"</span><span style="color: #93E0E3;">)</span> 'org-sc-toggle-autoload<span style="color: #D0BF8F;">)</span>
+     <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-c C-x C-l"</span><span style="color: #93E0E3;">)</span> 'org-sc-load-marked<span style="color: #D0BF8F;">)</span>
+     <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"H-C-o"</span><span style="color: #93E0E3;">)</span> 'org-sc-toggle-mode<span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)[</span><span style="color: #D0BF8F;">[</span>
 </pre>
 </div>
 </div>
@@ -533,94 +784,94 @@ h<span style="color: #dd0000; font-weight: bold;">(</span>eval-after-load <span 
 <div class="outline-text-2" id="text-8">
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp"><span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">This is run once after loading org for the first time</span>
- <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">It adds some org-mode specific key bindings.</span>
- <span style="color: #dd0000; font-weight: bold;">(</span>eval-after-load 'org
-   '<span style="color: #5fafd7; font-weight: bold;">(</span><span style="color: #a1db00; font-weight: bold;">progn</span>
-      <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">alias for org-cycle, more convenient than TAB</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-H-c"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-cycle<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">Note: This keybinding is in analogy to the default keybinding:</span>
-      <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">C-c . -&gt; org-time-stamp</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c C-."</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-set-date<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-M-{"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'backward-paragraph<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-M-}"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'forward-paragraph<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c C-S"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-schedule<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c C-s"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'sclang-main-stop<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c &gt;"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'sclang-show-post-buffer<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">own additions after org-config-examples below:</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-M-S-n"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-next-src-block<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-M-S-p"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-show-properties-block<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-M-/"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-sclang-eval-babel-block<span style="color: #a1db00; font-weight: bold;">)</span>
-             <span style="color: #6c6c6c; font-style: italic;">;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;</span>
-      <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">from: http://orgmode.org/worg/org-configs/org-config-examples.html</span>
-      <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">section navigation</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"M-n"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'jump-outline-next-visible-heading<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-M-n"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'jump-outline-next-visible-heading-and-cycle<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"M-p"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'jump-outline-previous-visible-heading<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-M-p"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'jump-outline-previous-visible-heading-and-cycle<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-M-f"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-jump-forward-heading-same-level<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-M-b"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-jump-backward-heading-same-level<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-M-u"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'jump-outline-up-heading<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">table</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-M-w"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-table-copy-region<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-M-y"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-table-paste-rectangle<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-M-l"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-table-sort-lines<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">display images</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"M-I"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'org-toggle-iimage-in-org<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">Following are the prelude-mode binding, minus the conflicting table bindings.</span>
-      <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">prelude-mode is turned off for org mode, below.</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c o"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'crux-open-with<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">(define-key org-mode-map (kbd "C-c g") 'prelude-google)</span>
-      <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">(define-key org-mode-map (kbd "C-c G") 'crux-github)</span>
-      <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">(define-key org-mode-map (kbd "C-c y") 'prelude-youtube)</span>
-      <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">(define-key org-mode-map (kbd "C-c U") 'prelude-duckduckgo)</span>
-      <span style="color: #6c6c6c; font-style: italic;">;;     </span><span style="color: #6c6c6c; font-style: italic;">;; mimic popular IDEs binding, note that it doesn't work in a terminal session</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">[</span><span style="color: #00d7af; font-weight: bold;">(</span>shift return<span style="color: #00d7af; font-weight: bold;">)</span><span style="color: #ff4ea3; font-weight: bold;">]</span> 'crux-smart-open-line<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"M-o"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'crux-smart-open-line<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">[</span><span style="color: #00d7af; font-weight: bold;">(</span>control shift return<span style="color: #00d7af; font-weight: bold;">)</span><span style="color: #ff4ea3; font-weight: bold;">]</span> 'crux-smart-open-line-above<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">[</span><span style="color: #00d7af; font-weight: bold;">(</span>control shift up<span style="color: #00d7af; font-weight: bold;">)</span><span style="color: #ff4ea3; font-weight: bold;">]</span>  'move-text-up<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">[</span><span style="color: #00d7af; font-weight: bold;">(</span>control shift down<span style="color: #00d7af; font-weight: bold;">)</span><span style="color: #ff4ea3; font-weight: bold;">]</span>  'move-text-down<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">[</span><span style="color: #00d7af; font-weight: bold;">(</span>control meta shift up<span style="color: #00d7af; font-weight: bold;">)</span><span style="color: #ff4ea3; font-weight: bold;">]</span>  'move-text-up<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">[</span><span style="color: #00d7af; font-weight: bold;">(</span>control meta shift down<span style="color: #00d7af; font-weight: bold;">)</span><span style="color: #ff4ea3; font-weight: bold;">]</span>  'move-text-down<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #6c6c6c; font-style: italic;">;;     </span><span style="color: #6c6c6c; font-style: italic;">;; the following 2 break structure editing with meta-shift-up / down in org mode</span>
-      <span style="color: #6c6c6c; font-style: italic;">;;     </span><span style="color: #6c6c6c; font-style: italic;">;;    (define-key map [(meta shift up)]  'move-text-up)</span>
-      <span style="color: #6c6c6c; font-style: italic;">;;     </span><span style="color: #6c6c6c; font-style: italic;">;;    (define-key map [(meta shift down)]  'move-text-down)</span>
-      <span style="color: #6c6c6c; font-style: italic;">;;     </span><span style="color: #6c6c6c; font-style: italic;">;; new substitutes for above:  (these are overwritten by other modes...)</span>
-      <span style="color: #6c6c6c; font-style: italic;">;;     </span><span style="color: #6c6c6c; font-style: italic;">;; (define-key map (kbd "C-c [")  'move-text-up)</span>
-      <span style="color: #6c6c6c; font-style: italic;">;;     </span><span style="color: #6c6c6c; font-style: italic;">;; (define-key map (kbd "C-c ]")  'move-text-down)</span>
-      <span style="color: #6c6c6c; font-style: italic;">;;     </span><span style="color: #6c6c6c; font-style: italic;">;; (define-key map [(control meta shift up)]  'move-text-up)</span>
-      <span style="color: #6c6c6c; font-style: italic;">;;     </span><span style="color: #6c6c6c; font-style: italic;">;; (define-key map [(control meta shift down)]  'move-text-down)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c n"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'crux-cleanup-buffer-or-region<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c f"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'crux-recentf-ido-find-file<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-M-z"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'crux-indent-defun<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c u"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'crux-view-url<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c e"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'crux-eval-and-replace<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c s"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'crux-swap-windows<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c D"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'crux-delete-file-and-buffer<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c d"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'crux-duplicate-current-line-or-region<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c M-d"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'crux-duplicate-and-comment-current-line-or-region<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c r"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'crux-rename-buffer-and-file<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c t"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'crux-visit-term-buffer<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c k"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'crux-kill-other-buffers<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #6c6c6c; font-style: italic;">;;     </span><span style="color: #6c6c6c; font-style: italic;">;; another annoying overwrite of a useful org-mode command:</span>
-      <span style="color: #6c6c6c; font-style: italic;">;;     </span><span style="color: #6c6c6c; font-style: italic;">;; (define-key map (kbd "C-c TAB") 'prelude-indent-rigidly-and-copy-to-clipboard)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c I"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'crux-find-user-init-file<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c S"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'crux-find-shell-init-file<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">replace not functioning 'prelude-goto-symbol with useful imenu-anywhere</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"C-c i"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'imenu-anywhere<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #6c6c6c; font-style: italic;">;;     </span><span style="color: #6c6c6c; font-style: italic;">;; extra prefix for projectile</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"s-p"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'projectile-command-map<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #6c6c6c; font-style: italic;">;;     </span><span style="color: #6c6c6c; font-style: italic;">;; make some use of the Super key</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"s-g"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'god-local-mode<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"s-r"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'crux-recentf-ido-find-file<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"s-j"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'crux-top-join-line<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"s-k"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'crux-kill-whole-line<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"s-m m"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'magit-status<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"s-m l"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'magit-log<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"s-m f"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'magit-log-buffer-file<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"s-m b"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'magit-blame<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #a1db00; font-weight: bold;">(</span>define-key org-mode-map <span style="color: #ff4ea3; font-weight: bold;">(</span>kbd <span style="color: #ff4ea3;">"s-o"</span><span style="color: #ff4ea3; font-weight: bold;">)</span> 'crux-smart-open-line-above<span style="color: #a1db00; font-weight: bold;">)</span>
-      <span style="color: #5fafd7; font-weight: bold;">)</span><span style="color: #dd0000; font-weight: bold;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">This is run once after loading org for the first time</span>
+ <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">It adds some org-mode specific key bindings.</span>
+ <span style="color: #DCDCCC;">(</span>eval-after-load 'org
+   '<span style="color: #BFEBBF;">(</span><span style="color: #F0DFAF; font-weight: bold;">progn</span>
+      <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">alias for org-cycle, more convenient than TAB</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-H-c"</span><span style="color: #93E0E3;">)</span> 'org-cycle<span style="color: #D0BF8F;">)</span>
+      <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">Note: This keybinding is in analogy to the default keybinding:</span>
+      <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">C-c . -&gt; org-time-stamp</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-c C-."</span><span style="color: #93E0E3;">)</span> 'org-set-date<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-M-{"</span><span style="color: #93E0E3;">)</span> 'backward-paragraph<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-M-}"</span><span style="color: #93E0E3;">)</span> 'forward-paragraph<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-c C-S"</span><span style="color: #93E0E3;">)</span> 'org-schedule<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-c C-s"</span><span style="color: #93E0E3;">)</span> 'sclang-main-stop<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-c &gt;"</span><span style="color: #93E0E3;">)</span> 'sclang-show-post-buffer<span style="color: #D0BF8F;">)</span>
+      <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">own additions after org-config-examples below:</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-M-S-n"</span><span style="color: #93E0E3;">)</span> 'org-next-src-block<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-M-S-p"</span><span style="color: #93E0E3;">)</span> 'org-show-properties-block<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-M-/"</span><span style="color: #93E0E3;">)</span> 'org-sclang-eval-babel-block<span style="color: #D0BF8F;">)</span>
+             <span style="color: #5F7F5F;">;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;</span>
+      <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">from: http://orgmode.org/worg/org-configs/org-config-examples.html</span>
+      <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">section navigation</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"M-n"</span><span style="color: #93E0E3;">)</span> 'jump-outline-next-visible-heading<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-M-n"</span><span style="color: #93E0E3;">)</span> 'jump-outline-next-visible-heading-and-cycle<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"M-p"</span><span style="color: #93E0E3;">)</span> 'jump-outline-previous-visible-heading<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-M-p"</span><span style="color: #93E0E3;">)</span> 'jump-outline-previous-visible-heading-and-cycle<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-M-f"</span><span style="color: #93E0E3;">)</span> 'org-jump-forward-heading-same-level<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-M-b"</span><span style="color: #93E0E3;">)</span> 'org-jump-backward-heading-same-level<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-M-u"</span><span style="color: #93E0E3;">)</span> 'jump-outline-up-heading<span style="color: #D0BF8F;">)</span>
+      <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">table</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-M-w"</span><span style="color: #93E0E3;">)</span> 'org-table-copy-region<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-M-y"</span><span style="color: #93E0E3;">)</span> 'org-table-paste-rectangle<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-M-l"</span><span style="color: #93E0E3;">)</span> 'org-table-sort-lines<span style="color: #D0BF8F;">)</span>
+      <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">display images</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"M-I"</span><span style="color: #93E0E3;">)</span> 'org-toggle-iimage-in-org<span style="color: #D0BF8F;">)</span>
+      <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">Following are the prelude-mode binding, minus the conflicting table bindings.</span>
+      <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">prelude-mode is turned off for org mode, below.</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-c o"</span><span style="color: #93E0E3;">)</span> 'crux-open-with<span style="color: #D0BF8F;">)</span>
+      <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">(define-key org-mode-map (kbd "C-c g") 'prelude-google)</span>
+      <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">(define-key org-mode-map (kbd "C-c G") 'crux-github)</span>
+      <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">(define-key org-mode-map (kbd "C-c y") 'prelude-youtube)</span>
+      <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">(define-key org-mode-map (kbd "C-c U") 'prelude-duckduckgo)</span>
+      <span style="color: #5F7F5F;">;;     </span><span style="color: #7F9F7F;">;; mimic popular IDEs binding, note that it doesn't work in a terminal session</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">[</span><span style="color: #9FC59F;">(</span>shift return<span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">]</span> 'crux-smart-open-line<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"M-o"</span><span style="color: #93E0E3;">)</span> 'crux-smart-open-line<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">[</span><span style="color: #9FC59F;">(</span>control shift return<span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">]</span> 'crux-smart-open-line-above<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">[</span><span style="color: #9FC59F;">(</span>control shift up<span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">]</span>  'move-text-up<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">[</span><span style="color: #9FC59F;">(</span>control shift down<span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">]</span>  'move-text-down<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">[</span><span style="color: #9FC59F;">(</span>control meta shift up<span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">]</span>  'move-text-up<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">[</span><span style="color: #9FC59F;">(</span>control meta shift down<span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">]</span>  'move-text-down<span style="color: #D0BF8F;">)</span>
+      <span style="color: #5F7F5F;">;;     </span><span style="color: #7F9F7F;">;; the following 2 break structure editing with meta-shift-up / down in org mode</span>
+      <span style="color: #5F7F5F;">;;     </span><span style="color: #7F9F7F;">;;    (define-key map [(meta shift up)]  'move-text-up)</span>
+      <span style="color: #5F7F5F;">;;     </span><span style="color: #7F9F7F;">;;    (define-key map [(meta shift down)]  'move-text-down)</span>
+      <span style="color: #5F7F5F;">;;     </span><span style="color: #7F9F7F;">;; new substitutes for above:  (these are overwritten by other modes...)</span>
+      <span style="color: #5F7F5F;">;;     </span><span style="color: #7F9F7F;">;; (define-key map (kbd "C-c [")  'move-text-up)</span>
+      <span style="color: #5F7F5F;">;;     </span><span style="color: #7F9F7F;">;; (define-key map (kbd "C-c ]")  'move-text-down)</span>
+      <span style="color: #5F7F5F;">;;     </span><span style="color: #7F9F7F;">;; (define-key map [(control meta shift up)]  'move-text-up)</span>
+      <span style="color: #5F7F5F;">;;     </span><span style="color: #7F9F7F;">;; (define-key map [(control meta shift down)]  'move-text-down)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-c n"</span><span style="color: #93E0E3;">)</span> 'crux-cleanup-buffer-or-region<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-c f"</span><span style="color: #93E0E3;">)</span> 'crux-recentf-ido-find-file<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-M-z"</span><span style="color: #93E0E3;">)</span> 'crux-indent-defun<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-c u"</span><span style="color: #93E0E3;">)</span> 'crux-view-url<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-c e"</span><span style="color: #93E0E3;">)</span> 'crux-eval-and-replace<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-c s"</span><span style="color: #93E0E3;">)</span> 'crux-swap-windows<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-c D"</span><span style="color: #93E0E3;">)</span> 'crux-delete-file-and-buffer<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-c d"</span><span style="color: #93E0E3;">)</span> 'crux-duplicate-current-line-or-region<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-c M-d"</span><span style="color: #93E0E3;">)</span> 'crux-duplicate-and-comment-current-line-or-region<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-c r"</span><span style="color: #93E0E3;">)</span> 'crux-rename-buffer-and-file<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-c t"</span><span style="color: #93E0E3;">)</span> 'crux-visit-term-buffer<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-c k"</span><span style="color: #93E0E3;">)</span> 'crux-kill-other-buffers<span style="color: #D0BF8F;">)</span>
+      <span style="color: #5F7F5F;">;;     </span><span style="color: #7F9F7F;">;; another annoying overwrite of a useful org-mode command:</span>
+      <span style="color: #5F7F5F;">;;     </span><span style="color: #7F9F7F;">;; (define-key map (kbd "C-c TAB") 'prelude-indent-rigidly-and-copy-to-clipboard)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-c I"</span><span style="color: #93E0E3;">)</span> 'crux-find-user-init-file<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-c S"</span><span style="color: #93E0E3;">)</span> 'crux-find-shell-init-file<span style="color: #D0BF8F;">)</span>
+      <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">replace not functioning 'prelude-goto-symbol with useful imenu-anywhere</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"C-c i"</span><span style="color: #93E0E3;">)</span> 'imenu-anywhere<span style="color: #D0BF8F;">)</span>
+      <span style="color: #5F7F5F;">;;     </span><span style="color: #7F9F7F;">;; extra prefix for projectile</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"s-p"</span><span style="color: #93E0E3;">)</span> 'projectile-command-map<span style="color: #D0BF8F;">)</span>
+      <span style="color: #5F7F5F;">;;     </span><span style="color: #7F9F7F;">;; make some use of the Super key</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"s-g"</span><span style="color: #93E0E3;">)</span> 'god-local-mode<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"s-r"</span><span style="color: #93E0E3;">)</span> 'crux-recentf-ido-find-file<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"s-j"</span><span style="color: #93E0E3;">)</span> 'crux-top-join-line<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"s-k"</span><span style="color: #93E0E3;">)</span> 'crux-kill-whole-line<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"s-m m"</span><span style="color: #93E0E3;">)</span> 'magit-status<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"s-m l"</span><span style="color: #93E0E3;">)</span> 'magit-log<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"s-m f"</span><span style="color: #93E0E3;">)</span> 'magit-log-buffer-file<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"s-m b"</span><span style="color: #93E0E3;">)</span> 'magit-blame<span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span>define-key org-mode-map <span style="color: #93E0E3;">(</span>kbd <span style="color: #CC9393;">"s-o"</span><span style="color: #93E0E3;">)</span> 'crux-smart-open-line-above<span style="color: #D0BF8F;">)</span>
+      <span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
 </pre>
 </div>
 </div>
@@ -786,7 +1037,7 @@ PulseAudio JACK Source:front-right
 <div id="postamble" class="status">
 <p class="date">Date: <span class="timestamp-wrapper"><span class="timestamp">&lt;2017-10-26 Πεμ&gt;</span></span></p>
 <p class="author">Author: Eugene Tryfonides</p>
-<p class="date">Created: 2017-10-27 Παρ 16:13</p>
+<p class="date">Created: 2017-10-31 Τρι 18:03</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
