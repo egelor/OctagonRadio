@@ -58,7 +58,8 @@ jack_connect Carla:audio-in2 'Jack Router':out_4
 jack_connect Carla:audio-out1 'Jack Router':in_7
 jack_connect Carla:audio-out2 'Jack Router':in_8
 #+END_SRC
-* OctaGon Radio :radio: [[file:microphone.sc][MainFile.sc]]
+*  OctaGon  Radio :radio: [[file:microphone.sc][MainFile.sc]]
+#+Oldfile:[[file:mic.sc][ mic.sc]] with ProxySpace
 #+BEGIN_SRC sclang :Volume
  s.initTree;
 s.volume = -3 //db
@@ -75,6 +76,22 @@ p=ProxySpace.new(s);
  p.stop;p.release;
 \p.push; //sc-hacks
 #+END_SRC
+** EQUALIZER-OLD
+#+BEGIN_SRC sclang function d=EQdef
+(// synth2  def2 eq2 EQdef EQSettting AudioIn [1,3]  BPeakEQ
+~out = 0 ;
+~dead=EQdef(*({|i| [("peek" ++ i).asSymbol,BPeakEQ ] }!20).flatten(1));  //20-bands parametric eq
+~eq = EQSetting(~dead);
+~micEq = {~eq.ar(AudioIn.ar([7,8]),\eqSettings.kr(~eq.setting)) }.play;
+~micEq = {~eq.ar(AudioIn.ar([1,3]),\eqSettings.kr(~eq.setting)) } +> \p;
+~micEq.stop;
+)
+(
+~viewEq = EQView (eqSetting: ~eq );
+~viewEq.action = { |view, setting| ~micEq.set(\eqSetting,setting) }
+)
+#+END_SRC
+
 ** SynthDefs
 #+BEGIN_SRC sclang New Synthdefs with equalizer
 // Base ConnectionS Inputs Outputs with  Mic Octagon Mamathron Player
@@ -147,21 +164,6 @@ SynthDef("\mamathron", { arg out= 0 ; Out.ar(out, AudioIn.ar([ 9,10])); }).write
 SynthDef("\Instrument", { arg out= 0 ; Out.ar(out, AudioIn.ar([ 2,4])); }).writeDefFile;
 )
 #+END_SRC
-** EQUALIZER-OLD
-#+BEGIN_SRC sclang function d=EQdef
-(// synth2  def2 eq2 EQdef EQSettting AudioIn [1,3]  BPeakEQ
-~out = 0 ;
-~dead=EQdef(*({|i| [("peek" ++ i).asSymbol,BPeakEQ ] }!20).flatten(1));  //20-bands parametric eq
-~eq = EQSetting(~dead);
-~micEq = {~eq.ar(AudioIn.ar([7,8]),\eqSettings.kr(~eq.setting)) }.play;
-~micEq = {~eq.ar(AudioIn.ar([1,3]),\eqSettings.kr(~eq.setting)) } +> \p;
-~micEq.stop;
-)
-(
-~viewEq = EQView (eqSetting: ~eq );
-~viewEq.action = { |view, setting| ~micEq.set(\eqSetting,setting) }
-)
-#+END_SRC
 **  Επιστροφές (feedback) OctaGon Monitoring
 #+BEGIN_SRC sclang returns
 (  // Octagon Feadback or Return
@@ -188,7 +190,7 @@ SynthDef("\Instrument", { arg out= 0 ; Out.ar(out, AudioIn.ar([ 2,4])); }).write
 ( //Microphone && Monitor it
 ~micmonitor = Synth ("\mic", [\out, 2] );
 ~micmonitor.free; ~micmonitor.release;
-~mic = Synth ("\mic" );
+~mic = Synth ("\mic");
 ~mic.free;~mic.release;
 ~view1.action = { |view, setting| ~mic.set( \eqSetting, setting ) };
 ~view1 = EQView(eqSetting:  ~eq3);
@@ -251,8 +253,23 @@ s.prepareForRecord;
 s.record(0);
 s.stopRecording;
 #+END_SRC
-
-** Browser :pulseaudio:
+#+BEGIN_SRC sclang mp3
+( //  \mp3rec
+SynthDef ("mp3rec",  { |bufnum=0 |
+ var son;
+son =  Out.ar(0);
+DiskOut.ar(bufnum, son);
+ }).writeDefFile;
+~m = MP3("Recording/mp3test.mp3", \writefile);
+~m .start;
+~abuffer = Buffer.alloc(s, 65526, 2);
+//start writting
+~abuffer.write(~m.fifo, "raw", "int16", 0 ,0 , true);
+~recmp3 = Synth( "mp3rec", [\bufnum, ~abuffer.bufnum], addAction:\addToTail);
+~abuffer.close; ~abuffer.free;
+m.finish;
+#+END_SRC
+** Browser : Pulseaudio:
 #+BEGIN_SRC sclang Browser
 ( // Browser
 ~browser = Synth("\browser");
@@ -293,21 +310,6 @@ s.stopRecording;
 ~mamathronmonitor.release;
 #+END_SRC
 # -----------------------------
-**  Record Output
-   :PROPERTIES:
-   :DATE:     <2017-10-26 Πεμ 14:58>
-   :END:
-#+Name:Record (path)
-#+Arguments: Is passed to prepareForRecord (above).
-#+date:<2017-10-26 Πεμ>
-#+BEGIN_SRC sclang  Rec
-s.recHeaderFormat = "wav"
-s.recChannels //default: 2) Must me called before preperForRecord
-s.prepareForRecord;
-s.record(0);
-s.stopRecording;
-#+END_SRC
-
 ** Octagon to MamathroN
 #+BEGIN_SRC  sclang  Send to mamathron
 // Mic to mamathron
@@ -337,6 +339,101 @@ s.stopRecording;
 ~playertomamathron.play(4);
 ~playertomamathron.stop;
 #+END_SRC
+
+* OctaGon Radio :osc: Ανάπτυξη
+** \verb   :out:
+#+BEGIN_SRC sclang Delay
+(  // \verb
+Ndef(\verb, {
+var input, output, delrd, sig, deltimes;
+// Choose which sort of input you want by (un)commenting these lines:
+	//input = Pan2.ar(PlayBuf.ar(1, b, loop: 0), -0.5); // buffer playback, panned half
+input = SoundIn.ar([0,1]); // TAKE CARE of feedback - use headphones
+//input = Dust2.ar([0.1, 0.01]); // Occasional clicks
+// Read our 4-channel delayed signals back from the feedback loop
+delrd = LocalIn.ar(4);
+// This will be our eventual output, which will also be recirculated
+output = input + delrd[[0,1]];
+sig = output ++ delrd[[2,3]];
+// Cross-fertilise the four delay lines with each other:
+sig = ([ [1, 1, 1, 1],
+[1, -1, 1, -1],
+[1, 1, -1, -1],
+[1, -1, -1, 1]] * sig).sum;
+// Attenutate the delayed signals so they decay:
+sig = sig * [0.4, 0.37, 0.333, 0.3];
+// Here we give delay times in milliseconds, convert to seconds,
+// then compensate with ControlDur for the one-block delay
+// which is always introduced when using the LocalIn/Out fdbk loop
+deltimes = [101, 143, 165, 177] * 0.001 - ControlDur.ir;
+// Apply the delays and send the signals into the feedback loop
+LocalOut.ar(DelayC.ar(sig, deltimes, deltimes));
+Out.ar(0, output);
+}).play
+)
+Ndef(\verb).free;
+#+END_SRC
+**  Ηχητικό περιβάλλον SplayNdef Μπάμπης  ::
+    #+BEGIN_SRC sclang o Μπάμπης
+~pinkΜπάμπης=(
+Ndef(\Μπάμπης, {
+	var sig;
+	sig = PinkNoise.ar(0.2 ! 2 );
+	2.do{sig = BPF.ar(sig, ([50, 62, 65, 72, 76, 89]).midicps, 0.03, 5)};
+	// sig = sig * LFSaw.kr({ExpRand(0.5,4)!6 }).exprange(0.01,1).squared;
+	sig = Splay.ar(sig.scramble);
+	sig = sig.blend(FreeVerb.ar(sig , 1), 0.5 );
+} ).fadeTime_(2)
+)
+~pinkΜπάμπης = Ndef (\Μπάμπης).play;
+~pinkΜπάμπης.stop;
+~pink.stop;
+    #+END_SRC
+** Play-mp3-Records
+#+BEGIN_SRC sclang mp3
+( // Synth mp3player
+SynthDef("mp3player", { |out = 0, bufnum = 0|
+	var son, wibble;
+	son = DiskIn.ar(2, bufnum);
+//	wibble = LFPar.kr(0.1).range(0.5, 2.0);
+	son = PitchShift.ar(son);   // , pitchRatio: wibble);
+	Out.ar(out, son);
+}).writeDefFile;
+)
+m = MP3("http://192.168.2.9:8003/start", \readurl);
+m = MP3 (Platform.resourceDir +/+ "sounds/mp3test.mp3");
+// Now use the buffer and Synth to read the var.fifo
+e = Buffer.cueSoundFile(s, m.fifo, 0, 2 );
+x = Synth ("mp3player", [\bufnum, e.bufnum]);
+m.start;
+e.close; e.free;
+m.finish;
+m.playing;
+#+END_SRC
+** Play-Records
+#+BEGIN_SRC sclang Buffers
+~logo1 = Buffer.read(s,Platform.resourceDir  +/+ "sounds/logo1.wav")
+~hiphopNight = Buffer.cueSoundFile(s, Platform.resourceDir +/+ "sounds/hiphopLiveNight.wav");
+SynthDef("tutorial-Buffer-cue", {arg out=0, bufnum;
+	Out.ar(out,
+	eq3.ar (DiskIn.ar(2,bufnum), \eqSetting.kr(eq3.setting)
+	)
+}).add;
+~playlogo = Synth.new("tutorial-Buffer-cue", [\bufnum,  ~logo1 ], s );
+~playhipN = Synth.new ("tutorial-Buffer-cue", [\bufnum, 6 , ~hiphopNight],s);
+~playlogo.free;
+~playhipN.free;
+~equalizer.action = { |view, setting| ~playhipN.set( \eqSetting, setting )}
+~equalizer = EQView(eqSetting:  ~eq3);
+   #+END_SRC
+
+
+* Βοηθήματα
+  #+BEGIN_SRC sclang Help
+MP3.lamepath;
+MP3.curlpath;
+  #+END_SRC
+
 * org-source-fontify-buffer
 #+BEGIN_SRC emacs-lisp fontify
 (setq org-src-fontify-natively t)
@@ -382,19 +479,6 @@ git push -f origin master
  ssh -T  egelor@github.com
 #+END_SRC
 *   Keybindings  :windmove:                                      :buffermove:
-**  Window move
-#+BEGIN_SRC emacs-lisp  windowmove
-(global-set-key (kbd "s-<") 'beginning-of-buffer)
-(global-set-key (kbd "s->") 'end-of-buffer)
-(global-set-key (kbd "s-S-<right>") 'windmove-right)
-(global-set-key (kbd "s-S-<left>") 'windmove-left)
-(global-set-key (kbd "s-S-<up>") 'windmove-up)
-(global-set-key (kbd "s-S-<down>") 'windmove-down)
-(global-set-key (kbd "s-M-<right>") 'buf-move-right)
-(global-set-key (kbd "s-M-<left>") 'buf-move-left)
-(global-set-key (kbd "s-M-<up>") 'buf-move-up)
-(global-set-key (kbd "s-M-<down>") 'buf-move-down)
-#+END_SRC
 **  ace-window
 #+BEGIN_SRC  emacs-lisp
 (global-set-key (kbd "C-S-a c") 'ace-jump-char-mode)
@@ -405,20 +489,6 @@ git push -f origin master
 (global-set-key (kbd "C-S-a W") 'ace-window)
 (global-set-key (kbd "C-S-a s") 'switch-window)
 (global-set-key (kbd "s-W") 'switch-window) ;; related to  ace-window s-w
-#+END_SRC
-** Hide-show block  code
-#+BEGIN_SRC  emacs-lisp
-(defun my-toggle-hideshow-all ()
-  "Toggle hideshow all."
-  (interactive)
-  (set (make-variable-buffer-local 'my-hs-hide) (not my-hs-hide))
-  (if my-hs-hide
-      (hs-hide-all)
-    (hs-show-all)))
-(global-set-key (kbd "C-c @ @") 'my-toggle-hideshow-all)
-(global-set-key (kbd "C-c @ h") 'hs-hide-block)
-(global-set-key (kbd "C-c @ s") 'hs-show-block)
-(global-set-key (kbd "C-c @ SPC") 'hs-show-block)
 #+END_SRC
 * Org-sc Keys  [[file:~/.emacs.d/personal/postload/015_org-sc.el][org-sc.el  ]]  :org: :org-sc:
 #+BEGIN_SRC emacs-lisp
