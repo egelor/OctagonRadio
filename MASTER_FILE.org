@@ -28,7 +28,7 @@ GUI.current;
 GUI.qt;
 GUI.schemes;
 GUI.skin;
-GUI.makeGui;
+GUI.makeGui ;
 s.volume = 3 ;
 s.queryAllNodes //run me to see the Nodes on the Server
 #+END_SRC
@@ -178,22 +178,22 @@ SynthDef("\Instrument", { arg out= 0 ; Out.ar(out, AudioIn.ar([ 2,4])); }).write
 ~octmonit.play(0);
 ~octmonit.stop;
 #+END_SRC
-**  Microphone ment Or Second microphodne
+**  Microphone ment Or Second microphone
    :PROPERTIES:
    :DATE:     <2019-12-29 Sun 16:59>
    :END:
    #+Title: Second Input from SoundCard
-#+BEGIN_SRC sclang Mic with eq~instmic = Synth("\inst");
+#+BEGIN_SRC sclang Mic with eq
 ~instmonitor = Synth("inst" , [\out, 1]);
 ~instmonitorS = Synth("inst" , [\out, 0]);
  ~instmonitor.free;~instmonitor.release;  ~instmonitorS.free;~instmonitorS.release;
-~instmic = Synth("inst");
+~instmic = Synth("mic");//use inst too
 ~instmic.free;~instmic.release;
 ~view1.action = { |view, setting| ~instmic.set( \eqSetting, setting ) };
 ~view1 = EQView(eqSetting:  ~eq4);
-#+END_SRC
+
 s.boot;
-#+BEGIN_SRC sclang InstrumentIn
+
 ~instrumentin={AudioIn.ar([2,4])}
 ~instrumentMonitor={AudioIn.ar([2,4])}
 ~instrumentIn.play(0);
@@ -216,6 +216,8 @@ relaxTime:0.01
 })
 
 )
+
+
 #+END_SRC
 ** Player: :playlists: :
 #+BEGIN_SRC sclang vlc or player
@@ -439,23 +441,23 @@ a = Group.basicNew(s,1); //get Group 1
 *** Synth reverb
 (
 SynthDef(\fxexamplereverb, {arg delaytime=0.01, decaytime=1;
-var input;
-var numc,numa,temp;
-input=AudioIn.ar(1,2); //get two channels of input starting (and ending) on bus 0
-numc = 4; // number of comb delays
-numa = 6; // number of allpass delays
-// reverb predelay time :
-temp = DelayN.ar(input, 0.048,0.048);
-temp=Mix.fill(numc,{CombL.ar(temp,0.1,rrand(0.01, 0.1),5)});
-// chain of 4 allpass delays on each of two channels (8 total) :
-numa.do({ temp = AllpassN.ar(temp, 0.051, [rrand(0.01, 0.05),rrand(0.01, 0.05)], 1)});
-// add original sound to reverb and play it :
-Out.ar(0,(0.2*temp));
+	var input;
+	var numc,numa,temp;
+	input=AudioIn.ar(1,3); //get two channels of input starting (and ending) on bus 0
+	numc = 4; // number of comb delays
+	numa = 6; // number of allpass delays
+	// reverb predelay time :
+	temp = DelayN.ar(input, 0.048,0.048);
+	temp=Mix.fill(numc,{CombL.ar(temp,0.1,rrand(0.01, 0.1),5)});
+	// chain of 4 allpass delays on each of two channels (8 total) :
+	numa.do({ temp = AllpassN.ar(temp, 0.051, [rrand(0.01, 0.05),rrand(0.01, 0.05)], 1)});
+	// add original sound to reverb and play it :
+	Out.ar(0,(0.2*temp));
 }).add;
 )
 *** control synth
 r= Synth.tail(a, \fxexamplereverb);
-r= Synth.tail(a, \fxexamplereverb, [\delaytime, 0.0001]);
+r= Synth.tail(a, \fxexamplereverb, [\delaytime, 0.001]);
 
 r.free;
 
@@ -1057,7 +1059,7 @@ Compander.ar()
 #+END_SRC
 ** two channel reverb (gverb)
 s.scope(2);
-#+BEGIN_SRC sclang
+#+BEGIN_SRC sclang run
 
 // bathroom
 a = Synth(\test, [\roomsize, 5, \revtime, 0.6, \damping, 0.62, \inputbw, 0.48, \drylevel -6, \earlylevel, -11, \taillevel, -13]);
@@ -1082,7 +1084,11 @@ a.free;
 s.quit;
 #+END_SRC
 *** synth
-#+BEGIN_SRC sclang
+    :PROPERTIES:
+    :ID:       4a876b0a-afb9-4986-9a9f-37cdae5b3f69
+    :eval-id:  9
+    :END:
+//#+BEGIN_SRC sclang Synth
 ~gverb=SynthDef(\test, {arg roomsize, revtime, damping, inputbw, spread = 15, drylevel, earlylevel,
         taillevel;
 	//var a = Resonz.ar(
@@ -1109,5 +1115,4 @@ s.quit;
 
 #+RESULTS:
 : t
-
 OSCFunc.defaultDispatcher
